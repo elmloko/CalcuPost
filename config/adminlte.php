@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'adminagbc',
+    'title' => 'CalcuPost',
     'title_prefix' => '',
     'title_postfix' => '| AGBC',
 
@@ -63,12 +63,12 @@ return [
     |
     */
 
-    'logo' => '<b>admin</b>AGBC',
+    'logo' => 'Calcu<b>Post</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AGBClogo.png',
     'logo_img_class' => 'brand-image img-circle',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'adminAGBC',
+    'logo_img_alt' => 'CalcuPost',
 
     /*
     |--------------------------------------------------------------------------
@@ -344,13 +344,13 @@ return [
             ],
         ],
         [
-            'text' => 'Consultas Informacion',
+            'text' => 'Calculadora Postal',
             'icon' => 'fas fa-users',
             // 'can'  => 'users.index',
             'submenu' => [
                 [
-                    'text' => 'Consulta Correspondencia',
-                    'url' => '',
+                    'text' => 'Tarifario Postal',
+                    'url' => '/tarifario',
                     'icon' => 'fas fa-user',
                 ],
             ],
