@@ -7,6 +7,6 @@
 @endsection
 
 @section('content')
-    {{-- @livewire('iniciar') --}}
+    @livewire('tarifario')
     @include('footer')
 @stop
