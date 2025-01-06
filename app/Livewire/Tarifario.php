@@ -31,7 +31,7 @@ class Tarifario extends Component
             $data = [
                 'categoria' => $this->activeTab,
             ];
-    
+
             if ($this->activeTab === 'EMS INT') {
                 $data = array_merge($data, [
                     'categoria' => 'EMS INT',
@@ -50,9 +50,9 @@ class Tarifario extends Component
                     'local_2' => $this->local_2,
                 ]);
             }
-    
+
             Precios::create($data);
-    
+
             session()->flash('message', 'Tarifa creada exitosamente.');
             $this->resetInputs();
             $this->dispatch('closeModal');
@@ -60,7 +60,22 @@ class Tarifario extends Component
             session()->flash('error', 'Error al crear la tarifa: ' . $e->getMessage());
         }
     }
-    
+
+    public function deleteTarifa($id)
+    {
+        try {
+            // 1. Buscas el registro (o usas un where).
+            $tarifario = Precios::findOrFail($id);
+
+            // 2. Lo eliminas.
+            $tarifario->delete();
+
+            // 3. Notificas al usuario
+            session()->flash('message', 'Tarifa eliminada exitosamente.');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error al eliminar la tarifa: ' . $e->getMessage());
+        }
+    }
 
     public function render()
     {

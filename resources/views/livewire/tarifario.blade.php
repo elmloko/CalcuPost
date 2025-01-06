@@ -51,7 +51,7 @@
                         <tr>
 
                             @if ($activeTab === 'EMS INT')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Destino A</th>
                                 <th>Destino B</th>
                                 <th>Destino C</th>
@@ -60,7 +60,7 @@
                             @endif
 
                             @if ($activeTab === 'EMS NAT')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>EMS Local 1</th>
                                 <th>EMS Local 2</th>
                                 <th>EMS Local 3</th>
@@ -72,7 +72,7 @@
                             @endif
 
                             @if ($activeTab === 'ENCOMIENDA')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Destino A</th>
                                 <th>Destino B</th>
                                 <th>Destino C</th>
@@ -81,7 +81,7 @@
                             @endif
 
                             @if ($activeTab === 'MI ENCOMIENDA')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Cuidades Capitales</th>
                                 <th>Trinidad / Cobija(Destinos Especiales)</th>
                                 <th>Prov. Detro Depto.</th>
@@ -89,7 +89,7 @@
                             @endif
 
                             @if ($activeTab === 'LC/AO INT')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Destino A</th>
                                 <th>Destino B</th>
                                 <th>Destino C</th>
@@ -98,7 +98,7 @@
                             @endif
 
                             @if ($activeTab === 'LC/AO NAT')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Servicio Local</th>
                                 <th>Servicio Nacional</th>
                                 <th>Prov. Detro Depto.</th>
@@ -108,7 +108,7 @@
                             @endif
 
                             @if ($activeTab === 'ECA INT')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Destino A</th>
                                 <th>Destino B</th>
                                 <th>Destino C</th>
@@ -117,7 +117,7 @@
                             @endif
 
                             @if ($activeTab === 'ECA NAT')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Local</th>
                                 <th>Nacional</th>
                                 <th>Prov. Detro Depto.</th>
@@ -127,7 +127,7 @@
                             @endif
 
                             @if ($activeTab === 'PLIEGOS INT')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Destino A</th>
                                 <th>Destino B</th>
                                 <th>Destino C</th>
@@ -136,7 +136,7 @@
                             @endif
 
                             @if ($activeTab === 'PLIEGOS NAT')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Local</th>
                                 <th>Nacional</th>
                                 <th>Prov. Detro Depto.</th>
@@ -144,7 +144,7 @@
                             @endif
 
                             @if ($activeTab === 'SACAS M INT')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Destino A</th>
                                 <th>Destino B</th>
                                 <th>Destino C</th>
@@ -153,18 +153,18 @@
                             @endif
 
                             @if ($activeTab === 'SACAS M NAT')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Nacional</th>
                                 <th>Provincial</th>
                             @endif
 
                             @if ($activeTab === 'SUPER NAT')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Nacional</th>
                             @endif
 
                             @if ($activeTab === 'SUPER PAQUE NAT')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Tarifa 1</th>
                                 <th>Tarifa 2</th>
                                 <th>Tarifa 3</th>
@@ -175,7 +175,7 @@
                             @endif
 
                             @if ($activeTab === 'SUPER DOC NAT')
-                                <th>Peso min / Peso max</th>
+                                <th>Peso min / Peso max (Kg.)</th>
                                 <th>Tarifa 1</th>
                                 <th>Tarifa 2</th>
                                 <th>Tarifa 3</th>
@@ -191,16 +191,25 @@
                             <tr>
 
                                 @if ($activeTab === 'EMS INT')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->dest_a }}</td>
                                     <td>{{ $tarifario->dest_b }}</td>
                                     <td>{{ $tarifario->dest_c }}</td>
                                     <td>{{ $tarifario->dest_d }}</td>
                                     <td>{{ $tarifario->dest_e }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'EMS NAT')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->local_1 }}</td>
                                     <td>{{ $tarifario->local_2 }}</td>
                                     <td>{{ $tarifario->local_3 }}</td>
@@ -209,102 +218,210 @@
                                     <td>{{ $tarifario->cui_int }}</td>
                                     <td>{{ $tarifario->cui1 }}</td>
                                     <td>{{ $tarifario->cui2 }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'ENCOMIENDA')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->dest_a }}</td>
                                     <td>{{ $tarifario->dest_b }}</td>
                                     <td>{{ $tarifario->dest_c }}</td>
                                     <td>{{ $tarifario->dest_d }}</td>
                                     <td>{{ $tarifario->dest_e }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'MI ENCOMIENDA')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->cui_cap }}</td>
                                     <td>{{ $tarifario->cui1 }}</td>
                                     <td>{{ $tarifario->pro_dentro }}</td>
                                     <td>{{ $tarifario->pro_otro }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'LC/AO INT')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->dest_a }}</td>
                                     <td>{{ $tarifario->dest_b }}</td>
                                     <td>{{ $tarifario->dest_c }}</td>
                                     <td>{{ $tarifario->dest_d }}</td>
                                     <td>{{ $tarifario->dest_e }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'LC/AO NAT')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->local_1 }}</td>
                                     <td>{{ $tarifario->nacional }}</td>
                                     <td>{{ $tarifario->pro_dentro }}</td>
                                     <td>{{ $tarifario->pro_otro }}</td>
                                     <td>{{ $tarifario->cui1 }}</td>
                                     <td>{{ $tarifario->cui2 }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'ECA INT')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->dest_a }}</td>
                                     <td>{{ $tarifario->dest_b }}</td>
                                     <td>{{ $tarifario->dest_c }}</td>
                                     <td>{{ $tarifario->dest_d }}</td>
                                     <td>{{ $tarifario->dest_e }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'ECA NAT')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->local_1 }}</td>
                                     <td>{{ $tarifario->nacional }}</td>
                                     <td>{{ $tarifario->pro_dentro }}</td>
                                     <td>{{ $tarifario->pro_otro }}</td>
                                     <td>{{ $tarifario->cui1 }}</td>
                                     <td>{{ $tarifario->cui2 }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'PLIEGOS INT')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->dest_a }}</td>
                                     <td>{{ $tarifario->dest_b }}</td>
                                     <td>{{ $tarifario->dest_c }}</td>
                                     <td>{{ $tarifario->dest_d }}</td>
                                     <td>{{ $tarifario->dest_e }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'PLIEGOS NAT')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->local_1 }}</td>
                                     <td>{{ $tarifario->nacional }}</td>
                                     <td>{{ $tarifario->pro_dentro }}</td>
                                     <td>{{ $tarifario->pro_otro }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'SACAS M INT')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->dest_a }}</td>
                                     <td>{{ $tarifario->dest_b }}</td>
                                     <td>{{ $tarifario->dest_c }}</td>
                                     <td>{{ $tarifario->dest_d }}</td>
                                     <td>{{ $tarifario->dest_e }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'SACAS M NAT')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->nacional }}</td>
                                     <td>{{ $tarifario->pro_dentro }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'SUPER NAT')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->nacional }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'SUPER PAQUE NAT')
-                                    <td>{{ $tarifario->peso_min_kg }}/{{ $tarifario->peso_max_kg }}</td>
+                                    <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->dest_a }}</td>
                                     <td>{{ $tarifario->dest_b }}</td>
                                     <td>{{ $tarifario->dest_c }}</td>
@@ -312,6 +429,15 @@
                                     <td>{{ $tarifario->dest_e }}</td>
                                     <td>{{ $tarifario->dest_f }}</td>
                                     <td>{{ $tarifario->dest_g }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
 
                                 @if ($activeTab === 'SUPER DOC NAT')
@@ -323,6 +449,15 @@
                                     <td>{{ $tarifario->dest_e }}</td>
                                     <td>{{ $tarifario->dest_f }}</td>
                                     <td>{{ $tarifario->dest_g }}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-danger btn-sm"
+                                            wire:click="deleteTarifa({{ $tarifario->id }})"
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </td>
                                 @endif
                             </tr>
                         @empty
