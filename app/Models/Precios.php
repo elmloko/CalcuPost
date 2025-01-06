@@ -11,6 +11,8 @@ class Precios extends Model
 
     protected $table = 'tarifario';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'categoria',
         'peso_min_kg',

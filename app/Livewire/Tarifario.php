@@ -10,24 +10,62 @@ class Tarifario extends Component
 {
     use WithPagination;
 
-    public $activeTab = 'EMS INT'; // Pestaña activa por defecto
+    public $activeTab = 'EMS INT';
+    public $peso_min_kg, $peso_max_kg, $dest_a, $dest_b, $dest_c, $dest_d, $dest_e, $local_1, $local_2; // Campos dinámicos
 
     public function selectTab($tab)
     {
         $this->activeTab = $tab;
+        $this->resetInputs();
         $this->resetPage();
     }
 
-    public function updatingSearch()
+    public function resetInputs()
     {
-        $this->resetPage();
+        $this->peso_min_kg = $this->peso_max_kg = $this->dest_a = $this->dest_b = $this->dest_c = $this->dest_d = $this->dest_e = $this->local_1 = $this->local_2 = null;
     }
+
+    public function createTarifa()
+    {
+        try {
+            $data = [
+                'categoria' => $this->activeTab,
+            ];
+    
+            if ($this->activeTab === 'EMS INT') {
+                $data = array_merge($data, [
+                    'categoria' => 'EMS INT',
+                    'peso_min_kg' => $this->peso_min_kg,
+                    'peso_max_kg' => $this->peso_max_kg,
+                    'dest_a' => $this->dest_a,
+                    'dest_b' => $this->dest_b,
+                    'dest_c' => $this->dest_c,
+                    'dest_d' => $this->dest_d,
+                    'dest_e' => $this->dest_e,
+                ]);
+            } elseif ($this->activeTab === 'EMS NAT') {
+                $data = array_merge($data, [
+                    'peso_min_kg' => $this->peso_min_kg,
+                    'local_1' => $this->local_1,
+                    'local_2' => $this->local_2,
+                ]);
+            }
+    
+            Precios::create($data);
+    
+            session()->flash('message', 'Tarifa creada exitosamente.');
+            $this->resetInputs();
+            $this->dispatch('closeModal');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error al crear la tarifa: ' . $e->getMessage());
+        }
+    }
+    
 
     public function render()
     {
-        // Filtra los datos según la pestaña activa
         $tarifarios = Precios::where('categoria', $this->activeTab)->paginate(10);
-    
+
         return view('livewire.tarifario', [
             'tarifarios' => $tarifarios,
         ]);

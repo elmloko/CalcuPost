@@ -12,6 +12,9 @@
                     </ol>
                 </div>
             </div>
+            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#createTarifaModal">
+                Crear nueva tarifa
+            </button>
         </div>
     </section>
 
@@ -31,7 +34,17 @@
                     </ul>
                 </div>
             </div>
+            @if (session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                </div>
+            @endif
 
+            @if (session()->has('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
@@ -325,5 +338,82 @@
                 {{ $tarifarios->links() }}
             </div>
         </div>
+
+        <div class="modal fade" id="createTarifaModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Crear Tarifa - {{ $activeTab }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form wire:submit.prevent="createTarifa">
+                            @if ($activeTab === 'EMS INT')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.01" wire:model="peso_min_kg" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.01" wire:model="peso_max_kg" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino A</label>
+                                    <input type="text" wire:model="dest_a" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino B</label>
+                                    <input type="text" wire:model="dest_b" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino C</label>
+                                    <input type="text" wire:model="dest_c" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino D</label>
+                                    <input type="text" wire:model="dest_d" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino E</label>
+                                    <input type="text" wire:model="dest_e" class="form-control">
+                                </div>
+                                <!-- Otros campos específicos de EMS INT -->
+                            @elseif ($activeTab === 'EMS NAT')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.01" wire:model="peso_min_kg" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>EMS Local 1</label>
+                                    <input type="text" wire:model="local_1" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>EMS Local 2</label>
+                                    <input type="text" wire:model="local_2" class="form-control">
+                                </div>
+                                <!-- Otros campos específicos de EMS NAT -->
+                            @endif
+                            <!-- Agregar más condicionales para otras pestañas -->
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" wire:click="createTarifa">
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('closeModal', () => {
+            $('#createTarifaModal').modal('hide');
+        });
+    });
+</script>
