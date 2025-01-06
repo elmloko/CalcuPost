@@ -69,7 +69,7 @@
                                 <th>EMS Nacional</th>
                                 <th>Cuidades Intermedias</th>
                                 <th>Trinidad / Cobija</th>
-                                <th>Riberalta / Guayaramarin</th>
+                                <th>Riberalta / Guayaramerin</th>
                                 <th>Acciones</th>
                             @endif
 
@@ -109,7 +109,7 @@
                                 <th>Prov. Detro Depto.</th>
                                 <th>Prov. en Otro Depto</th>
                                 <th>Trinidad / Cobija</th>
-                                <th>Riberalta / Guayaramarin</th>
+                                <th>Riberalta / Guayaremarin</th>
                                 <th>Acciones</th>
                             @endif
 
@@ -130,7 +130,7 @@
                                 <th>Prov. Detro Depto.</th>
                                 <th>Prov. en Otro Depto</th>
                                 <th>Trinidad / Cobija</th>
-                                <th>Riberalta / Guayaramarin</th>
+                                <th>Riberalta / Guayaramerin</th>
                                 <th>Acciones</th>
                             @endif
 
@@ -213,11 +213,9 @@
                                     <td>{{ $tarifario->dest_d }}</td>
                                     <td>{{ $tarifario->dest_e }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -234,11 +232,9 @@
                                     <td>{{ $tarifario->cui1 }}</td>
                                     <td>{{ $tarifario->cui2 }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -252,11 +248,9 @@
                                     <td>{{ $tarifario->dest_d }}</td>
                                     <td>{{ $tarifario->dest_e }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -269,11 +263,9 @@
                                     <td>{{ $tarifario->pro_dentro }}</td>
                                     <td>{{ $tarifario->pro_otro }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -287,11 +279,9 @@
                                     <td>{{ $tarifario->dest_d }}</td>
                                     <td>{{ $tarifario->dest_e }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -306,11 +296,9 @@
                                     <td>{{ $tarifario->cui1 }}</td>
                                     <td>{{ $tarifario->cui2 }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -324,11 +312,9 @@
                                     <td>{{ $tarifario->dest_d }}</td>
                                     <td>{{ $tarifario->dest_e }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -343,11 +329,9 @@
                                     <td>{{ $tarifario->cui1 }}</td>
                                     <td>{{ $tarifario->cui2 }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -361,11 +345,9 @@
                                     <td>{{ $tarifario->dest_d }}</td>
                                     <td>{{ $tarifario->dest_e }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -378,11 +360,9 @@
                                     <td>{{ $tarifario->pro_dentro }}</td>
                                     <td>{{ $tarifario->pro_otro }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -396,11 +376,9 @@
                                     <td>{{ $tarifario->dest_d }}</td>
                                     <td>{{ $tarifario->dest_e }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -411,11 +389,9 @@
                                     <td>{{ $tarifario->nacional }}</td>
                                     <td>{{ $tarifario->pro_dentro }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -425,11 +401,9 @@
                                     <td>{{ $tarifario->peso_min_kg }} Kg./{{ $tarifario->peso_max_kg }} Kg.</td>
                                     <td>{{ $tarifario->nacional }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -445,11 +419,9 @@
                                     <td>{{ $tarifario->dest_f }}</td>
                                     <td>{{ $tarifario->dest_g }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -465,11 +437,9 @@
                                     <td>{{ $tarifario->dest_f }}</td>
                                     <td>{{ $tarifario->dest_g }}</td>
                                     <td>
-                                        <button 
-                                            class="btn btn-danger btn-sm"
+                                        <button class="btn btn-danger btn-sm"
                                             wire:click="deleteTarifa({{ $tarifario->id }})"
-                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')"
-                                        >
+                                            onclick="return confirm('¿Estás seguro de eliminar este registro?')">
                                             Eliminar
                                         </button>
                                     </td>
@@ -504,49 +474,467 @@
                             @if ($activeTab === 'EMS INT')
                                 <div class="form-group">
                                     <label>Peso mínimo (kg)</label>
-                                    <input type="number" step="0.01" wire:model="peso_min_kg" class="form-control">
+                                    <input type="number" step="0.001" wire:model="peso_min_kg" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>Peso máximo (kg)</label>
-                                    <input type="number" step="0.01" wire:model="peso_max_kg" class="form-control">
+                                    <input type="number" step="0.001" wire:model="peso_max_kg" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>Destino A</label>
-                                    <input type="text" wire:model="dest_a" class="form-control">
+                                    <input type="number" wire:model="dest_a" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>Destino B</label>
-                                    <input type="text" wire:model="dest_b" class="form-control">
+                                    <input type="number" wire:model="dest_b" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>Destino C</label>
-                                    <input type="text" wire:model="dest_c" class="form-control">
+                                    <input type="number" wire:model="dest_c" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>Destino D</label>
-                                    <input type="text" wire:model="dest_d" class="form-control">
+                                    <input type="number" wire:model="dest_d" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>Destino E</label>
-                                    <input type="text" wire:model="dest_e" class="form-control">
+                                    <input type="number" wire:model="dest_e" class="form-control">
                                 </div>
-                                <!-- Otros campos específicos de EMS INT -->
                             @elseif ($activeTab === 'EMS NAT')
                                 <div class="form-group">
                                     <label>Peso mínimo (kg)</label>
-                                    <input type="number" step="0.01" wire:model="peso_min_kg" class="form-control">
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>EMS Local 1</label>
-                                    <input type="text" wire:model="local_1" class="form-control">
+                                    <input type="number" wire:model="local_1" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>EMS Local 2</label>
-                                    <input type="text" wire:model="local_2" class="form-control">
+                                    <input type="number" wire:model="local_2" class="form-control">
                                 </div>
-                                <!-- Otros campos específicos de EMS NAT -->
+                                <div class="form-group">
+                                    <label>EMS Local 3</label>
+                                    <input type="number" wire:model="local_3" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>EMS Local 4</label>
+                                    <input type="number" wire:model="local_4" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>EMS Nacional</label>
+                                    <input type="number" wire:model="nacional" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Cuidades Intermedias</label>
+                                    <input type="number" wire:model="cui_int" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Trinidad / Cobija</label>
+                                    <input type="number" wire:model="cui1" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Riberalta / Guayaramerin</label>
+                                    <input type="number" wire:model="cui2" class="form-control">
+                                </div>
+                            @elseif ($activeTab === 'MI ENCOMIENDA')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Cuidades Capitales</label>
+                                    <input type="number" wire:model="cui_cap" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Trinidad / Cobija(Destinos Especiales)</label>
+                                    <input type="number" wire:model="cui1" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Prov. Detro Depto.</label>
+                                    <input type="number" wire:model="pro_dentro" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Prov. en Otro Depto</label>
+                                    <input type="number" wire:model="pro_otro" class="form-control">
+                                </div>
+                            @elseif ($activeTab === 'ENCOMIENDA')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino A</label>
+                                    <input type="number" wire:model="dest_a" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino B</label>
+                                    <input type="number" wire:model="dest_b" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino C</label>
+                                    <input type="number" wire:model="dest_c" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino D</label>
+                                    <input type="number" wire:model="dest_d" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino E</label>
+                                    <input type="number" wire:model="dest_e" class="form-control">
+                                </div>
+                            @elseif ($activeTab === 'LC/AO INT')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino A</label>
+                                    <input type="number" wire:model="dest_a" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino B</label>
+                                    <input type="number" wire:model="dest_b" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino C</label>
+                                    <input type="number" wire:model="dest_c" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino D</label>
+                                    <input type="number" wire:model="dest_d" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino E</label>
+                                    <input type="number" wire:model="dest_e" class="form-control">
+                                </div>
+                            @elseif ($activeTab === 'LC/AO NAT')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Servicio Local</label>
+                                    <input type="number" wire:model="local_1" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Servicio Nacional</label>
+                                    <input type="number" wire:model="nacional" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Prov. Detro Depto.</label>
+                                    <input type="number" wire:model="pro_dentro" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Prov. en Otro Depto</label>
+                                    <input type="number" wire:model="pro_otro" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Trinidad / Cobija</label>
+                                    <input type="number" wire:model="cui1" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Riberalta / Guayaremarin</label>
+                                    <input type="number" wire:model="cui2" class="form-control">
+                                </div>
+                            @elseif ($activeTab === 'ECA INT')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino A</label>
+                                    <input type="number" wire:model="dest_a" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino B</label>
+                                    <input type="number" wire:model="dest_b" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino C</label>
+                                    <input type="number" wire:model="dest_c" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino D</label>
+                                    <input type="number" wire:model="dest_d" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino E</label>
+                                    <input type="number" wire:model="dest_e" class="form-control">
+                                </div>
+                            @elseif ($activeTab === 'ECA NAT')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Local</label>
+                                    <input type="number" wire:model="local_1" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Nacional</label>
+                                    <input type="number" wire:model="nacional" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Prov. Detro Depto.</label>
+                                    <input type="number" wire:model="pro_dentro" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Prov. en Otro Depto</label>
+                                    <input type="number" wire:model="pro_otro" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Trinidad / Cobija</label>
+                                    <input type="number" wire:model="cui1" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Riberalta / Guayaremarin</label>
+                                    <input type="number" wire:model="cui2" class="form-control">
+                                </div>
+                            @elseif ($activeTab === 'PLIEGOS INT')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino A</label>
+                                    <input type="number" wire:model="dest_a" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino B</label>
+                                    <input type="number" wire:model="dest_b" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino C</label>
+                                    <input type="number" wire:model="dest_c" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino D</label>
+                                    <input type="number" wire:model="dest_d" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino E</label>
+                                    <input type="number" wire:model="dest_e" class="form-control">
+                                </div>
+                            @elseif ($activeTab === 'PLIEGOS NAT')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Local</label>
+                                    <input type="number" wire:model="local_1" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Nacional</label>
+                                    <input type="number" wire:model="nacional" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Prov. Detro Depto.</label>
+                                    <input type="number" wire:model="pro_dentro" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Prov. en Otro Depto</label>
+                                    <input type="number" wire:model="pro_otro" class="form-control">
+                                </div>
+                            @elseif ($activeTab === 'SACAS M INT')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino A</label>
+                                    <input type="number" wire:model="dest_a" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino B</label>
+                                    <input type="number" wire:model="dest_b" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino C</label>
+                                    <input type="number" wire:model="dest_c" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino D</label>
+                                    <input type="number" wire:model="dest_d" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino E</label>
+                                    <input type="number" wire:model="dest_e" class="form-control">
+                                </div>
+                            @elseif ($activeTab === 'SACAS M NAT')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Nacional</label>
+                                    <input type="number" wire:model="nacional" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Provincial</label>
+                                    <input type="number" wire:model="pro_dentro" class="form-control">
+                                </div>
+                            @elseif ($activeTab === 'SUPER NAT')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Nacional</label>
+                                    <input type="number" wire:model="nacional" class="form-control">
+                                </div>
+                            @elseif ($activeTab === 'SUPER PAQUE NAT')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino A</label>
+                                    <input type="number" wire:model="dest_a" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino B</label>
+                                    <input type="number" wire:model="dest_b" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino C</label>
+                                    <input type="number" wire:model="dest_c" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino D</label>
+                                    <input type="number" wire:model="dest_d" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino E</label>
+                                    <input type="number" wire:model="dest_e" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino F</label>
+                                    <input type="number" wire:model="dest_f" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino G</label>
+                                    <input type="number" wire:model="dest_g" class="form-control">
+                                </div>
+                            @elseif ($activeTab === 'SUPER DOC NAT')
+                                <div class="form-group">
+                                    <label>Peso mínimo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_min_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Peso máximo (kg)</label>
+                                    <input type="number" step="0.001" wire:model="peso_max_kg"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino A</label>
+                                    <input type="number" wire:model="dest_a" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino B</label>
+                                    <input type="number" wire:model="dest_b" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino C</label>
+                                    <input type="number" wire:model="dest_c" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino D</label>
+                                    <input type="number" wire:model="dest_d" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino E</label>
+                                    <input type="number" wire:model="dest_e" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino F</label>
+                                    <input type="number" wire:model="dest_f" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destino G</label>
+                                    <input type="number" wire:model="dest_g" class="form-control">
+                                </div>
                             @endif
-                            <!-- Agregar más condicionales para otras pestañas -->
                         </form>
                     </div>
                     <div class="modal-footer">
