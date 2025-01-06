@@ -57,6 +57,7 @@
                                 <th>Destino C</th>
                                 <th>Destino D</th>
                                 <th>Destino E</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'EMS NAT')
@@ -69,6 +70,7 @@
                                 <th>Cuidades Intermedias</th>
                                 <th>Trinidad / Cobija</th>
                                 <th>Riberalta / Guayaramarin</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'ENCOMIENDA')
@@ -78,6 +80,7 @@
                                 <th>Destino C</th>
                                 <th>Destino D</th>
                                 <th>Destino E</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'MI ENCOMIENDA')
@@ -86,6 +89,7 @@
                                 <th>Trinidad / Cobija(Destinos Especiales)</th>
                                 <th>Prov. Detro Depto.</th>
                                 <th>Prov. en Otro Depto</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'LC/AO INT')
@@ -95,6 +99,7 @@
                                 <th>Destino C</th>
                                 <th>Destino D</th>
                                 <th>Destino E</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'LC/AO NAT')
@@ -105,6 +110,7 @@
                                 <th>Prov. en Otro Depto</th>
                                 <th>Trinidad / Cobija</th>
                                 <th>Riberalta / Guayaramarin</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'ECA INT')
@@ -114,6 +120,7 @@
                                 <th>Destino C</th>
                                 <th>Destino D</th>
                                 <th>Destino E</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'ECA NAT')
@@ -124,6 +131,7 @@
                                 <th>Prov. en Otro Depto</th>
                                 <th>Trinidad / Cobija</th>
                                 <th>Riberalta / Guayaramarin</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'PLIEGOS INT')
@@ -133,6 +141,7 @@
                                 <th>Destino C</th>
                                 <th>Destino D</th>
                                 <th>Destino E</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'PLIEGOS NAT')
@@ -141,6 +150,7 @@
                                 <th>Nacional</th>
                                 <th>Prov. Detro Depto.</th>
                                 <th>Prov. en Otro Depto</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'SACAS M INT')
@@ -150,17 +160,20 @@
                                 <th>Destino C</th>
                                 <th>Destino D</th>
                                 <th>Destino E</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'SACAS M NAT')
                                 <th>Peso min / Peso max (Kg.)</th>
                                 <th>Nacional</th>
                                 <th>Provincial</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'SUPER NAT')
                                 <th>Peso min / Peso max (Kg.)</th>
                                 <th>Nacional</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'SUPER PAQUE NAT')
@@ -172,6 +185,7 @@
                                 <th>Tarifa 5</th>
                                 <th>Tarifa 6</th>
                                 <th>Tarifa 7</th>
+                                <th>Acciones</th>
                             @endif
 
                             @if ($activeTab === 'SUPER DOC NAT')
@@ -183,6 +197,7 @@
                                 <th>Tarifa 5</th>
                                 <th>Tarifa 6</th>
                                 <th>Tarifa 7</th>
+                                <th>Acciones</th>
                             @endif
                         </tr>
                     </thead>
