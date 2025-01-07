@@ -1,6 +1,27 @@
 <div class="container">
     <section class="form-register">
         <h4>Calculadora Postal</h4>
+        <select class="controls" name="categoria" id="categoria" wire:model="categoria">
+            <option value="">Seleccione un Servicio Postal</option>
+            <option class="nacional" value="EMS NAT">EMS Nacional</option>
+            <option class="internacional" value="EMS INT">EMS Internacional</option>
+            <option class="nacional" value="MI ENCOMIENDA">Mi Encomienda Nacional</option>
+            <option class="internacional" value="ENCOMIENDA">Mi Encomienda Internacional</option>
+            <option class="nacional" value="LC/AO NAT">LC/AO Nacional</option>
+            <option class="internacional" value="LC/AO INT">LC/AO Internacional</option>
+            <option class="nacional" value="ECA NAT">ECA Nacional</option>
+            <option class="internacional" value="ECA INT">ECA Internacional</option>
+            <option class="nacional" value="PLIEGOS NAT">Pliegos Oficiales Nacional</option>
+            <option class="internacional" value="PLIEGOS INT">Pliegos Internacional</option>
+            <option class="nacional" value="SACAS M NAT">Sacas M Nacional</option>
+            <option class="internacional" value="SACAS M INT">Sacas M Internacional</option>
+            <option class="nacional" value="SUPER NAT">Super Express Nacional</option>
+            <option class="internacional" value="SUPER DOC NAT">Super Express
+                Internacional Documentos</option>
+            <option class="internacional" value="SUPER PAQUE NAT">Super Express Internacional
+                Paquetes</option>
+        </select>
+
         <select class="controls" name="destino" id="destino" wire:model="destino">
             <option value="">Seleccione un Destino</option>
             <option value="local_1">Area Urbana (Hasta 2.5 Km)</option>
@@ -179,33 +200,12 @@
             <option value="nacional">Pando</option>
             <option value="nacional">Potosí</option>
             <option value="nacional">Santa Cruz</option>
-            <option value="nacional">Tarija</option>            
+            <option value="nacional">Tarija</option>
             <option value="cui_int">Cuidades Intermedias</option>
             <option value="cui1">Trinidad / Cobija</option>
             <option value="cui2">Riberalta / Guayaramerin</option>
             <option value="pro_dentro">Provincia Dentro Departamento</option>
-            <option value="pro_otro">Provincia en  Otro Departamento</option>
-        </select>
-
-        <select class="controls" name="categoria" id="categoria" wire:model="categoria">
-            <option value="">Seleccione un Servicio Postal</option>
-            <option class="nacional" value="EMS NAT">EMS Nacional</option>
-            <option class="internacional" value="EMS INT">EMS Internacional</option>
-            <option class="nacional" value="MI ENCOMIENDA">Mi Encomienda Nacional</option>
-            <option class="internacional" value="ENCOMIENDA">Mi Encomienda Internacional</option>
-            <option class="nacional" value="LC/AO NAT">LC/AO Nacional</option>
-            <option class="internacional" value="LC/AO INT">LC/AO Internacional</option>
-            <option class="nacional" value="ECA NAT">ECA Nacional</option>
-            <option class="internacional" value="ECA INT">ECA Internacional</option>
-            <option class="nacional" value="PLIEGOS NAT">Pliegos Oficiales Nacional</option>
-            <option class="internacional" value="PLIEGOS INT">Pliegos Internacional</option>
-            <option class="nacional" value="SACAS M NAT">Sacas M Nacional</option>
-            <option class="internacional" value="SACAS M INT">Sacas M Internacional</option>
-            <option class="nacional" value="SUPER NAT">Super Express Nacional</option>
-            <option class="internacional" value="SUPER DOC NAT">Super Express
-                Internacional Documentos</option>
-            <option class="internacional" value="SUPER PAQUE NAT">Super Express Internacional
-                Paquetes</option>
+            <option value="pro_otro">Provincia en Otro Departamento</option>
         </select>
 
         <input class="controls" type="number" name="peso" id="peso" wire:model="peso"
@@ -221,3 +221,209 @@
         @endif
     </section>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const categoriaSelect = document.getElementById("categoria");
+        const destinoSelect = document.getElementById("destino");
+
+        // Función para mostrar/ocultar opciones
+        function filtrarOpciones() {
+            const categoria = categoriaSelect.value;
+
+            // Obtener todas las opciones del select de destino
+            const opcionesDestino = Array.from(destinoSelect.options);
+
+            // Ocultar todas las opciones inicialmente
+            opcionesDestino.forEach((opcion) => {
+                opcion.style.display = "none";
+            });
+
+            // Lógica de visibilidad según la categoría seleccionada
+            if (categoria === "EMS NAT") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "local_1" ||
+                        opcion.value === "local_2" ||
+                        opcion.value === "local_3" ||
+                        opcion.value === "local_4" ||
+                        opcion.value === "nacional"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "EMS INT") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "dest_a" ||
+                        opcion.value === "dest_b" ||
+                        opcion.value === "dest_c" ||
+                        opcion.value === "dest_d" ||
+                        opcion.value === "dest_e"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "MI ENCOMIENDA") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "nacional" ||
+                        opcion.value === "cui1" ||
+                        opcion.value === "pro_dentro" ||
+                        opcion.value === "pro_otro"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "ENCOMIENDA") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "dest_a" ||
+                        opcion.value === "dest_b" ||
+                        opcion.value === "dest_c" ||
+                        opcion.value === "dest_d" ||
+                        opcion.value === "dest_e"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "LC/AO NAT") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "local_1" ||
+                        opcion.value === "nacional" ||
+                        opcion.value === "pro_dentro" ||
+                        opcion.value === "pro_otro" ||
+                        opcion.value === "cui1" ||
+                        opcion.value === "cui2"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "LC/AO INT") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "dest_a" ||
+                        opcion.value === "dest_b" ||
+                        opcion.value === "dest_c" ||
+                        opcion.value === "dest_d" ||
+                        opcion.value === "dest_e"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "ECA NAT") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "local_1" ||
+                        opcion.value === "nacional" ||
+                        opcion.value === "pro_dentro" ||
+                        opcion.value === "pro_otro" ||
+                        opcion.value === "cui1" ||
+                        opcion.value === "cui2"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "ECA INT") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "dest_a" ||
+                        opcion.value === "dest_b" ||
+                        opcion.value === "dest_c" ||
+                        opcion.value === "dest_d" ||
+                        opcion.value === "dest_e"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "PLIEGOS NAT") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "local_1" ||
+                        opcion.value === "nacional" ||
+                        opcion.value === "pro_dentro" ||
+                        opcion.value === "pro_otro"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "PLIEGOS INT") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "dest_a" ||
+                        opcion.value === "dest_b" ||
+                        opcion.value === "dest_c" ||
+                        opcion.value === "dest_d" ||
+                        opcion.value === "dest_e"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "SACAS M NAT") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "nacional" ||
+                        opcion.value === "pro_dentro"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "SACAS M INT") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "dest_a" ||
+                        opcion.value === "dest_b" ||
+                        opcion.value === "dest_c" ||
+                        opcion.value === "dest_d" ||
+                        opcion.value === "dest_e"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "SUPER NAT") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "nacional"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "SUPER PAQUE NAT") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "dest_a" ||
+                        opcion.value === "dest_b" ||
+                        opcion.value === "dest_c" ||
+                        opcion.value === "dest_d" ||
+                        opcion.value === "dest_e"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } else if (categoria === "SUPER DOC NAT") {
+                opcionesDestino.forEach((opcion) => {
+                    if (
+                        opcion.value === "dest_a" ||
+                        opcion.value === "dest_b" ||
+                        opcion.value === "dest_c" ||
+                        opcion.value === "dest_d" ||
+                        opcion.value === "dest_e"
+                    ) {
+                        opcion.style.display = "block";
+                    }
+                });
+            } 
+ 
+            // Reiniciar el valor del select de destino
+            destinoSelect.value = "";
+        }
+
+        // Escuchar el evento de cambio en el select de categoría
+        categoriaSelect.addEventListener("change", filtrarOpciones);
+
+        // Ejecutar la función al cargar la página
+        filtrarOpciones();
+    });
+</script>
+
