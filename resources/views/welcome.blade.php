@@ -79,16 +79,7 @@
 </head>
 
 <body>
-    <div class="container">
-        <section class="form-register">
-            <h4>Calculadora Postal</h4>
-            <input class="controls" type="text" name="pais" id="pais" placeholder="Ingrese el País">
-            <input class="controls" type="text" name="ciudad" id="ciudad" placeholder="Ingrese la Ciudad de Envío">
-            <input class="controls" type="text" name="servicio" id="servicio" placeholder="Ingrese un Servicio Postal">
-            <input class="controls" type="number" name="peso" id="peso" placeholder="Ingrese el Peso Aprox. de su Paquete">
-            <input class="botons" type="submit" value="Calcular">
-        </section>
-    </div>
+    @livewire('calculadora')
 </body>
 
 </html>
