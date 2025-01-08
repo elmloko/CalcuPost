@@ -126,7 +126,7 @@
         }
 
         .image-container img {
-            width: 4500px;
+            width: 450px;
             height: auto;
             border-radius: 8px;
             margin: 150px;
