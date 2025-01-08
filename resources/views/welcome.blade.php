@@ -30,7 +30,10 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            width: 100vw;
+            overflow: hidden;
         }
+
 
         .container {
             display: flex;
@@ -48,8 +51,7 @@
             font-family: 'Calibri', sans-serif;
             color: white;
             box-shadow: 7px 13px 37px rgba(0, 0, 0, 0.5);
-            margin-right: 250px;
-            /* Ajusta esta distancia */
+            margin-right: 250px;            /* Ajusta esta distancia */
         }
 
         .form-register h4 {
@@ -99,22 +101,17 @@
             margin-top: 20px;
             padding: 15px;
             background: #ffffff;
-            /* Fondo blanco */
             border: 2px solid #2563eb;
-            /* Borde azul */
             border-radius: 8px;
             text-align: center;
             color: #1f2937;
-            /* Color de texto oscuro */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            /* Sombra ligera */
         }
 
         .resultado h5 {
             font-size: 1.2rem;
             margin-bottom: 10px;
             color: #B99C46;
-            /* Azul para el título */
         }
 
         .resultado p {
@@ -122,11 +119,10 @@
             font-weight: bold;
             margin: 0;
             color: #942d5c;
-            /* Verde para el resultado */
         }
 
         .image-container img {
-            width: 450px;
+            width: 500px;
             height: auto;
             border-radius: 8px;
             margin: 150px;
