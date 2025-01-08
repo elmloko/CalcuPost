@@ -42,7 +42,8 @@
             font-family: 'Calibri', sans-serif;
             color: white;
             box-shadow: 7px 13px 37px rgba(0, 0, 0, 0.5);
-            margin-right: 300px; /* Ajusta esta distancia */
+            margin-right: 300px;
+            /* Ajusta esta distancia */
         }
 
         .form-register h4 {
@@ -73,6 +74,49 @@
 
         .form-register .botons:hover {
             background: #1741a1;
+        }
+
+        .container h4 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 10px;
+        }
+
+        .container h3 {
+            font-size: 1rem;
+            margin: 15px 0 5px;
+        }
+
+        .resultado {
+            margin-top: 20px;
+            padding: 15px;
+            background: #ffffff;
+            /* Fondo blanco */
+            border: 2px solid #2563eb;
+            /* Borde azul */
+            border-radius: 8px;
+            text-align: center;
+            color: #1f2937;
+            /* Color de texto oscuro */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Sombra ligera */
+        }
+
+        .resultado h5 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #B99C46;
+            /* Azul para el título */
+        }
+
+        .resultado p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+            color: #942d5c;
+            /* Verde para el resultado */
         }
     </style>
     @livewireStyles

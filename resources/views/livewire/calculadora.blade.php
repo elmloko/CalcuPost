@@ -1,7 +1,7 @@
 <div class="container">
     <section class="form-register">
         <h4>Calculadora Postal</h4>
-        <h3>Seleciona por que Servicio quieres enviar </h3>
+        <h3>Seleciona por que servicio quieres enviar </h3>
         <select class="controls" name="categoria" id="categoria" wire:model="categoria">
             <option value="">Seleccione un Servicio Postal</option>
             <option class="nacional" value="EMS NAT">EMS Nacional</option>
@@ -224,8 +224,8 @@
 
         @if ($resultado)
             <div class="resultado">
-                <h5>Resultado:</h5>
-                <p>{{ $resultado }}</p>
+                <h5>El costo estimado del envío es:</h5>
+                <p>{{ $resultado }} BS.</p>
             </div>
         @endif
     </section>
