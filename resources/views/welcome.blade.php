@@ -24,6 +24,12 @@
             background-size: cover;
             background-position: center;
             font-family: 'Figtree', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         .container {
@@ -117,6 +123,14 @@
             margin: 0;
             color: #942d5c;
             /* Verde para el resultado */
+        }
+
+        .image-container img {
+            width: 600px;
+            height: auto;
+            border-radius: 8px;
+            margin: 150px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0);
         }
     </style>
     @livewireStyles

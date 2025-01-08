@@ -1,4 +1,7 @@
 <div class="container">
+    <div class="image-container">
+        <img src="{{ asset('images/image.png') }}" alt="Imagen Descriptiva">
+    </div>
     <section class="form-register">
         <h4>Calculadora Postal</h4>
         <h3>Seleciona por que servicio quieres enviar </h3>
