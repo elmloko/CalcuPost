@@ -42,7 +42,7 @@
             font-family: 'Calibri', sans-serif;
             color: white;
             box-shadow: 7px 13px 37px rgba(0, 0, 0, 0.5);
-            margin-right: 300px;
+            margin-right: 250px;
             /* Ajusta esta distancia */
         }
 
