@@ -1,6 +1,7 @@
 <div class="container">
     <section class="form-register">
         <h4>Calculadora Postal</h4>
+        <h3>Seleciona por que Servicio quieres enviar </h3>
         <select class="controls" name="categoria" id="categoria" wire:model="categoria">
             <option value="">Seleccione un Servicio Postal</option>
             <option class="nacional" value="EMS NAT">EMS Nacional</option>
@@ -21,7 +22,7 @@
             <option class="internacional" value="SUPER PAQUE NAT">Super Express Internacional
                 Paquetes</option>
         </select>
-
+        <h3>Seleciona a donde quieres enviar...</h3>
         <select class="controls" name="destino" id="destino" wire:model="destino">
             <option value="">Seleccione un Destino</option>
             <option value="local_1">Area Urbana (Hasta 2.5 Km)</option>
@@ -201,13 +202,21 @@
             <option value="nacional_potosi">Potosí</option>
             <option value="nacional_santa_cruz">Santa Cruz</option>
             <option value="nacional_tarija">Tarija</option>
+            <option value="cui_cap_chuquisaca">Chuquisaca</option>
+            <option value="cui_cap_cochabamba">Cochabamba</option>
+            <option value="cui_cap_la_paz">La Paz</option>
+            <option value="cui_cap_oruro">Oruro</option>
+            <option value="cui_cap_pando">Pando</option>
+            <option value="cui_cap_potosi">Potosí</option>
+            <option value="cui_cap_santa_cruz">Santa Cruz</option>
+            <option value="cui_cap_tarija">Tarija</option>
             <option value="cui_int">Cuidades Intermedias</option>
             <option value="cui1">Trinidad / Cobija</option>
             <option value="cui2">Riberalta / Guayaramerin</option>
             <option value="pro_dentro">Provincia Dentro Departamento</option>
             <option value="pro_otro">Provincia en Otro Departamento</option>
         </select>
-
+        <h3>Ingrese el peso del paquete...</h3>
         <input class="controls" type="number" name="peso" id="peso" wire:model="peso"
             placeholder="Ingrese el Peso Aprox. de su Paquete" step="0.001" min="0">
 
@@ -265,7 +274,7 @@
             } else if (categoria === "MI ENCOMIENDA") {
                 opcionesDestino.forEach((opcion) => {
                     if (
-                        opcion.value.startsWith("nacional") ||
+                        opcion.value.startsWith("cui_cap") ||
                         opcion.value === "cui1" ||
                         opcion.value === "pro_dentro" ||
                         opcion.value === "pro_otro"

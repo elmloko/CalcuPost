@@ -32,12 +32,6 @@ class Calculadora extends Component
         }
     }
 
-    /**
-     * parsearDestino:
-     * - Si llega "dest_e_tanzania" => se convierte en "dest_e"
-     * - Si llega "local_1_brasil"  => se convierte en "local_1"
-     * - Si llega "nacional_la"     => se convierte en "nacional"
-     */
     private function parsearDestino($destino)
     {
         $partes = explode('_', $destino);
@@ -51,9 +45,7 @@ class Calculadora extends Component
         if (count($partes) >= 2) {
             return $partes[0] . '_' . $partes[1];
         }
-
-        // Si no cumple con el formato esperado, retornamos el valor tal cual 
-        // (o podríamos manejarlo de otra forma).
+        
         return $destino;
     }
 
