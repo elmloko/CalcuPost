@@ -11,6 +11,124 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
+    <!-- Styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url('fondo.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Figtree', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+
+        .container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0 20px;
+        }
+
+        .form-register {
+            width: 400px;
+            background: #24303c;
+            padding: 30px;
+            border-radius: 8px;
+            font-family: 'Calibri', sans-serif;
+            color: white;
+            box-shadow: 7px 13px 37px rgba(0, 0, 0, 0.5);
+            margin-right: 250px;            /* Ajusta esta distancia */
+        }
+
+        .form-register h4 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            width: 100%;
+            background: #1e2a36;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            border: 1px solid #1f53c5;
+            font-size: 16px;
+            color: white;
+        }
+
+        .form-register .botons {
+            width: 100%;
+            background: #1f53c5;
+            border: none;
+            padding: 12px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-register .botons:hover {
+            background: #1741a1;
+        }
+
+        .container h4 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 10px;
+        }
+
+        .container h3 {
+            font-size: 1rem;
+            margin: 15px 0 5px;
+        }
+
+        .resultado {
+            margin-top: 20px;
+            padding: 15px;
+            background: #ffffff;
+            border: 2px solid #2563eb;
+            border-radius: 8px;
+            text-align: center;
+            color: #1f2937;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .resultado h5 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #B99C46;
+        }
+
+        .resultado p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+            color: #942d5c;
+        }
+
+        .image-container img {
+            width: 500px;
+            height: auto;
+            border-radius: 8px;
+            margin: 150px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0);
+        }
+    </style>
     @livewireStyles
 </head>
 
