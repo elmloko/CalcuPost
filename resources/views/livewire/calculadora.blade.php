@@ -244,7 +244,7 @@
         @if ($resultado)
             <div class="resultado">
                 <h5>El costo estimado del envío es:</h5>
-                <p>{{ $resultado }} BS.</p>
+                <p>{{ $resultado }} Bs.</p>
             </div>
         @endif
     </section>
