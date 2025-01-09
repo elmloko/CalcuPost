@@ -1,94 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Postal</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: url('/images/Servicio Prioritario foot.jpg') no-repeat center center fixed;
-            background-size: cover;
-            background-position: center;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-        }
-        .logo {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .logo img {
-            max-width: 150px; /* Ajusta el tamaño del logo */
-            height: auto;
-        }
-        .form-container {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-        .form-container label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-container input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        .form-container button {
-            background-color: #34447C;
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-        .form-container button:hover {
-            background-color: #B99C46;
-        }
-    </style>
-</head>
-<body>
-    <!-- Logo -->
-    <div class="logo">
-        <img src="{{ asset('images/AGBClogo.png') }}" alt="Logo">
-    </div>
+<x-guest-layout>
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <!-- Formulario -->
-    <div class="form-container">
-        <form method="POST" action="{{ route('login') }}">
-            <!-- CSRF Token -->
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <form method="POST" action="{{ route('login') }}">
+        @csrf
 
-            <!-- Email Address -->
-            <div>
-                <label for="email">Email</label>
-                <input id="email" type="email" name="email" required autofocus>
-            </div>
+        <!-- Email Address -->
+        <div>
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
 
-            <!-- Password -->
-            <div>
-                <label for="password">Password</label>
-                <input id="password" type="password" name="password" required>
-            </div>
+        <!-- Password -->
+        <div class="mt-4">
+            <x-input-label for="password" :value="__('Password')" />
 
-            <!-- Login Button -->
-            <div>
-                <button type="submit">Log in</button>
-            </div>
-        </form>
-    </div>
-</body>
-</html>
+            <x-text-input id="password" class="block mt-1 w-full"
+                            type="password"
+                            name="password"
+                            required autocomplete="current-password" />
+
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <!-- Remember Me -->
+        <div class="block mt-4">
+            <label for="remember_me" class="inline-flex items-center">
+                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
+                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
+            </label>
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+            @if (Route::has('password.request'))
+                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
+                    {{ __('Forgot your password?') }}
+                </a>
+            @endif
+
+            <x-primary-button class="ms-3">
+                {{ __('Log in') }}
+            </x-primary-button>
+        </div>
+    </form>
+</x-guest-layout>
