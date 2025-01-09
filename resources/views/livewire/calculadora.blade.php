@@ -223,6 +223,22 @@
         <input class="controls" type="number" name="peso" id="peso" wire:model="peso"
             placeholder="Ingrese el Peso Aprox. de su Paquete" step="0.001" min="0">
 
+        <h3>Ingrese las dimensiones del paquete...</h3>
+        <div class="dimension-container">
+            <div class="dimension-item">
+                <input class="controls" type="number" name="largo" id="largo" wire:model="largo"
+                    placeholder="Largo (cm)" step="0.1" min="0">
+            </div>
+            <div class="dimension-item">
+                <input class="controls" type="number" name="ancho" id="ancho" wire:model="ancho"
+                    placeholder="Ancho (cm)" step="0.1" min="0">
+            </div>
+            <div class="dimension-item">
+                <input class="controls" type="number" name="alto" id="alto" wire:model="alto"
+                    placeholder="Alto (cm)" step="0.1" min="0">
+            </div>
+        </div>
+
         <button class="botons" wire:click="calcular">Calcular</button>
 
         @if ($resultado)

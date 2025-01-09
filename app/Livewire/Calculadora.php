@@ -10,6 +10,9 @@ class Calculadora extends Component
     public $categoria;
     public $destino;
     public $peso;
+    public $largo;
+    public $ancho;
+    public $alto;
     public $resultado;
 
     public function calcular()
@@ -17,6 +20,9 @@ class Calculadora extends Component
         $this->validate([
             'categoria' => 'required',
             'peso'      => 'required|numeric|min:0',
+            'largo'     => 'required|numeric|min:0',
+            'ancho'     => 'required|numeric|min:0',
+            'alto'      => 'required|numeric|min:0',
         ]);
 
         $columna = $this->parsearDestino($this->destino);
@@ -29,6 +35,15 @@ class Calculadora extends Component
 
         if (!$this->resultado) {
             $this->resultado = "No se encontraron tarifas para los datos ingresados.";
+            return;
+        }
+
+        // Calcular el volumen total
+        $dimensiones = $this->largo + $this->ancho + $this->alto;
+
+        // Si la suma de largo, ancho y alto supera 1.5, agregar un 30% al resultado
+        if ($dimensiones > 1.5) {
+            $this->resultado += $this->resultado * 0.30;
         }
     }
 

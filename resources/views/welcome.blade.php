@@ -51,7 +51,8 @@
             font-family: 'Calibri', sans-serif;
             color: white;
             box-shadow: 7px 13px 37px rgba(0, 0, 0, 0.5);
-            margin-right: 250px;            /* Ajusta esta distancia */
+            margin-right: 250px;
+            /* Ajusta esta distancia */
         }
 
         .form-register h4 {
@@ -127,6 +128,26 @@
             border-radius: 8px;
             margin: 150px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0);
+        }
+
+        .dimension-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .dimension-item {
+            width: 32%;
+            /* Asegura que los tres campos ocupen el 100% de la fila */
+        }
+
+        .controls {
+            width: 100%;
+            /* Hace que los campos se ajusten dentro de su contenedor */
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
         }
     </style>
     @livewireStyles
