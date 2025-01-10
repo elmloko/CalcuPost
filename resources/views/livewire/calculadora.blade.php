@@ -33,7 +33,6 @@
             <option value="local_3">Area Urbana (Hasta 7.5 Km)</option>
             <option value="local_4">Area Urbana (Hasta 10 Km)</option>
             <option value="dest_a_argentina">Argentina</option>
-            <option value="dest_a_bolivia">Bolivia</option>
             <option value="dest_a_brasil">Brasil</option>
             <option value="dest_a_chile">Chile</option>
             <option value="dest_a_colombia">Colombia</option>
