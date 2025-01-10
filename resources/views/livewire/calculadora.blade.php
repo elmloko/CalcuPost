@@ -10,13 +10,13 @@
             <option class="nacional" value="EMS NAT">EMS Nacional</option>
             <option class="internacional" value="EMS INT">EMS Internacional</option>
             <option class="nacional" value="MI ENCOMIENDA">Mi Encomienda Nacional</option>
-            <option class="internacional" value="ENCOMIENDA">Mi Encomienda Internacional</option>
+            <option class="internacional" value="ENCOMIENDA">Encomienda Internacional</option>
             <option class="nacional" value="LC/AO NAT">LC/AO Nacional</option>
             <option class="internacional" value="LC/AO INT">LC/AO Internacional</option>
             <option class="nacional" value="ECA NAT">ECA Nacional</option>
             <option class="internacional" value="ECA INT">ECA Internacional</option>
             <option class="nacional" value="PLIEGOS NAT">Pliegos Oficiales Nacional</option>
-            <option class="internacional" value="PLIEGOS INT">Pliegos Internacional</option>
+            <option class="internacional" value="PLIEGOS INT">Pliegos Oficiales Internacional</option>
             <option class="nacional" value="SACAS M NAT">Sacas M Nacional</option>
             <option class="internacional" value="SACAS M INT">Sacas M Internacional</option>
             <option class="nacional" value="SUPER NAT">Super Express Nacional</option>
@@ -239,6 +239,27 @@
             </div>
         </div>
 
+        <h3>Selecciona servicios adicionales:</h3>
+        <div class="dimension-container">
+            <div class="dimension-item">
+                <label for="certificado">
+                    <input type="checkbox" name="certificado" id="certificado" wire:model="certificado">
+                    Paquete Certificado
+                </label>
+            </div>
+            <div class="dimension-item">
+                <label for="espreso">
+                    <input type="checkbox" name="espreso" id="espreso" wire:model="espreso">
+                    Servicio Expreso
+                </label>
+            </div>
+            <div class="dimension-item">
+                <label for="recibo">
+                    <input type="checkbox" name="recibo" id="recibo" wire:model="recibo">
+                    Aviso de Recibo
+                </label>
+            </div>
+        </div>
         <button class="botons" wire:click="calcular">Calcular</button>
 
         @if ($resultado)

@@ -14,6 +14,9 @@ class Calculadora extends Component
     public $ancho;
     public $alto;
     public $resultado;
+    public $certificado = false;
+    public $espreso = false;
+    public $recibo = false;
 
     public function calcular()
     {
@@ -45,6 +48,52 @@ class Calculadora extends Component
         if ($dimensiones > 1.5) {
             $this->resultado += $this->resultado * 0.30;
         }
+
+        // Ajustar el resultado con base en los servicios adicionales
+        $this->aplicarServiciosAdicionales();
+    }
+
+    private function aplicarServiciosAdicionales()
+    {
+        // Verificar categoría nacional o internacional
+        if ($this->esNacional($this->categoria)) {
+            if ($this->certificado) {
+                $this->resultado += 2;
+            }
+            if ($this->espreso) {
+                $this->resultado += 10;
+            }
+            // El checkbox de "recibo" no altera el resultado
+        } elseif ($this->esInternacional($this->categoria)) {
+            if ($this->certificado) {
+                $this->resultado += 8;
+            }
+            if ($this->espreso) {
+                $this->resultado += 10;
+            }
+            if ($this->espreso) {
+                $this->resultado += 8;
+            }
+            // El checkbox de "recibo" no altera el resultado
+        }
+    }
+
+    private function esNacional($categoria)
+    {
+        $categoriasNacionales = [
+            "EMS NAT", "MI ENCOMIENDA", "LC/AO NAT", "ECA NAT",
+            "PLIEGOS NAT", "SACAS M NAT", "SUPER NAT"
+        ];
+        return in_array($categoria, $categoriasNacionales);
+    }
+
+    private function esInternacional($categoria)
+    {
+        $categoriasInternacionales = [
+            "EMS INT", "ENCOMIENDA", "LC/AO INT", "ECA INT",
+            "PLIEGOS INT", "SACAS M INT", "SUPER DOC NAT", "SUPER PAQUE NAT"
+        ];
+        return in_array($categoria, $categoriasInternacionales);
     }
 
     private function parsearDestino($destino)
