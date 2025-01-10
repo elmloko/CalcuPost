@@ -23,9 +23,6 @@ class Calculadora extends Component
         $this->validate([
             'categoria' => 'required',
             'peso'      => 'required|numeric|min:0',
-            'largo'     => 'required|numeric|min:0',
-            'ancho'     => 'required|numeric|min:0',
-            'alto'      => 'required|numeric|min:0',
         ]);
 
         $columna = $this->parsearDestino($this->destino);
