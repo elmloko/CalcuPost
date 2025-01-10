@@ -34,30 +34,32 @@
             overflow: hidden;
         }
 
-
         .container {
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 0 20px;
+            padding: 20px;
+            flex-wrap: wrap;
+            /* Permite que los elementos se acomoden en varias filas */
         }
 
         .form-register {
-            width: 400px;
+            width: 100%;
+            max-width: 400px;
             background: #24303c;
             padding: 30px;
             border-radius: 8px;
             font-family: 'Calibri', sans-serif;
             color: white;
             box-shadow: 7px 13px 37px rgba(0, 0, 0, 0.5);
-            margin-right: 250px;
-            /* Ajusta esta distancia */
+            margin: 20px;
         }
 
         .form-register h4 {
             font-size: 24px;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .controls {
@@ -123,33 +125,96 @@
         }
 
         .image-container img {
-            width: 500px;
+            width: 100%;
+            max-width: 500px;
             height: auto;
             border-radius: 8px;
-            margin: 150px;
+            margin: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0);
         }
 
         .dimension-container {
             display: flex;
             justify-content: space-between;
+            gap: 10px;
+            /* Espaciado entre los elementos */
             margin-bottom: 16px;
         }
 
         .dimension-item {
-            width: 32%;
-            /* Asegura que los tres campos ocupen el 100% de la fila */
+            flex: 1;
+            /* Asegura que todos los elementos tengan el mismo ancho */
+            min-width: 30%;
+            /* Asegura que los elementos sean lo suficientemente grandes en pantallas pequeñas */
         }
 
         .controls {
             width: 100%;
-            /* Hace que los campos se ajusten dentro de su contenedor */
+            /* Asegura que los inputs ocupen el ancho completo del contenedor */
             padding: 10px;
             border-radius: 4px;
             border: 1px solid #ccc;
             font-size: 16px;
         }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .form-register {
+                margin: 0;
+            }
+
+            .dimension-container {
+                gap: 10px;
+            }
+
+            .dimension-item {
+                width: 100%;
+            }
+
+            .image-container img {
+                margin: 10px;
+                max-width: 300px;
+            }
+
+            .image-container {
+                display: none;
+                /* Oculta el contenedor de la imagen */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-register {
+                padding: 20px;
+            }
+
+            .form-register h4 {
+                font-size: 20px;
+            }
+
+            .controls {
+                font-size: 14px;
+            }
+
+            .form-register .botons {
+                font-size: 14px;
+            }
+
+            .resultado h5 {
+                font-size: 1rem;
+            }
+
+            .resultado p {
+                font-size: 1.2rem;
+            }
+        }
     </style>
+
     @livewireStyles
 </head>
 
