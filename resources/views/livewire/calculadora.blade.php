@@ -219,11 +219,11 @@
             <option value="pro_dentro">Provincia Dentro Departamento</option>
             <option value="pro_otro">Provincia en Otro Departamento</option>
         </select>
-        <h3>Ingrese el peso del paquete...</h3>
+        <h3>Ingrese el peso del paquete...(Kg.)</h3>
         <input class="controls" type="number" name="peso" id="peso" wire:model="peso"
             placeholder="Ingrese el Peso Aprox. de su Paquete" step="0.001" min="0">
 
-        <h3>Ingrese las dimensiones del paquete...</h3>
+        <h3>Ingrese las dimensiones del paquete...(OPCIONAL/cm.)</h3>
         <div class="dimension-container">
             <div class="dimension-item">
                 <input class="controls" type="number" name="largo" id="largo" wire:model="largo"
