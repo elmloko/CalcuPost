@@ -20,7 +20,7 @@
         }
 
         body {
-            background: url('/images/fila.jpeg') no-repeat center center fixed;
+            background: url('/images/Fondo calculadora-2.jpg') no-repeat center center fixed;
             background-size: cover;
             background-position: center;
             font-family: 'Figtree', sans-serif;
