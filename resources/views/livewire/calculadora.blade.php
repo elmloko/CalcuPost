@@ -1,6 +1,6 @@
 <div class="container">
     <div class="image-container">
-        <img src="{{ asset('images/image.png') }}" alt="Imagen Descriptiva">
+        <img src="{{ asset('images/Monito calculadora.png') }}" alt="Imagen Descriptiva">
     </div>
     <section class="form-register">
         <h4>Calculadora Postal</h4>
