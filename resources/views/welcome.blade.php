@@ -20,7 +20,7 @@
         }
 
         body {
-            background-image: url('fondo.jpg');
+            background: url('/images/Encomienda Postal.jpg') no-repeat center center fixed;
             background-size: cover;
             background-position: center;
             font-family: 'Figtree', sans-serif;
