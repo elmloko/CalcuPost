@@ -4,7 +4,7 @@
     </div>
     <section class="form-register">
         <h4>Calculadora Postal</h4>
-        <h3>Seleciona por que servicio quieres enviar </h3>
+        <h3>*Seleciona por que servicio quieres enviar.</h3>
         <select class="controls" name="categoria" id="categoria" wire:model="categoria">
             <option value="">Seleccione un Servicio Postal</option>
             <option class="nacional" value="EMS NAT">EMS Nacional</option>
@@ -25,7 +25,7 @@
             <option class="internacional" value="SUPER PAQUE NAT">Super Express Internacional
                 Paquetes</option>
         </select>
-        <h3>Seleciona a donde quieres enviar...</h3>
+        <h3>*Seleciona a donde quieres enviar.</h3>
         <select class="controls" name="destino" id="destino" wire:model="destino">
             <option value="">Seleccione un Destino</option>
             <option value="local_1">Area Urbana (Hasta 2.5 Km)</option>
@@ -218,11 +218,11 @@
             <option value="pro_dentro">Provincia Dentro Departamento</option>
             <option value="pro_otro">Provincia en Otro Departamento</option>
         </select>
-        <h3>Ingrese el peso del paquete...(Kg.)</h3>
+        <h3>*Ingrese el peso del paquete.(Kg.)</h3>
         <input class="controls" type="number" name="peso" id="peso" wire:model="peso"
             placeholder="Ingrese el Peso Aprox. de su Paquete" step="0.001" min="0">
 
-        <h3>Ingrese las dimensiones del paquete...(OPCIONAL/cm.)</h3>
+        <h3>Ingrese las dimensiones del paquete.(OPCIONAL /cm.)</h3>
         <div class="dimension-container">
             <div class="dimension-item">
                 <input class="controls" type="number" name="largo" id="largo" wire:model="largo"
