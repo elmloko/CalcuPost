@@ -19,29 +19,27 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
         body {
             background: url('/images/Fondo calculadora-2.jpg') no-repeat center center fixed;
             background-size: cover;
             background-position: center;
             font-family: 'Figtree', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
         }
 
         .container {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             padding: 20px;
             flex-wrap: wrap;
-            /* Permite que los elementos se acomoden en varias filas */
         }
 
         .form-register {
@@ -137,26 +135,29 @@
             display: flex;
             justify-content: space-between;
             gap: 10px;
-            /* Espaciado entre los elementos */
             margin-bottom: 16px;
         }
 
         .dimension-item {
             flex: 1;
-            /* Asegura que todos los elementos tengan el mismo ancho */
             min-width: 30%;
-            /* Asegura que los elementos sean lo suficientemente grandes en pantallas pequeñas */
         }
 
         .controls {
             width: 100%;
-            /* Asegura que los inputs ocupen el ancho completo del contenedor */
             padding: 10px;
             border-radius: 4px;
             border: 1px solid #ccc;
             font-size: 16px;
         }
 
+        footer {
+            text-align: center;
+            background-color: #24303c;
+            color: white;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -184,7 +185,6 @@
 
             .image-container {
                 display: none;
-                /* Oculta el contenedor de la imagen */
             }
         }
 
@@ -219,7 +219,18 @@
 </head>
 
 <body>
-    @livewire('calculadora')
+    <div class="container">
+        @livewire('calculadora')
+    </div>
+    <footer>
+        <p class="mb-2"><small>#EstamosSaliendoAdelante #RumboalBicentenario</small></p>
+        <p class="mb-2"><small>&copy; {{ date('Y') }} Todos los derechos reservados - Agencia
+                Boliviana de Correos <a href="mailto:mespinozarojas46@gmail.com" class="opacity-75"
+                    title="Marco Antonio Espinoza Rojas">Copyright © MAER
+                    {{ date('Y') }} </a></small></p>
+        <p class="mb-2"><small>Contacto: (591-2) 2152423 - Av. Mariscal Santa Cruz Esq. C. Oruro Edif.
+                Telecomunicaciones - agbc@correos.gob.bo</small></p>
+    </footer>
 </body>
 
 </html>
