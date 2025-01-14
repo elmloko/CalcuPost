@@ -124,7 +124,7 @@
 
         .image-container img {
             width: 100%;
-            max-width: 500px;
+            max-width: 400px;
             height: auto;
             border-radius: 8px;
             margin: 20px;
