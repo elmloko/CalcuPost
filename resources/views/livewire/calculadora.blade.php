@@ -1,7 +1,4 @@
 <div class="container">
-    <div class="icon-container">
-        <img src="/images/Monito calculadora.png" alt="Icono" />
-    </div>
     <section class="form-register">
         <h4>Calculadora Postal</h4>
         <h3>*Seleciona por que servicio quieres enviar.</h3>
@@ -268,6 +265,9 @@
             </div>
         @endif
     </section>
+    <div class="image-container">
+        <img src="{{ asset('images/Monito calculadora.png') }}" alt="Imagen Descriptiva">
+    </div>
 </div>
 
 <script>
