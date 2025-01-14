@@ -19,7 +19,8 @@
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
             height: 100%;
             margin: 0;
             display: flex;
@@ -27,6 +28,7 @@
         }
 
         body {
+            /* Ajusta la ruta de tu imagen de fondo */
             background: url('/images/Fondo calculadora-2.jpg') no-repeat center center fixed;
             background-size: cover;
             background-position: center;
@@ -34,6 +36,8 @@
         }
 
         .container {
+            /* OJO: Agregamos position: relative para poder posicionar absolutamente el ícono */
+            position: relative;
             flex: 1;
             display: flex;
             justify-content: center;
@@ -42,6 +46,7 @@
             flex-wrap: wrap;
         }
 
+        /* Contenedor del formulario */
         .form-register {
             width: 100%;
             max-width: 400px;
@@ -159,6 +164,20 @@
             font-size: 0.9rem;
         }
 
+        .icon-container {
+            position: absolute;
+            /* Disminuye la distancia desde la derecha para que quede cerca del formulario */
+            right: 600px;
+            bottom: 20px;
+        }
+
+        .icon-container img {
+            width: 200px;
+            /* ajusta tamaño del ícono */
+            height: auto;
+            /* puedes añadir más estilos si quieres */
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .container {
@@ -183,9 +202,11 @@
                 max-width: 300px;
             }
 
-            .image-container {
-                display: none;
-            }
+            /* Si prefieres ocultar el fondo extra en pantallas pequeñas
+               .image-container {
+                   display: none;
+               }
+            */
         }
 
         @media (max-width: 480px) {
