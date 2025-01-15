@@ -200,12 +200,12 @@
                 width: 100%;
             }
 
-            .image-container img {
+            .icono-mascota img {
                 margin: 10px;
                 max-width: 300px;
             }
 
-            .image-container {
+            .icono-mascota {
                 display: none;
             }
         }
