@@ -13,13 +13,14 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "laravelcollective/html": "^6.4",
-        "livewire/livewire": "^3.5",
+        "livewire/livewire": "^3.0",
         "opcodesio/log-viewer": "^3.11",
         "spatie/laravel-permission": "^6.9"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "ibex/crud-generator": "^2.1",
+        // Aquí se baja de ^2.1 a ^1.5 (o la que sepas que funciona con PHP 8.1)
+        "ibex/crud-generator": "^1.5",
         "laravel/breeze": "^1.29",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
