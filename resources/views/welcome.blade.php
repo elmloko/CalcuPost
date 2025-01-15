@@ -25,6 +25,8 @@
             margin: 0;
             display: flex;
             flex-direction: column;
+            overflow-x: auto; /* Scroll horizontal si no cabe */
+            /* overflow-y: hidden; Evita scroll vertical si no lo quieres */
         }
 
         body {
@@ -53,7 +55,7 @@
             justify-content: flex-end !important;
             align-items: center;
             padding: 20px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             position: relative;
         }
 
@@ -177,6 +179,7 @@
             padding: 10px 20px;
             font-size: 0.9rem;
         }
+
 
         /* Responsive Design */
         @media (max-width: 768px) {
