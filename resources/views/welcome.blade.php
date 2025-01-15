@@ -19,7 +19,8 @@
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
             height: 100%;
             margin: 0;
             display: flex;
@@ -33,16 +34,31 @@
             font-family: 'Figtree', sans-serif;
         }
 
+        .icono-mascota {
+            position: absolute;
+            width: 200px;
+            height: auto;
+            right: 120px;
+            bottom: 0 !important;
+            z-index: 9999;
+        }
+
+        .icono-mascota img {
+            width: 100%;
+            height: auto;
+        }
+
         .container {
-            flex: 1;
             display: flex;
-            justify-content: center;
+            justify-content: flex-end !important;
             align-items: center;
             padding: 20px;
             flex-wrap: wrap;
+            position: relative;
         }
 
         .form-register {
+            margin-top: 250px;
             width: 100%;
             max-width: 400px;
             background: #24303c;
@@ -51,7 +67,10 @@
             font-family: 'Calibri', sans-serif;
             color: white;
             box-shadow: 7px 13px 37px rgba(0, 0, 0, 0.5);
-            margin: 20px;
+            margin: 50px;
+            margin-left: auto !important;
+            margin-right: 250px;
+            margin-bottom: 100px;
         }
 
         .form-register h4 {

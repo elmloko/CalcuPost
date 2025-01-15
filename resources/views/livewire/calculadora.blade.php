@@ -265,7 +265,7 @@
             </div>
         @endif
     </section>
-    <div class="image-container">
+    <div class="icono-mascota">
         <img src="{{ asset('images/MONITO.png') }}" alt="Imagen Descriptiva">
     </div>
 </div>
