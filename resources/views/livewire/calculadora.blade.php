@@ -266,7 +266,7 @@
         @endif
     </section>
     <div class="image-container">
-        <img src="{{ asset('images/Monito calculadora.png') }}" alt="Imagen Descriptiva">
+        <img src="{{ asset('images/MONITO.png') }}" alt="Imagen Descriptiva">
     </div>
 </div>
 
