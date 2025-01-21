@@ -25,8 +25,7 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            overflow-x: auto; /* Scroll horizontal si no cabe */
-            /* overflow-y: hidden; Evita scroll vertical si no lo quieres */
+            overflow-x: auto;
         }
 
         body {
@@ -253,6 +252,17 @@
         <p class="mb-2"><small>Contacto: (591-2) 2152423 - Av. Mariscal Santa Cruz Esq. C. Oruro Edif.
                 Telecomunicaciones - agbc@correos.gob.bo</small></p>
     </footer>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3K53BSN7HD"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-3K53BSN7HD');
+    </script>
 </body>
 
 </html>
