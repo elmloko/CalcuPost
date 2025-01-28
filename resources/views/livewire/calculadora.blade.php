@@ -17,10 +17,10 @@
             <option class="nacional" value="SACAS M NAT">Sacas M Nacional</option>
             <option class="internacional" value="SACAS M INT">Sacas M Internacional</option>
             <option class="nacional" value="SUPER NAT">Super Express Nacional</option>
-            <option class="internacional" value="SUPER DOC NAT">Super Express
+            {{-- <option class="internacional" value="SUPER DOC NAT">Super Express
                 Internacional Documentos</option>
             <option class="internacional" value="SUPER PAQUE NAT">Super Express Internacional
-                Paquetes</option>
+                Paquetes</option> --}}
         </select>
         <h3>*Seleciona a donde quieres enviar.</h3>
         <select class="controls" name="destino" id="destino" wire:model="destino">
@@ -243,12 +243,12 @@
                     Paquete Certificado
                 </label>
             </div>
-            <div class="dimension-item">
+            {{-- <div class="dimension-item">
                 <label for="espreso">
                     <input type="checkbox" name="espreso" id="espreso" wire:model="espreso">
                     Servicio Expreso
                 </label>
-            </div>
+            </div> --}}
             <div class="dimension-item">
                 <label for="recibo">
                     <input type="checkbox" name="recibo" id="recibo" wire:model="recibo">
