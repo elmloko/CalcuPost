@@ -257,7 +257,9 @@
             </div>
         </div>
         <button class="botons" wire:click="calcular">Calcular</button>
-
+        <p style="font-size: 14px; color: #ffffff;">
+            *El precio mostrado es referencial y puede ajustarse según las tarifas vigentes.*
+        </p>
         @if ($resultado)
             <div class="resultado">
                 <h5>El costo estimado del envío es:</h5>
@@ -265,6 +267,7 @@
             </div>
         @endif
     </section>
+    
     <div class="icono-mascota">
         <img src="{{ asset('images/MONITO.png') }}" alt="Imagen Descriptiva">
     </div>
