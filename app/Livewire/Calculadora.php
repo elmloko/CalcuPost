@@ -44,7 +44,11 @@ class Calculadora extends Component
         }
 
         // Calcular el volumen total
-        $dimensiones = $this->largo + $this->ancho + $this->alto;
+        $largo = is_numeric($this->largo) ? (float) $this->largo : 0;
+        $ancho = is_numeric($this->ancho) ? (float) $this->ancho : 0;
+        $alto = is_numeric($this->alto) ? (float) $this->alto : 0;
+
+        $dimensiones = $largo + $ancho + $alto;
 
         // Si la suma de largo, ancho y alto supera 1.5, agregar un 30% al resultado
         if ($dimensiones > 1.5) {
@@ -73,10 +77,6 @@ class Calculadora extends Component
             if ($this->espreso) {
                 $this->resultado += 10;
             }
-            if ($this->espreso) {
-                $this->resultado += 8;
-            }
-            // El checkbox de "recibo" no altera el resultado
         }
     }
 
@@ -112,7 +112,7 @@ class Calculadora extends Component
     private function parsearDestino($destino)
     {
         if (empty($destino)) {
-            return 0; // Retornar null si no hay un destino válido
+            return null; // Retornar null si no hay un destino válido
         }
 
         $partes = explode('_', $destino);
@@ -129,7 +129,6 @@ class Calculadora extends Component
 
         return null; // Retornar null si no se puede determinar la columna
     }
-
 
     public function render()
     {
