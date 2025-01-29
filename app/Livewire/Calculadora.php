@@ -25,6 +25,11 @@ class Calculadora extends Component
             'peso'      => 'required|numeric|min:0',
         ]);
 
+        if (empty($this->destino)) {
+            $this->resultado = "Por favor, selecciona un destino válido.";
+            return;
+        }
+
         $columna = $this->parsearDestino($this->destino);
 
         $this->resultado = DB::table('tarifario')
@@ -78,8 +83,13 @@ class Calculadora extends Component
     private function esNacional($categoria)
     {
         $categoriasNacionales = [
-            "EMS NAT", "MI ENCOMIENDA", "LC/AO NAT", "ECA NAT",
-            "PLIEGOS NAT", "SACAS M NAT", "SUPER NAT"
+            "EMS NAT",
+            "MI ENCOMIENDA",
+            "LC/AO NAT",
+            "ECA NAT",
+            "PLIEGOS NAT",
+            "SACAS M NAT",
+            "SUPER NAT"
         ];
         return in_array($categoria, $categoriasNacionales);
     }
@@ -87,14 +97,24 @@ class Calculadora extends Component
     private function esInternacional($categoria)
     {
         $categoriasInternacionales = [
-            "EMS INT", "ENCOMIENDA", "LC/AO INT", "ECA INT",
-            "PLIEGOS INT", "SACAS M INT", "SUPER DOC NAT", "SUPER PAQUE NAT"
+            "EMS INT",
+            "ENCOMIENDA",
+            "LC/AO INT",
+            "ECA INT",
+            "PLIEGOS INT",
+            "SACAS M INT",
+            "SUPER DOC NAT",
+            "SUPER PAQUE NAT"
         ];
         return in_array($categoria, $categoriasInternacionales);
     }
 
     private function parsearDestino($destino)
     {
+        if (empty($destino)) {
+            return 0; // Retornar null si no hay un destino válido
+        }
+
         $partes = explode('_', $destino);
 
         // Si el primer fragmento es "nacional", devolvemos la columna "nacional".
@@ -106,9 +126,10 @@ class Calculadora extends Component
         if (count($partes) >= 2) {
             return $partes[0] . '_' . $partes[1];
         }
-        
-        return $destino;
+
+        return null; // Retornar null si no se puede determinar la columna
     }
+
 
     public function render()
     {
