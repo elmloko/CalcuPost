@@ -274,24 +274,28 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const categoriaSelect = document.getElementById("categoria");
-        const destinoSelect = document.getElementById("destino");
+document.addEventListener("DOMContentLoaded", function () {
+    const categoriaSelect = document.getElementById("categoria");
+    const destinoSelect = document.getElementById("destino");
 
-        // Función para mostrar/ocultar opciones
-        function filtrarOpciones() {
-            const categoria = categoriaSelect.value;
+    // Función para mostrar/ocultar opciones
+    function filtrarOpciones() {
+        const categoria = categoriaSelect.value;
 
-            // Obtener todas las opciones del select de destino
-            const opcionesDestino = Array.from(destinoSelect.options);
+        // Limpiar el valor seleccionado en el select de destino
+        destinoSelect.value = "";
 
-            // Ocultar todas las opciones inicialmente
-            opcionesDestino.forEach((opcion) => {
-                opcion.style.display = "none";
-            });
+        // Obtener todas las opciones del select de destino
+        const opcionesDestino = Array.from(destinoSelect.options);
 
-            // Lógica de visibilidad según la categoría seleccionada
-            if (categoria === "EMS NAT") {
+        // Ocultar todas las opciones inicialmente
+        opcionesDestino.forEach((opcion) => {
+            opcion.style.display = "none";
+        });
+
+        // Mostrar opciones según la categoría seleccionada
+        switch (categoria) {
+            case "EMS NAT":
                 opcionesDestino.forEach((opcion) => {
                     if (
                         opcion.value === "local_1" ||
@@ -303,17 +307,23 @@
                         opcion.style.display = "block";
                     }
                 });
-            } else if (categoria === "EMS INT") {
+                break;
+
+            case "EMS INT":
                 opcionesDestino.forEach((opcion) => {
-                    if (opcion.value.startsWith("dest_a") ||
+                    if (
+                        opcion.value.startsWith("dest_a") ||
                         opcion.value.startsWith("dest_b") ||
                         opcion.value.startsWith("dest_c") ||
                         opcion.value.startsWith("dest_d") ||
-                        opcion.value.startsWith("dest_e")) {
+                        opcion.value.startsWith("dest_e")
+                    ) {
                         opcion.style.display = "block";
                     }
                 });
-            } else if (categoria === "MI ENCOMIENDA") {
+                break;
+
+            case "MI ENCOMIENDA":
                 opcionesDestino.forEach((opcion) => {
                     if (
                         opcion.value.startsWith("cui_cap") ||
@@ -324,17 +334,23 @@
                         opcion.style.display = "block";
                     }
                 });
-            } else if (categoria === "ENCOMIENDA") {
+                break;
+
+            case "ENCOMIENDA":
                 opcionesDestino.forEach((opcion) => {
-                    if (opcion.value.startsWith("dest_a") ||
+                    if (
+                        opcion.value.startsWith("dest_a") ||
                         opcion.value.startsWith("dest_b") ||
                         opcion.value.startsWith("dest_c") ||
                         opcion.value.startsWith("dest_d") ||
-                        opcion.value.startsWith("dest_e")) {
+                        opcion.value.startsWith("dest_e")
+                    ) {
                         opcion.style.display = "block";
                     }
                 });
-            } else if (categoria === "LC/AO NAT") {
+                break;
+
+            case "LC/AO NAT":
                 opcionesDestino.forEach((opcion) => {
                     if (
                         opcion.value === "local_1" ||
@@ -347,17 +363,23 @@
                         opcion.style.display = "block";
                     }
                 });
-            } else if (categoria === "LC/AO INT") {
+                break;
+
+            case "LC/AO INT":
                 opcionesDestino.forEach((opcion) => {
-                    if (opcion.value.startsWith("dest_a") ||
+                    if (
+                        opcion.value.startsWith("dest_a") ||
                         opcion.value.startsWith("dest_b") ||
                         opcion.value.startsWith("dest_c") ||
                         opcion.value.startsWith("dest_d") ||
-                        opcion.value.startsWith("dest_e")) {
+                        opcion.value.startsWith("dest_e")
+                    ) {
                         opcion.style.display = "block";
                     }
                 });
-            } else if (categoria === "ECA NAT") {
+                break;
+
+            case "ECA NAT":
                 opcionesDestino.forEach((opcion) => {
                     if (
                         opcion.value === "local_1" ||
@@ -370,17 +392,23 @@
                         opcion.style.display = "block";
                     }
                 });
-            } else if (categoria === "ECA INT") {
+                break;
+
+            case "ECA INT":
                 opcionesDestino.forEach((opcion) => {
-                    if (opcion.value.startsWith("dest_a") ||
+                    if (
+                        opcion.value.startsWith("dest_a") ||
                         opcion.value.startsWith("dest_b") ||
                         opcion.value.startsWith("dest_c") ||
                         opcion.value.startsWith("dest_d") ||
-                        opcion.value.startsWith("dest_e")) {
+                        opcion.value.startsWith("dest_e")
+                    ) {
                         opcion.style.display = "block";
                     }
                 });
-            } else if (categoria === "PLIEGOS NAT") {
+                break;
+
+            case "PLIEGOS NAT":
                 opcionesDestino.forEach((opcion) => {
                     if (
                         opcion.value === "local_1" ||
@@ -391,17 +419,23 @@
                         opcion.style.display = "block";
                     }
                 });
-            } else if (categoria === "PLIEGOS INT") {
+                break;
+
+            case "PLIEGOS INT":
                 opcionesDestino.forEach((opcion) => {
-                    if (opcion.value.startsWith("dest_a") ||
+                    if (
+                        opcion.value.startsWith("dest_a") ||
                         opcion.value.startsWith("dest_b") ||
                         opcion.value.startsWith("dest_c") ||
                         opcion.value.startsWith("dest_d") ||
-                        opcion.value.startsWith("dest_e")) {
+                        opcion.value.startsWith("dest_e")
+                    ) {
                         opcion.style.display = "block";
                     }
                 });
-            } else if (categoria === "SACAS M NAT") {
+                break;
+
+            case "SACAS M NAT":
                 opcionesDestino.forEach((opcion) => {
                     if (
                         opcion.value.startsWith("nacional") ||
@@ -410,54 +444,41 @@
                         opcion.style.display = "block";
                     }
                 });
-            } else if (categoria === "SACAS M INT") {
+                break;
+
+            case "SACAS M INT":
                 opcionesDestino.forEach((opcion) => {
-                    if (opcion.value.startsWith("dest_a") ||
+                    if (
+                        opcion.value.startsWith("dest_a") ||
                         opcion.value.startsWith("dest_b") ||
                         opcion.value.startsWith("dest_c") ||
                         opcion.value.startsWith("dest_d") ||
-                        opcion.value.startsWith("dest_e")) {
-                        opcion.style.display = "block";
-                    }
-                });
-            } else if (categoria === "SUPER NAT") {
-                opcionesDestino.forEach((opcion) => {
-                    if (
-                        opcion.value.startsWith("nacional")
+                        opcion.value.startsWith("dest_e")
                     ) {
                         opcion.style.display = "block";
                     }
                 });
-            } else if (categoria === "SUPER PAQUE NAT") {
-                opcionesDestino.forEach((opcion) => {
-                    if (opcion.value.startsWith("dest_a") ||
-                        opcion.value.startsWith("dest_b") ||
-                        opcion.value.startsWith("dest_c") ||
-                        opcion.value.startsWith("dest_d") ||
-                        opcion.value.startsWith("dest_e")) {
-                        opcion.style.display = "block";
-                    }
-                });
-            } else if (categoria === "SUPER DOC NAT") {
-                opcionesDestino.forEach((opcion) => {
-                    if (opcion.value.startsWith("dest_a") ||
-                        opcion.value.startsWith("dest_b") ||
-                        opcion.value.startsWith("dest_c") ||
-                        opcion.value.startsWith("dest_d") ||
-                        opcion.value.startsWith("dest_e")) {
-                        opcion.style.display = "block";
-                    }
-                });
-            }
+                break;
 
-            // Reiniciar el valor del select de destino
-            destinoSelect.value = "";
+            case "SUPER NAT":
+                opcionesDestino.forEach((opcion) => {
+                    if (opcion.value.startsWith("nacional")) {
+                        opcion.style.display = "block";
+                    }
+                });
+                break;
+
+            default:
+                // No mostrar opciones si no hay una categoría válida
+                break;
         }
+    }
 
-        // Escuchar el evento de cambio en el select de categoría
-        categoriaSelect.addEventListener("change", filtrarOpciones);
+    // Escuchar el evento de cambio en el select de categoría
+    categoriaSelect.addEventListener("change", filtrarOpciones);
 
-        // Ejecutar la función al cargar la página
-        filtrarOpciones();
-    });
+    // Ejecutar la función al cargar la página para asegurar el estado inicial
+    filtrarOpciones();
+});
+
 </script>
