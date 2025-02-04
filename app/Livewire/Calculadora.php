@@ -89,7 +89,8 @@ class Calculadora extends Component
     {
         $categoriasNacionales = [
             "EMS NAT", "MI ENCOMIENDA", "LC/AO NAT",
-            "ECA NAT", "PLIEGOS NAT", "SACAS M NAT", "SUPER NAT"
+            "ECA NAT", "PLIEGOS NAT", "SACAS M NAT", "SUPER NAT",
+            "SUPER DOC NAT", "SUPER PAQUE NAT"
         ];
         return in_array($categoria, $categoriasNacionales);
     }
@@ -98,8 +99,7 @@ class Calculadora extends Component
     {
         $categoriasInternacionales = [
             "EMS INT", "ENCOMIENDA", "LC/AO INT",
-            "ECA INT", "PLIEGOS INT", "SACAS M INT",
-            "SUPER DOC NAT", "SUPER PAQUE NAT"
+            "ECA INT", "PLIEGOS INT", "SACAS M INT"
         ];
         return in_array($categoria, $categoriasInternacionales);
     }
