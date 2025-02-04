@@ -61,17 +61,22 @@ class Calculadora extends Component
 
     private function aplicarServiciosAdicionales()
     {
-        // Verificar categoría nacional o internacional
+        // Categorías que pueden sumar por "certificado"
+        $categorias_con_certificado = [
+            "LC/AO NAT", "ECA NAT", "PLIEGOS NAT", "SACAS M NAT",
+            "LC/AO INT", "ECA INT", "PLIEGOS INT", "SACAS M INT"
+        ];
+
+        // Verificar si la categoría es nacional o internacional
         if ($this->esNacional($this->categoria)) {
-            if ($this->certificado) {
+            if ($this->certificado && in_array($this->categoria, $categorias_con_certificado)) {
                 $this->resultado += 2;
             }
             if ($this->espreso) {
                 $this->resultado += 10;
             }
-            // El checkbox de "recibo" no altera el resultado
         } elseif ($this->esInternacional($this->categoria)) {
-            if ($this->certificado) {
+            if ($this->certificado && in_array($this->categoria, $categorias_con_certificado)) {
                 $this->resultado += 8;
             }
             if ($this->espreso) {
@@ -83,13 +88,8 @@ class Calculadora extends Component
     private function esNacional($categoria)
     {
         $categoriasNacionales = [
-            "EMS NAT",
-            "MI ENCOMIENDA",
-            "LC/AO NAT",
-            "ECA NAT",
-            "PLIEGOS NAT",
-            "SACAS M NAT",
-            "SUPER NAT"
+            "EMS NAT", "MI ENCOMIENDA", "LC/AO NAT",
+            "ECA NAT", "PLIEGOS NAT", "SACAS M NAT", "SUPER NAT"
         ];
         return in_array($categoria, $categoriasNacionales);
     }
@@ -97,14 +97,9 @@ class Calculadora extends Component
     private function esInternacional($categoria)
     {
         $categoriasInternacionales = [
-            "EMS INT",
-            "ENCOMIENDA",
-            "LC/AO INT",
-            "ECA INT",
-            "PLIEGOS INT",
-            "SACAS M INT",
-            "SUPER DOC NAT",
-            "SUPER PAQUE NAT"
+            "EMS INT", "ENCOMIENDA", "LC/AO INT",
+            "ECA INT", "PLIEGOS INT", "SACAS M INT",
+            "SUPER DOC NAT", "SUPER PAQUE NAT"
         ];
         return in_array($categoria, $categoriasInternacionales);
     }
@@ -112,29 +107,25 @@ class Calculadora extends Component
     private function parsearDestino($destino)
     {
         if (empty($destino)) {
-            return null; // Retornar null si no hay un destino válido
+            return null;
         }
-    
+
         $partes = explode('_', $destino);
-    
-        // Si el valor no contiene '_' (por ejemplo, "cui1"), retorna el mismo valor
+
         if (count($partes) === 1) {
             return $destino;
         }
-    
-        // Si el primer fragmento es "nacional", devolvemos la columna "nacional".
+
         if (!empty($partes[0]) && $partes[0] === 'nacional') {
             return 'nacional';
         }
-    
-        // Para valores como "dest_e_tanzania" o "local_1_mexico": tomamos las dos primeras partes.
+
         if (count($partes) >= 2) {
             return $partes[0] . '_' . $partes[1];
         }
-    
-        return null; // En caso de no poder determinar la columna
+
+        return null;
     }
-    
 
     public function render()
     {
