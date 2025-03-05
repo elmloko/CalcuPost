@@ -58,6 +58,9 @@
         .form-container button:hover {
             background-color: #B99C46;
         }
+        .centrado {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -68,6 +71,10 @@
 
     <!-- Formulario -->
     <div class="form-container">
+        <div class="centrado">
+            <h2>HERRAMIENTA POSTAL PARA EL CÁLCULO PRECISO DE TARIFAS</h2>
+            <h3>"CALCUPOST"</h3>
+        </div>
         <form method="POST" action="{{ route('login') }}">
             <!-- CSRF Token -->
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
