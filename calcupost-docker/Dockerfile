@@ -23,5 +23,5 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # 5. Exponer PHP-FPM y setear entrypoint
 EXPOSE 9000
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["php-fpm"]
