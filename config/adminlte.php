@@ -314,58 +314,41 @@ return [
         [
             'text' => 'Dashboard',
             'url' => '/dashboard',
-            'icon' => 'fas fa-user',
+            'icon' => 'fas fa-tachometer-alt',
         ],
         [
-            'text' => 'Gestion Usuarios',
-            'icon' => 'fas fa-users',
-            // 'can'  => 'users.index',
+            'text' => 'Gestión Usuarios',
+            'icon' => 'fas fa-users', // Grupo de usuarios
             'submenu' => [
                 [
                     'text' => 'Personal AGBC',
                     'url' => 'users',
-                    'icon' => 'fas fa-user',
-                ],
-                [
-                    'text' => 'Roles',
-                    'url' => 'roles',
-                    'icon' => 'fas fa-users-cog',
-                ],
-                [
-                    'text' => 'Permisos',
-                    'url' => 'permissions',
-                    'icon' => 'fas fa-key',
-                ],
-                [
-                    'text' => 'Accesos',
-                    'url' => 'role-has-permissions',
-                    'icon' => 'fas fa-key',
+                    'icon' => 'fas fa-id-badge', // Identificación del personal
                 ],
             ],
         ],
         [
             'text' => 'Calculadora Postal',
-            'icon' => 'fas fa-users',
+            'icon' => 'fas fa-calculator', // Representa directamente cálculo o tarifas
             // 'can'  => 'users.index',
             'submenu' => [
                 [
                     'text' => 'Tarifario Postal',
                     'url' => '/tarifario',
-                    'icon' => 'fas fa-user',
+                    'icon' => 'fas fa-file-invoice-dollar', // Tarifas, costos postales
                 ],
             ],
+        ],
+
+        [
+            'text' => 'Logs',
+            'url' => '/log-viewer',
+            'icon' => 'fas fa-file-alt', // Representa claramente registros/logs
         ],
         [
             'text' => 'Rendimiento',
             'url' => '/pulse',
-
-            'icon' => 'fas fa-user',
-        ],
-        [
-            'text' => 'Logs',
-            'url' => '/log-viewer',
-
-            'icon' => 'fas fa-user',
+            'icon' => 'fas fa-tachometer-alt', // Icono de panel o rendimiento
         ],
     ],
 
