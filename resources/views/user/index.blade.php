@@ -6,4 +6,5 @@
 
 @section('content')
 @livewire('users')
+@include('footer')
 @endsection
