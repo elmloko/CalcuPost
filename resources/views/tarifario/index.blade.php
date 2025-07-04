@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'CalcuPost')
+@section('title', 'POSTAR')
 
 @section('template_title')
     Tarifario Postal

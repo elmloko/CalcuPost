@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'CalcuPost',
+    'title' => 'postar',
     'title_prefix' => '',
     'title_postfix' => '| AGBC',
 
@@ -68,7 +68,7 @@ return [
     'logo_img_class' => 'brand-image img-circle',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'CalcuPost',
+    'logo_img_alt' => 'POSTAR',
 
     /*
     |--------------------------------------------------------------------------

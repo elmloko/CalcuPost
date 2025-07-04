@@ -73,7 +73,7 @@
     <div class="form-container">
         <div class="centrado">
             <h2>HERRAMIENTA POSTAL PARA EL CÁLCULO PRECISO DE TARIFAS</h2>
-            <h3>"CALCUPOST"</h3>
+            <h3>"POSTAR"</h3>
         </div>
         <form method="POST" action="{{ route('login') }}">
             <!-- CSRF Token -->
