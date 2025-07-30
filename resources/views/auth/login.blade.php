@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Postal</title>
+    <title>POSTAR|AGBC</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/AGBClogo.png') }}" />
     <style>
         body {
             font-family: Arial, sans-serif;
