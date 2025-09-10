@@ -133,9 +133,9 @@ CREATE TABLE IF NOT EXISTS `pulse_aggregates` (
   KEY `pulse_aggregates_period_bucket_index` (`period`,`bucket`),
   KEY `pulse_aggregates_type_index` (`type`),
   KEY `pulse_aggregates_period_type_aggregate_bucket_index` (`period`,`type`,`aggregate`,`bucket`)
-) ENGINE=InnoDB AUTO_INCREMENT=123435 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=123483 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla calcupost.pulse_aggregates: ~3.098 rows (aproximadamente)
+-- Volcando datos para la tabla calcupost.pulse_aggregates: ~3.122 rows (aproximadamente)
 INSERT INTO `pulse_aggregates` (`id`, `bucket`, `period`, `type`, `key`, `aggregate`, `value`, `count`) VALUES
 	(58761, 1749464640, 10080, 'user_request', '1', 'count', 10.00, NULL),
 	(58798, 1749474720, 10080, 'slow_request', '["GET","\\/","Closure"]', 'count', 1.00, NULL),
@@ -3319,7 +3319,43 @@ INSERT INTO `pulse_aggregates` (`id`, `bucket`, `period`, `type`, `key`, `aggreg
 	(123431, 1751936940, 60, 'slow_request', '["GET","\\/","Closure"]', 'max', 1664.00, NULL),
 	(123432, 1751936760, 360, 'slow_request', '["GET","\\/","Closure"]', 'max', 1664.00, NULL),
 	(123433, 1751935680, 1440, 'slow_request', '["GET","\\/","Closure"]', 'max', 1664.00, NULL),
-	(123434, 1751934240, 10080, 'slow_request', '["GET","\\/","Closure"]', 'max', 1664.00, NULL);
+	(123434, 1751934240, 10080, 'slow_request', '["GET","\\/","Closure"]', 'max', 1664.00, NULL),
+	(123435, 1751987400, 60, 'user_request', '1', 'count', 2.00, NULL),
+	(123436, 1751987160, 360, 'user_request', '1', 'count', 3.00, NULL),
+	(123437, 1751986080, 1440, 'user_request', '1', 'count', 3.00, NULL),
+	(123438, 1751984640, 10080, 'user_request', '1', 'count', 4.00, NULL),
+	(123443, 1751987460, 60, 'user_request', '1', 'count', 1.00, NULL),
+	(123447, 1751987880, 60, 'user_request', '1', 'count', 1.00, NULL),
+	(123448, 1751987880, 360, 'user_request', '1', 'count', 1.00, NULL),
+	(123449, 1751987520, 1440, 'user_request', '1', 'count', 1.00, NULL),
+	(123451, 1753710840, 60, 'user_request', '1', 'count', 2.00, NULL),
+	(123452, 1753710840, 360, 'user_request', '1', 'count', 2.00, NULL),
+	(123453, 1753709760, 1440, 'user_request', '1', 'count', 2.00, NULL),
+	(123454, 1753708320, 10080, 'user_request', '1', 'count', 2.00, NULL),
+	(123459, 1753815540, 60, 'cache_miss', 'c5778eb052729d3c4be3c0a1c7e6bf1a', 'count', 1.00, NULL),
+	(123460, 1753815240, 360, 'cache_miss', 'c5778eb052729d3c4be3c0a1c7e6bf1a', 'count', 1.00, NULL),
+	(123461, 1753814880, 1440, 'cache_miss', 'c5778eb052729d3c4be3c0a1c7e6bf1a', 'count', 1.00, NULL),
+	(123462, 1753809120, 10080, 'cache_miss', 'c5778eb052729d3c4be3c0a1c7e6bf1a', 'count', 1.00, NULL),
+	(123463, 1753815540, 60, 'cache_hit', 'c5778eb052729d3c4be3c0a1c7e6bf1a', 'count', 1.00, NULL),
+	(123464, 1753815240, 360, 'cache_hit', 'c5778eb052729d3c4be3c0a1c7e6bf1a', 'count', 1.00, NULL),
+	(123465, 1753814880, 1440, 'cache_hit', 'c5778eb052729d3c4be3c0a1c7e6bf1a', 'count', 1.00, NULL),
+	(123466, 1753809120, 10080, 'cache_hit', 'c5778eb052729d3c4be3c0a1c7e6bf1a', 'count', 1.00, NULL),
+	(123467, 1754604540, 60, 'slow_request', '["GET","\\/","Closure"]', 'count', 1.00, NULL),
+	(123468, 1754604360, 360, 'slow_request', '["GET","\\/","Closure"]', 'count', 1.00, NULL),
+	(123469, 1754604000, 1440, 'slow_request', '["GET","\\/","Closure"]', 'count', 1.00, NULL),
+	(123470, 1754595360, 10080, 'slow_request', '["GET","\\/","Closure"]', 'count', 1.00, NULL),
+	(123471, 1754604540, 60, 'slow_request', '["GET","\\/","Closure"]', 'max', 3225.00, NULL),
+	(123472, 1754604360, 360, 'slow_request', '["GET","\\/","Closure"]', 'max', 3225.00, NULL),
+	(123473, 1754604000, 1440, 'slow_request', '["GET","\\/","Closure"]', 'max', 3225.00, NULL),
+	(123474, 1754595360, 10080, 'slow_request', '["GET","\\/","Closure"]', 'max', 3225.00, NULL),
+	(123475, 1755131760, 60, 'slow_request', '["GET","\\/","Closure"]', 'count', 1.00, NULL),
+	(123476, 1755131760, 360, 'slow_request', '["GET","\\/","Closure"]', 'count', 1.00, NULL),
+	(123477, 1755131040, 1440, 'slow_request', '["GET","\\/","Closure"]', 'count', 1.00, NULL),
+	(123478, 1755129600, 10080, 'slow_request', '["GET","\\/","Closure"]', 'count', 1.00, NULL),
+	(123479, 1755131760, 60, 'slow_request', '["GET","\\/","Closure"]', 'max', 1189.00, NULL),
+	(123480, 1755131760, 360, 'slow_request', '["GET","\\/","Closure"]', 'max', 1189.00, NULL),
+	(123481, 1755131040, 1440, 'slow_request', '["GET","\\/","Closure"]', 'max', 1189.00, NULL),
+	(123482, 1755129600, 10080, 'slow_request', '["GET","\\/","Closure"]', 'max', 1189.00, NULL);
 
 -- Volcando estructura para tabla calcupost.pulse_entries
 CREATE TABLE IF NOT EXISTS `pulse_entries` (
@@ -3334,9 +3370,9 @@ CREATE TABLE IF NOT EXISTS `pulse_entries` (
   KEY `pulse_entries_type_index` (`type`),
   KEY `pulse_entries_key_hash_index` (`key_hash`),
   KEY `pulse_entries_timestamp_type_key_hash_value_index` (`timestamp`,`type`,`key_hash`,`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=25549 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25559 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla calcupost.pulse_entries: ~15.288 rows (aproximadamente)
+-- Volcando datos para la tabla calcupost.pulse_entries: ~15.298 rows (aproximadamente)
 INSERT INTO `pulse_entries` (`id`, `timestamp`, `type`, `key`, `value`) VALUES
 	(10364, 1749474529, 'user_request', '1', NULL),
 	(10365, 1749474530, 'user_request', '1', NULL),
@@ -18523,7 +18559,17 @@ INSERT INTO `pulse_entries` (`id`, `timestamp`, `type`, `key`, `value`) VALUES
 	(25545, 1751559233, 'user_request', '1', NULL),
 	(25546, 1751559234, 'user_request', '1', NULL),
 	(25547, 1751559237, 'user_request', '1', NULL),
-	(25548, 1751936954, 'slow_request', '["GET","\\/","Closure"]', 1664);
+	(25548, 1751936954, 'slow_request', '["GET","\\/","Closure"]', 1664),
+	(25549, 1751987427, 'user_request', '1', NULL),
+	(25550, 1751987428, 'user_request', '1', NULL),
+	(25551, 1751987477, 'user_request', '1', NULL),
+	(25552, 1751987925, 'user_request', '1', NULL),
+	(25553, 1753710869, 'user_request', '1', NULL),
+	(25554, 1753710870, 'user_request', '1', NULL),
+	(25555, 1753815576, 'cache_miss', 'c5778eb052729d3c4be3c0a1c7e6bf1a', NULL),
+	(25556, 1753815576, 'cache_hit', 'c5778eb052729d3c4be3c0a1c7e6bf1a', NULL),
+	(25557, 1754604582, 'slow_request', '["GET","\\/","Closure"]', 3225),
+	(25558, 1755131805, 'slow_request', '["GET","\\/","Closure"]', 1189);
 
 -- Volcando estructura para tabla calcupost.pulse_values
 CREATE TABLE IF NOT EXISTS `pulse_values` (
