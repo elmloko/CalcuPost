@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -28,24 +27,26 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
+            'name'     => 'required',
+            'email'    => 'required|email|unique:users',
             'password' => 'required|min:8',
             'Regional' => 'required',
-            'ci' => 'required',
+            'ci'       => 'required',
+            'roles'    => 'required|exists:roles,id', // 👈 validar ID de rol
         ]);
     
         $user = new User();
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
+        $user->name     = $request->input('name');
+        $user->email    = $request->input('email');
         $user->password = bcrypt($request->input('password')); // Encriptar la contraseña
         $user->Regional = $request->input('Regional');
-        $user->ci = $request->input('ci');
-
+        $user->ci       = $request->input('ci');
         $user->save();
 
-        $user->assignRole($request->input('roles'));
-        
+        // 👇 Buscar el rol por ID y asignar el MODELO, no el ID crudo
+        $role = Role::findOrFail($request->input('roles'));
+        $user->assignRole($role); // ahora sí
+
         return redirect()->route('users.index')
             ->with('success', 'Usuario creado correctamente');
     }
@@ -68,19 +69,22 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id, // Utiliza $user->id
+            'name'     => 'required',
+            'email'    => 'required|email|unique:users,email,' . $user->id,
             'Regional' => 'required',
-            'ci' => 'required',
+            'ci'       => 'required',
+            'roles'    => 'required|exists:roles,id', // 👈 igual aquí
         ]);
 
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->roles()->sync($request->roles);
+        $user->name     = $request->input('name');
+        $user->email    = $request->input('email');
         $user->Regional = $request->input('Regional');
-        $user->ci = $request->input('ci');
-        
+        $user->ci       = $request->input('ci');
         $user->save();
+
+        // 👇 Usar syncRoles con el modelo Role
+        $role = Role::findOrFail($request->input('roles'));
+        $user->syncRoles([$role]); // o $user->syncRoles($role);
 
         return redirect()->route('users.index')
             ->with('success', 'Usuario actualizado correctamente');
