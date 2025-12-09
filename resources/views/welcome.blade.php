@@ -244,7 +244,7 @@
         @livewire('calculadora')
     </div>
     <footer>
-        <p class="mb-2"><small>#EstamosSaliendoAdelante #RumboalBicentenario</small></p>
+        {{-- <p class="mb-2"><small>#EstamosSaliendoAdelante #RumboalBicentenario</small></p> --}}
         <p class="mb-2"><small>&copy; {{ date('Y') }} Todos los derechos reservados - Agencia
                 Boliviana de Correos <a href="mailto:mespinozarojas46@gmail.com" class="opacity-75"
                     title="Marco Antonio Espinoza Rojas">Copyright © MAER
