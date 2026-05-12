@@ -7,7 +7,8 @@
 
     <title>Calculadora Postal | Correos de Bolivia</title>
 
-    <link rel="icon" type="image/png" href="vendor/adminlte/dist/img/AGBClogo.png" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=5" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=5" />
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800|sora:400,600,700,800&display=swap" rel="stylesheet" />
 
@@ -202,7 +203,7 @@
         .footer-col li:hover { color: #1c58a7; }
         .footer-col a, .footer-col a:visited { color: inherit; text-decoration: none; }
         .footer-col a:hover, .footer-col a:focus-visible { color: #1c58a7; text-decoration: none; }
-        .footer-brand img { width: 220px; height: 130px; object-fit: contain; display: block; }
+        .footer-brand img { width: 290px; height: 170px; object-fit: contain; display: block; }
         .footer-contact {
             border-top: 1px solid rgba(4, 30, 66, .22);
             border-bottom: 1px solid rgba(4, 30, 66, .22);
