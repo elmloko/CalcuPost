@@ -1,5 +1,4 @@
-<div class="container">
-    <section class="form-register">
+<section class="form-register">
         <h4>Calculadora Postal</h4>
         <h3>*Seleciona por que servicio quieres enviar.</h3>
         <select class="controls" name="categoria" id="categoria" wire:model="categoria">
@@ -257,7 +256,7 @@
             </div>
         </div>
         <button class="botons" wire:click="calcular">Calcular</button>
-        <p style="font-size: 14px; color: #ffffff;">
+        <p class="form-note">
             *El precio mostrado es referencial y puede ajustarse según las tarifas vigentes.*
         </p>
         @if ($resultado)
@@ -267,11 +266,6 @@
             </div>
         @endif
     </section>
-    
-    <div class="icono-mascota">
-        <img src="{{ asset('images/MONITO.png') }}" alt="Imagen Descriptiva">
-    </div>
-</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
