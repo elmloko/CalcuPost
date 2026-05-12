@@ -246,7 +246,7 @@
             <h2>Rápido, fácil y confiable</h2>
             <p>Obtén el costo estimado de tu envío nacional o internacional en pocos pasos.</p>
             <div class="hero-wave"></div>
-            <img src="{{ asset('images/Monito calculadora.png') }}" alt="Mascota Correos">
+            <img src="{{ asset('images/Monito calculadora25.png') }}" alt="Mascota Correos">
         </aside>
 
         <div class="container">
