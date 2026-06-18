@@ -274,6 +274,7 @@
         gtag('js', new Date());
         gtag('config', 'G-3K53BSN7HD');
     </script>
+    @livewireScripts
 </body>
 
 </html>
