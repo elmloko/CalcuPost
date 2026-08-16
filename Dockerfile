@@ -1,19 +1,29 @@
-FROM laravelsail/php82-composer:latest
+FROM php:8.4-apache-bookworm
 
-# Instala extensiones requeridas
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    git \
-    curl \
-    libzip-dev \
-    && docker-php-ext-install pdo_mysql zip
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git \
+        unzip \
+        libzip-dev \
+        libpng-dev \
+        libonig-dev \
+        libxml2-dev \
+        nodejs \
+        npm \
+    && docker-php-ext-install pdo_mysql mbstring bcmath gd zip exif pcntl \
+    && a2enmod rewrite \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copia los archivos al contenedor (si no usas volumen en Compose)
-# COPY . /var/www/html
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Establece el directorio de trabajo
+# Laravel sirve desde /public, no desde la raíz del repo
+RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf \
+    && sed -ri -e 's!AllowOverride None!AllowOverride All!g' /etc/apache2/apache2.conf
+
 WORKDIR /var/www/html
+
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+EXPOSE 80
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["apache2-foreground"]
