@@ -1,28 +1,21 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span id="card_title">
-                            {{ __('Usuarios') }}
-                        </span>
-                        <div style="display: flex; align-items: center;">
-                            <div class="mr-2">
-                                <a href="{{ route('users.excel') }}" class="btn btn-success btn-sm"
-                                    data-placement="left">Excel</a>
-                            </div>
-                            <div class="mr-2">
-                                <a href="{{ route('users.pdf') }}" class="btn btn-danger btn-sm"
-                                    data-placement="left">PDF</a>
-                            </div>
-                            <div class="float-right">
-                                <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm float-right"
-                                    data-placement="left">
-                                    {{ __('Crear Nuevo') }}
-                                </a>
-                            </div>
-                        </div>
+            <div class="tariff-table-card personnel-card">
+                <div class="tariff-table-card__header personnel-card__header">
+                    <div>
+                        <span class="panel-kicker">DIRECTORIO INTERNO</span>
+                        <h2>Personal AGBC</h2>
+                        <p>Administra accesos, estado y datos del personal.</p>
+                    </div>
+                    <div class="personnel-card__actions">
+                        <span class="tariff-table-card__count">{{ $users->total() }} personas</span>
+                        <a href="{{ route('users.pdf') }}" class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-file-pdf mr-1" aria-hidden="true"></i> PDF
+                        </a>
+                        <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-user-plus mr-1" aria-hidden="true"></i> Crear persona
+                        </a>
                     </div>
                 </div>
 
@@ -31,10 +24,14 @@
                         <p>{{ session('success') }}</p>
                     </div>
                 @endif
+                @if (session()->has('error'))
+                    <div class="alert alert-danger">
+                        <p>{{ session('error') }}</p>
+                    </div>
+                @endif
 
-                <div class="card-body">
-                    <!-- Barra de búsqueda con botón de búsqueda -->
-                    <div class="row mb-3">
+                <div class="personnel-card__body">
+                    <div class="row personnel-toolbar">
                         <div class="col-md-6">
                             <input type="text" wire:model="search" class="form-control"
                                 placeholder="Buscar por nombre o email...">
@@ -44,59 +41,61 @@
                         </div>
                     </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead class="thead">
+                    <div class="table-responsive tariff-table-wrap">
+                        <table class="table tariff-table personnel-table">
+                            <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Nombre Completo</th>
                                     <th>Email</th>
-                                    <th>Contraseña</th>
                                     <th>Regional</th>
                                     <th>Carnet Identidad</th>
                                     <th>Estado</th>
-                                    <th>Nivel de Usuario</th>
+                                    <th>Tipo de cuenta</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($users as $user)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ str_repeat('*', min(12, strlen($user->password))) }}</td>
-                                        <td>{{ $user->Regional }}</td>
-                                        <td>{{ $user->ci }}</td>
-                                        <td><span class="badge {{ $user->trashed() ? 'badge-danger' : 'badge-info' }}">
+                                    <tr wire:key="personnel-row-{{ $user->id }}">
+                                        <td><span class="personnel-number">{{ $users->firstItem() + $loop->index }}</span></td>
+                                        <td class="personnel-name"><span class="personnel-avatar"><i class="fas fa-user" aria-hidden="true"></i></span><strong>{{ $user->name }}</strong></td>
+                                        <td><a class="personnel-email" href="mailto:{{ $user->email }}">{{ $user->email }}</a></td>
+                                        <td>{{ $user->city ?: '—' }}</td>
+                                        <td>{{ $user->ci ?: '—' }}</td>
+                                        <td><span class="personnel-status {{ $user->trashed() ? 'is-inactive' : 'is-active' }}">
                                                 {{ $user->trashed() ? 'Inactivo' : 'Activo' }}
                                             </span></td>
                                         <td>
-                                            @foreach ($user->roles as $role)
-                                                <span class="badge badge-info">{{ $role->name }}</span>
-                                            @endforeach
+                                            <span class="personnel-role {{ $user->isAdministrator() ? 'is-admin' : '' }}">
+                                                {{ $user->isAdministrator() ? 'Administrador' : 'Usuario' }}
+                                            </span>
                                         </td>
-                                        <td>
+                                        <td class="personnel-actions">
                                             @if ($user->trashed())
                                                 <button wire:click="restore({{ $user->id }})"
                                                     class="btn btn-sm btn-success">
-                                                    <i class="fa fa-arrow-up"></i> {{ __('Alta') }}
+                                                    <i class="fa fa-arrow-up"></i> {{ __('Reactivar') }}
+                                                </button>
+                                                <button wire:click="deletePermanently({{ $user->id }})"
+                                                    wire:confirm="Esta acción eliminará definitivamente al usuario y no se puede deshacer. ¿Desea continuar?"
+                                                    class="btn btn-sm btn-danger">
+                                                    <i class="fa fa-trash"></i> {{ __('Eliminar') }}
                                                 </button>
                                             @else
-                                                <button wire:click="delete({{ $user->id }})"
+                                                <button wire:click="deactivate({{ $user->id }})"
+                                                    wire:confirm="¿Desea desactivar este usuario? Podrá reactivarlo después."
                                                     class="btn btn-sm btn-warning">
-                                                    <i class="fa fa-arrow-down"></i> {{ __('Baja') }}
+                                                    <i class="fa fa-user-slash"></i> {{ __('Desactivar') }}
                                                 </button>
                                                 <a class="btn btn-sm btn-success"
                                                     href="{{ route('users.edit', $user->id) }}">
                                                     <i class="fa fa-fw fa-edit"></i> {{ __('Editar') }}
                                                 </a>
-                                                @hasrole('SuperAdmin')
-                                                    <button wire:click="setPasswordUser({{ $user->id }})"
-                                                        class="btn btn-sm btn-primary">
-                                                        <i class="fa fa-key"></i> {{ __('Cambiar Contraseña') }}
-                                                    </button>
-                                                @endhasrole
+                                                <button wire:click="setPasswordUser({{ $user->id }})"
+                                                    class="btn btn-sm btn-primary">
+                                                    <i class="fa fa-key"></i> {{ __('Cambiar Contraseña') }}
+                                                </button>
                                             @endif
                                         </td>
                                     </tr>
@@ -105,12 +104,12 @@
                         </table>
                     </div>
 
-                    <div class="row mt-3">
+                    <div class="row personnel-pagination">
                         <div class="col-md-6">
                             {{ $users->links() }}
                         </div>
                         <div class="col-md-6 text-right">
-                            Se encontraron {{ $users->total() }} registros en total
+                            Mostrando {{ $users->firstItem() ?? 0 }}–{{ $users->lastItem() ?? 0 }} de {{ $users->total() }} personas
                         </div>
                     </div>
                 </div>

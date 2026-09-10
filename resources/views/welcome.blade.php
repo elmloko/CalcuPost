@@ -38,6 +38,7 @@
             display: grid;
             grid-template-columns: 42% 58%;
             gap: 16px;
+            align-items: start;
         }
 
         .hero {
@@ -69,8 +70,10 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            bottom: 0;
-            max-height: 500px;
+            top: 280px;
+            height: 360px;
+            max-width: 82%;
+            object-fit: contain;
             z-index: 2;
         }
 
@@ -223,7 +226,7 @@
             .hero h1 { font-size: 40px; }
             .hero h2 { font-size: 28px; }
             .hero p { font-size: 20px; }
-            .hero img { max-height: 320px; }
+            .hero img { top: 190px; height: 220px; max-width: 78%; }
             .form-register { min-height: auto; }
             .footer-grid { grid-template-columns: 1fr; }
         }

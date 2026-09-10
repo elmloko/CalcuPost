@@ -110,7 +110,7 @@ return [
     */
 
     'preloader' => [
-        'enabled' => true,
+        'enabled' => false,
         'mode' => 'fullscreen',
         'img' => [
             'path' => 'vendor/adminlte/dist/img/AGBClogo.png',
@@ -136,7 +136,7 @@ return [
     'usermenu_enabled' => true,
     'usermenu_header' => true,
     'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => true,
+    'usermenu_image' => false,
     'usermenu_desc' => true,
     'usermenu_profile_url' => true,
 
@@ -304,6 +304,12 @@ return [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
+        [
+            'text' => 'Resumen operativo',
+            'url' => '/dashboard',
+            'icon' => 'fas fa-chart-line',
+            'topnav' => true,
+        ],
 
         // Sidebar items:
         [
@@ -319,6 +325,7 @@ return [
         [
             'text' => 'Gestión Usuarios',
             'icon' => 'fas fa-users', // Grupo de usuarios
+            'can' => 'administrar-sistema',
             'submenu' => [
                 [
                     'text' => 'Personal AGBC',
@@ -341,8 +348,9 @@ return [
         ],
 
         [
-            'text' => 'Logs',
-            'url' => '/log-viewer',
+            'text' => 'Registros',
+            'url' => '/registros',
+            'can' => 'administrar-sistema',
             'icon' => 'fas fa-file-alt', // Representa claramente registros/logs
         ],
         [
@@ -387,6 +395,16 @@ return [
     */
 
     'plugins' => [
+        'PostarBrand' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'css/admin-brand.css',
+                ],
+            ],
+        ],
         'Datatables' => [
             'active' => false,
             'files' => [
@@ -404,21 +422,6 @@ return [
                     'type' => 'css',
                     'asset' => false,
                     'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
-                ],
-            ],
-        ],
-        'Select2' => [
-            'active' => false,
-            'files' => [
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
                 ],
             ],
         ],

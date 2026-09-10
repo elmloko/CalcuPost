@@ -76,7 +76,7 @@ class ProfileTest extends TestCase
             ->assertRedirect('/');
 
         $this->assertGuest();
-        $this->assertNull($user->fresh());
+        $this->assertSoftDeleted($user);
     }
 
     public function test_correct_password_must_be_provided_to_delete_account(): void
@@ -95,5 +95,15 @@ class ProfileTest extends TestCase
             ->assertRedirect('/profile');
 
         $this->assertNotNull($user->fresh());
+    }
+
+    public function test_administrator_can_view_the_personnel_directory(): void
+    {
+        $administrator = User::factory()->create(['is_admin' => true]);
+
+        $this->actingAs($administrator)->get('/users')
+            ->assertOk()
+            ->assertSee('Personal AGBC')
+            ->assertSee('personnel-table', false);
     }
 }

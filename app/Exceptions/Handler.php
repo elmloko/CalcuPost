@@ -3,6 +3,9 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -41,6 +44,18 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
+        $this->renderable(function (HttpException $exception, Request $request) {
+            if ($exception->getStatusCode() === 419
+                && $exception->getPrevious() instanceof TokenMismatchException
+                && $request->isMethod('post') && $request->is('login') && !$request->expectsJson()) {
+                // Reject the submission and show a fresh form; never retry or preserve a password.
+                $email = $request->input('email');
+                return redirect()->route('login', [], 303)
+                    ->withInput(is_string($email) ? ['email' => $email] : [])
+                    ->withErrors(['session' => 'El formulario de acceso caducó. Vuelve a ingresar tu contraseña.']);
+            }
+        });
+
         $this->reportable(function (Throwable $e) {
             //
         });

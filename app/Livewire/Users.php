@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class Users extends Component
@@ -28,6 +29,7 @@ class Users extends Component
     // Establecer el ID del usuario para cambiar la contraseña y abrir el modal
     public function setPasswordUser($userId)
     {
+        $this->authorizeAdministrator();
         $this->userIdBeingUpdated = $userId;
         $this->dispatch('openModal'); // Disparar evento para abrir el modal
     }
@@ -35,6 +37,8 @@ class Users extends Component
     // Método para actualizar la contraseña del usuario
     public function updatePassword()
     {
+        $this->authorizeAdministrator();
+
         $this->validate([
             'newPassword' => 'required|min:6', // Validar que la nueva contraseña tenga al menos 6 caracteres
         ]);
@@ -57,8 +61,69 @@ class Users extends Component
         $this->dispatch('closeModal');
     }
 
+    public function deactivate(int $userId): void
+    {
+        $this->authorizeAdministrator();
+        $user = User::findOrFail($userId);
+
+        if (! $this->canModify($user)) {
+            return;
+        }
+
+        $user->delete();
+        session()->flash('success', 'Usuario desactivado correctamente. Puede reactivarlo cuando lo necesite.');
+    }
+
+    public function restore(int $userId): void
+    {
+        $this->authorizeAdministrator();
+        $user = User::withTrashed()->findOrFail($userId);
+
+        if (! $user->trashed()) {
+            session()->flash('error', 'El usuario ya se encuentra activo.');
+            return;
+        }
+
+        $user->restore();
+        session()->flash('success', 'Usuario reactivado correctamente.');
+    }
+
+    public function deletePermanently(int $userId): void
+    {
+        $this->authorizeAdministrator();
+        $user = User::withTrashed()->findOrFail($userId);
+
+        if (! $user->trashed()) {
+            session()->flash('error', 'Primero debe desactivar al usuario.');
+            return;
+        }
+
+        DB::transaction(function () use ($user) {
+            $user->forceDelete();
+        });
+
+        session()->flash('success', 'Usuario eliminado definitivamente.');
+    }
+
+    private function authorizeAdministrator(): void
+    {
+        abort_unless(auth()->check() && auth()->user()->isAdministrator(), 403);
+    }
+
+    private function canModify(User $user): bool
+    {
+        if ($user->is(auth()->user())) {
+            session()->flash('error', 'No puede desactivar ni eliminar su propia cuenta.');
+            return false;
+        }
+
+        return true;
+    }
+
     public function render()
     {
+        $this->authorizeAdministrator();
+
         // Obtener los usuarios con paginación y filtrados por el campo de búsqueda
         $users = User::withTrashed()
             ->where(function ($query) {

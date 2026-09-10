@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,6 +62,14 @@
         .centrado {
             text-align: center;
         }
+        .login-alert {
+            margin-bottom: 16px;
+            padding: 12px;
+            border: 1px solid #b42318;
+            border-radius: 4px;
+            color: #8a1c13;
+            background: #fff1f0;
+        }
     </style>
 </head>
 <body>
@@ -76,6 +84,13 @@
             <h2>HERRAMIENTA POSTAL PARA EL CÁLCULO PRECISO DE TARIFAS</h2>
             <h3>"POSTAR"</h3>
         </div>
+        @if ($errors->any())
+            <div class="login-alert" role="alert">
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
+            </div>
+        @endif
         <form method="POST" action="{{ route('login') }}">
             <!-- CSRF Token -->
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -83,14 +98,14 @@
             <!-- Email Address -->
             <div>
                 <label for="email">Email</label>
-                <input id="email" type="email" name="email" required autofocus>
+                <input id="email" type="email" name="email" value="{{ old('email') }}" autocomplete="username" required autofocus>
             </div>
 
 
             <!-- Password -->
             <div>
                 <label for="password">Password</label>
-                <input id="password" type="password" name="password" required>
+                <input id="password" type="password" name="password" autocomplete="current-password" required>
             </div>
 
             <!-- Login Button -->

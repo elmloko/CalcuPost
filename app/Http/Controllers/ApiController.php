@@ -2,123 +2,55 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\PostalService;
+use App\Support\CalculatorHistory;
+use App\Support\PostalCalculator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ApiController extends Controller
 {
-    public function calcular(Request $request)
+    public function calcular(Request $request, PostalCalculator $calculator, CalculatorHistory $history)
     {
-        $request->validate([
-            'categoria' => 'required|string',
-            'peso'      => 'required|numeric|min:0',
-            'destino'   => 'required|string',
-            'largo'     => 'nullable|numeric|min:0',
-            'ancho'     => 'nullable|numeric|min:0',
-            'alto'      => 'nullable|numeric|min:0',
-            'certificado' => 'boolean',
-            'espreso'     => 'boolean',
-            'recibo'      => 'boolean',
-        ]);
+        $started = hrtime(true);
+        $request->validate(['categoria' => 'required|string|max:50']);
+        Validator::make(['sesion_consulta' => $request->header('X-Calculator-Session')], [
+            'sesion_consulta' => 'nullable|uuid',
+        ])->validate();
 
-        $categoria = $request->categoria;
-        $peso = $request->peso;
-        $destino = $request->destino;
-        $certificado = $request->certificado ?? false;
-        $espreso = $request->espreso ?? false;
-        $recibo = $request->recibo ?? false;
-
-        $columna = self::parsearDestino($destino);
-
-        if (!$columna) {
-            return response()->json(['message' => 'Destino inválido'], 400);
+        // Calculations remain public; an existing Sanctum token may identify the caller.
+        $user = Auth::guard('sanctum')->user();
+        if ($request->bearerToken() && !$user) {
+            return response()->json(['message' => 'Token de autenticación inválido.'], 401);
+        }
+        $service = PostalService::where('category', $request->input('categoria'))->first();
+        if (!$service) {
+            return response()->json(['message' => 'El servicio postal no está disponible.'], 404);
+        }
+        $calculation = $calculator->calculate($service, $request->all());
+        // Reuse this UUID to count an API session once, without storing IP addresses.
+        $session = $request->header('X-Calculator-Session') ?: (string) Str::uuid();
+        try {
+            $record = $history->save($service, $calculation, $started, $user, 'api:'.$session);
+        } catch (\Throwable $exception) {
+            report($exception);
+            return response()->json([
+                'success' => false, 'registro_guardado' => false,
+                'message' => 'No se pudo guardar la consulta. Inténtalo de nuevo.',
+            ], 503);
         }
 
-        $resultado = DB::table('tarifario')
-            ->where('categoria', $categoria)
-            ->where('peso_min_kg', '<=', $peso)
-            ->where('peso_max_kg', '>=', $peso)
-            ->value($columna);
-
-        if (!$resultado) {
-            return response()->json(['message' => 'No se encontraron tarifas para los datos ingresados.'], 404);
-        }
-
-        // Cálculo de volumen
-        $largo = $request->largo ?? 0;
-        $ancho = $request->ancho ?? 0;
-        $alto = $request->alto ?? 0;
-
-        $dimensiones = $largo + $ancho + $alto;
-
-        // Si la suma de largo, ancho y alto supera 1.5, agregar un 30%
-        if ($dimensiones > 1.5) {
-            $resultado += $resultado * 0.30;
-        }
-
-        // Aplicar costos adicionales
-        $resultado = self::aplicarServiciosAdicionales($categoria, $resultado, $certificado, $espreso);
-
-        return response()->json([
-            'success' => true,
-            'categoria' => $categoria,
-            'peso' => $peso,
-            'destino' => $destino,
-            'tarifa' => $resultado
-        ]);
-    }
-
-    private static function aplicarServiciosAdicionales($categoria, $resultado, $certificado, $espreso)
-    {
-        if (self::esNacional($categoria)) {
-            if ($certificado) $resultado += 2;
-            if ($espreso) $resultado += 10;
-        } elseif (self::esInternacional($categoria)) {
-            if ($certificado) $resultado += 8;
-            if ($espreso) $resultado += 10;
-        }
-        return $resultado;
-    }
-
-    private static function esNacional($categoria)
-    {
-        $categoriasNacionales = [
-            "EMS NAT", "MI ENCOMIENDA", "LC/AO NAT",
-            "ECA NAT", "PLIEGOS NAT", "SACAS M NAT", "SUPER NAT"
+        $body = [
+            'success' => $calculation['status'] === 'calculated',
+            'categoria' => $service->category, 'peso' => (float) $calculation['data']['peso'],
+            'destino' => $calculation['data']['destino'], 'tarifa' => $calculation['total'],
+            'registro_id' => $record->id, 'registro_guardado' => true, 'sesion_consulta' => $session,
         ];
-        return in_array($categoria, $categoriasNacionales);
-    }
-
-    private static function esInternacional($categoria)
-    {
-        $categoriasInternacionales = [
-            "EMS INT", "ENCOMIENDA", "LC/AO INT",
-            "ECA INT", "PLIEGOS INT", "SACAS M INT", "SUPER DOC NAT", "SUPER PAQUE NAT"
-        ];
-        return in_array($categoria, $categoriasInternacionales);
-    }
-
-    private static function parsearDestino($destino)
-    {
-        if (empty($destino)) {
-            return null;
+        if ($calculation['status'] === 'no_rate') {
+            $body['message'] = 'No se encontraron tarifas para los datos ingresados.';
         }
-
-        $partes = explode('_', $destino);
-
-        if (count($partes) === 1) {
-            return $destino;
-        }
-
-        if (!empty($partes[0]) && $partes[0] === 'nacional') {
-            return 'nacional';
-        }
-
-        if (count($partes) >= 2) {
-            return $partes[0] . '_' . $partes[1];
-        }
-
-        return null;
+        return response()->json($body, $calculation['status'] === 'calculated' ? 200 : 404);
     }
 }

@@ -126,7 +126,8 @@ return [
     |
     */
 
-    'cookie' => env(
+    // Local test and application servers share a hostname, but must not share a login cookie.
+    'cookie' => env('APP_ENV') === 'testing' ? 'calcupost_test_session' : env(
         'SESSION_COOKIE',
         Str::slug(env('APP_NAME', 'laravel'), '_').'_session'
     ),
@@ -168,7 +169,8 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    // The isolated test server runs over HTTP; retain the configured HTTPS policy elsewhere.
+    'secure' => env('APP_ENV') === 'testing' ? false : env('SESSION_SECURE_COOKIE'),
 
     /*
     |--------------------------------------------------------------------------
@@ -196,6 +198,7 @@ return [
     |
     */
 
-    'same_site' => env('SESSION_SAME_SITE', 'lax'),
+    // Browsers reject SameSite=None without Secure; the local test server uses HTTP.
+    'same_site' => env('APP_ENV') === 'testing' ? 'lax' : env('SESSION_SAME_SITE', 'lax'),
 
 ];

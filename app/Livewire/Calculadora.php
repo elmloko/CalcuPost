@@ -2,12 +2,20 @@
 
 namespace App\Livewire;
 
+use App\Models\PostalService;
+use App\Support\CalculatorHistory;
+use App\Support\PostalCalculator;
+use App\Support\PostalDestinations;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
-use Illuminate\Support\Facades\DB;
 
 class Calculadora extends Component
 {
+    public $servicio = '';
+    public $modalidad = '';
     public $categoria;
+    public $perfilCategoria = '';
     public $destino;
     public $peso;
     public $largo;
@@ -17,114 +25,110 @@ class Calculadora extends Component
     public $certificado = false;
     public $espreso = false;
     public $recibo = false;
+    public $registroGuardado;
+
+    public function updatedServicio(): void
+    {
+        $this->modalidad = '';
+        $this->categoria = '';
+        $this->perfilCategoria = '';
+        $this->reiniciarCalculo();
+
+        if (count($this->modalidades) === 1) {
+            $this->modalidad = array_key_first($this->modalidades);
+            $this->sincronizarCategoria();
+            return;
+        }
+
+        $this->dispatch('categoria-cambiada', categoria: '', perfil: '', modalidad: '');
+    }
+
+    public function updatedModalidad(): void
+    {
+        $this->sincronizarCategoria();
+    }
+
+    public function getModalidadesProperty(): array
+    {
+        return PostalService::where('code', $this->servicio)
+            ->orderByRaw("FIELD(modality, 'NAT', 'INT', 'PAQUE', 'DOC')")
+            ->pluck('category', 'modality')
+            ->all();
+    }
+
+    public function getCatalogoServiciosProperty(): array
+    {
+        return PostalService::query()
+            ->orderBy('name')
+            ->get()
+            ->groupBy('code')
+            ->map(fn ($services) => $services->first()->name)
+            ->all();
+    }
+
+    private function sincronizarCategoria(): void
+    {
+        $this->categoria = $this->modalidades[$this->modalidad] ?? '';
+        $this->perfilCategoria = PostalService::where('category', $this->categoria)->value('profile') ?? '';
+        $this->reiniciarCalculo();
+        $this->dispatch('categoria-cambiada', categoria: $this->categoria, perfil: $this->perfilCategoria, modalidad: $this->modalidad);
+    }
+
+    private function reiniciarCalculo(): void
+    {
+        $this->destino = '';
+        $this->resultado = null;
+        $this->registroGuardado = null;
+        $this->resetValidation();
+    }
+
+    public function getDestinosProperty(): array
+    {
+        return PostalDestinations::forService(PostalService::where('code', $this->servicio)
+            ->where('modality', $this->modalidad)->first());
+    }
+
+    public function limpiar(): void
+    {
+        $this->reset('servicio', 'modalidad', 'categoria', 'perfilCategoria', 'destino', 'peso',
+            'largo', 'ancho', 'alto', 'resultado', 'certificado', 'espreso', 'recibo', 'registroGuardado');
+        $this->resetValidation();
+    }
 
     public function calcular()
     {
+        $started = hrtime(true);
+        $this->resultado = null;
+        $this->registroGuardado = null;
         $this->validate([
-            'categoria' => 'required',
-            'peso'      => 'required|numeric|min:0',
+            'servicio' => ['required', 'string', Rule::exists('postal_services', 'code')],
+            'modalidad' => ['required', Rule::in(array_keys($this->modalidades))],
+        ], [
+            'required' => 'Completa el campo :attribute.',
+            'in' => 'Selecciona una opción válida para :attribute.',
+            'exists' => 'El servicio seleccionado ya no está disponible.',
         ]);
 
-        if (empty($this->destino)) {
-            $this->resultado = "Por favor, selecciona un destino válido.";
-            return;
+        $service = PostalService::where('code', $this->servicio)->where('modality', $this->modalidad)->firstOrFail();
+        $this->categoria = $service->category;
+        $this->perfilCategoria = $service->profile;
+        $calculation = app(PostalCalculator::class)->calculate($service, $this->only([
+            'destino', 'peso', 'largo', 'ancho', 'alto', 'certificado', 'espreso', 'recibo',
+        ]));
+        $this->resultado = $calculation['total'] ?? 'No se encontraron tarifas para los datos ingresados.';
+
+        if (!session()->has('calculator_visitor')) {
+            session()->put('calculator_visitor', (string) Str::uuid());
         }
-
-        $columna = $this->parsearDestino($this->destino);
-
-        $this->resultado = DB::table('tarifario')
-            ->where('categoria', $this->categoria)
-            ->where('peso_min_kg', '<=', $this->peso)
-            ->where('peso_max_kg', '>=', $this->peso)
-            ->value($columna);
-
-        if (!$this->resultado) {
-            $this->resultado = "No se encontraron tarifas para los datos ingresados.";
-            return;
+        try {
+            $record = app(CalculatorHistory::class)->save(
+                $service, $calculation, $started, auth()->user(), session('calculator_visitor')
+            );
+            $this->registroGuardado = $record->id;
+        } catch (\Throwable $exception) {
+            report($exception);
+            $this->addError('historial', 'El cálculo está disponible, pero no se pudo guardar en el historial. Inténtalo de nuevo antes de limpiar.');
         }
-
-        // Calcular el volumen total
-        $largo = is_numeric($this->largo) ? (float) $this->largo : 0;
-        $ancho = is_numeric($this->ancho) ? (float) $this->ancho : 0;
-        $alto = is_numeric($this->alto) ? (float) $this->alto : 0;
-
-        $dimensiones = $largo + $ancho + $alto;
-
-        // Si la suma de largo, ancho y alto supera 1.5, agregar un 30% al resultado
-        if ($dimensiones > 1.5) {
-            $this->resultado += $this->resultado * 0.30;
-        }
-
-        // Ajustar el resultado con base en los servicios adicionales
-        $this->aplicarServiciosAdicionales();
-    }
-
-    private function aplicarServiciosAdicionales()
-    {
-        // Categorías que pueden sumar por "certificado"
-        $categorias_con_certificado = [
-            "LC/AO NAT", "ECA NAT", "PLIEGOS NAT", "SACAS M NAT",
-            "LC/AO INT", "ECA INT", "PLIEGOS INT", "SACAS M INT"
-        ];
-
-        // Verificar si la categoría es nacional o internacional
-        if ($this->esNacional($this->categoria)) {
-            if ($this->certificado && in_array($this->categoria, $categorias_con_certificado)) {
-                $this->resultado += 2;
-            }
-            if ($this->espreso) {
-                $this->resultado += 10;
-            }
-        } elseif ($this->esInternacional($this->categoria)) {
-            if ($this->certificado && in_array($this->categoria, $categorias_con_certificado)) {
-                $this->resultado += 8;
-            }
-            if ($this->espreso) {
-                $this->resultado += 10;
-            }
-        }
-    }
-
-    private function esNacional($categoria)
-    {
-        $categoriasNacionales = [
-            "EMS NAT", "MI ENCOMIENDA", "LC/AO NAT",
-            "ECA NAT", "PLIEGOS NAT", "SACAS M NAT", "SUPER NAT",
-            "SUPER DOC NAT", "SUPER PAQUE NAT"
-        ];
-        return in_array($categoria, $categoriasNacionales);
-    }
-
-    private function esInternacional($categoria)
-    {
-        $categoriasInternacionales = [
-            "EMS INT", "ENCOMIENDA", "LC/AO INT",
-            "ECA INT", "PLIEGOS INT", "SACAS M INT"
-        ];
-        return in_array($categoria, $categoriasInternacionales);
-    }
-
-    private function parsearDestino($destino)
-    {
-        if (empty($destino)) {
-            return null;
-        }
-
-        $partes = explode('_', $destino);
-
-        if (count($partes) === 1) {
-            return $destino;
-        }
-
-        if (!empty($partes[0]) && $partes[0] === 'nacional') {
-            return 'nacional';
-        }
-
-        if (count($partes) >= 2) {
-            return $partes[0] . '_' . $partes[1];
-        }
-
-        return null;
     }
 
     public function render()

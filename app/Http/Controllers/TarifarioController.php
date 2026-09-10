@@ -8,6 +8,6 @@ class TarifarioController extends Controller
 {
     public function getTarifario ()
     {
-        return view('tarifario.index ');
+        return view('tarifario.index');
     }
 }

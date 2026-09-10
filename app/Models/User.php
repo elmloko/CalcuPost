@@ -6,12 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     public function adminlte_image()
     {
@@ -19,8 +18,7 @@ class User extends Authenticatable
     }
     public function adminlte_desc()
     {
-        // Recupera el nombre del rol del usuario actual
-        return $this->getRoleNames()->implode(', ');
+        return $this->isAdministrator() ? 'Administrador' : 'Usuario';
     }
     public function adminlte_profile_url()
     {
@@ -32,6 +30,8 @@ class User extends Authenticatable
         'password',
         'city',
         'ci',
+        'email_verified_at',
+        'is_admin',
     ];
 
     /**
@@ -52,5 +52,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_admin' => 'boolean',
     ];
+
+    public function isAdministrator(): bool
+    {
+        return (bool) $this->is_admin;
+    }
 }

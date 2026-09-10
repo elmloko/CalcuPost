@@ -1,0 +1,1440 @@
+{
+  "info": {
+    "name": "CalcuPost · Pruebas API completa",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Pruebas de regresión de la API y de su historial. Ejecutar en el servidor aislado 127.0.0.1:8001 conectado a calcupost_test. Las consultas válidas crean registros de prueba; no se modifican datos de producción. El formulario Livewire y la API comparten cálculo y guardado. Sin contraseñas ni tokens reales."
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8001",
+      "type": "string"
+    },
+    {
+      "key": "ems_nat_1kg",
+      "value": "17",
+      "type": "string"
+    },
+    {
+      "key": "ems_int_1kg",
+      "value": "228",
+      "type": "string"
+    },
+    {
+      "key": "lc_ao_nat_1kg",
+      "value": "10",
+      "type": "string"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (!/^http:\\/\\/(127\\.0\\.0\\.1|localhost):8001$/.test(pm.variables.get('base_url'))) { throw new Error('Usa el servidor aislado local en el puerto 8001.'); }",
+          "if (pm.info.requestName.startsWith('01') || !pm.collectionVariables.get('calculator_session')) { pm.collectionVariables.set('calculator_session', pm.variables.replaceIn('{{$guid}}')); pm.collectionVariables.set('record_ids', '[]'); }",
+          "if (pm.request.method === 'POST' && !pm.request.headers.has('X-Calculator-Session')) { pm.request.headers.upsert({key: 'X-Calculator-Session', value: pm.collectionVariables.get('calculator_session')}); }"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.test(\"Sin error interno del servidor\", () => pm.expect(pm.response.code).to.be.below(500));",
+          "if (pm.request.method === 'POST' && (pm.response.code === 200 || pm.info.requestName.startsWith('13'))) {",
+          "  pm.test('Consulta guardada y sesión conservada', () => { const b = pm.response.json(); pm.expect(b.registro_guardado).to.eql(true); pm.expect(b.registro_id).to.be.a('number').above(0); pm.expect(b.sesion_consulta).to.eql(pm.collectionVariables.get('calculator_session')); const ids = JSON.parse(pm.collectionVariables.get('record_ids')); pm.expect(ids).not.to.include(b.registro_id); ids.push(b.registro_id); pm.collectionVariables.set('record_ids', JSON.stringify(ids)); });",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "01 · EMS nacional",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Estructura del cálculo\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); [\"categoria\",\"peso\",\"destino\",\"tarifa\"].forEach(key=>pm.expect(body).to.have.property(key)); pm.expect(Number(body.tarifa)).to.be.at.least(0); });",
+              "pm.test(\"Importe esperado\", () => { const body=pm.response.json(); pm.expect(Number(body.tarifa)).to.eql(Number(pm.collectionVariables.get('ems_nat_1kg'))); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 · EMS internacional",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS INT\",\n  \"peso\": 1,\n  \"destino\": \"dest_a_argentina\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Estructura del cálculo\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); [\"categoria\",\"peso\",\"destino\",\"tarifa\"].forEach(key=>pm.expect(body).to.have.property(key)); pm.expect(Number(body.tarifa)).to.be.at.least(0); });",
+              "pm.test(\"Importe esperado\", () => { const body=pm.response.json(); pm.expect(Number(body.tarifa)).to.eql(Number(pm.collectionVariables.get('ems_int_1kg'))); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 · LC/AO nacional certificado",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"LC/AO NAT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\",\n  \"certificado\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Estructura del cálculo\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); [\"categoria\",\"peso\",\"destino\",\"tarifa\"].forEach(key=>pm.expect(body).to.have.property(key)); pm.expect(Number(body.tarifa)).to.be.at.least(0); });",
+              "pm.test(\"Importe esperado\", () => { const body=pm.response.json(); pm.expect(Number(body.tarifa)).to.eql(Number(pm.collectionVariables.get('lc_ao_nat_1kg')) + 2); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 · EMS nacional expreso",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\",\n  \"espreso\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Estructura del cálculo\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); [\"categoria\",\"peso\",\"destino\",\"tarifa\"].forEach(key=>pm.expect(body).to.have.property(key)); pm.expect(Number(body.tarifa)).to.be.at.least(0); });",
+              "pm.test(\"Importe esperado\", () => { const body=pm.response.json(); pm.expect(Number(body.tarifa)).to.eql(Number(pm.collectionVariables.get('ems_nat_1kg')) + 10); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 · Dimensiones según regla actual",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\",\n  \"largo\": 0.5,\n  \"ancho\": 0.5,\n  \"alto\": 0.6\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Estructura del cálculo\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); [\"categoria\",\"peso\",\"destino\",\"tarifa\"].forEach(key=>pm.expect(body).to.have.property(key)); pm.expect(Number(body.tarifa)).to.be.at.least(0); });",
+              "pm.test(\"Importe esperado\", () => { const body=pm.response.json(); pm.expect(Number(body.tarifa)).to.be.closeTo(Number(pm.collectionVariables.get('ems_nat_1kg')) * 1.3, 0.001); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cobertura positiva · Todos los servicios",
+      "description": "Un caso válido y determinista para cada variante que no estaba cubierta por los casos iniciales.",
+      "item": [
+        {
+          "name": "Encomienda nacional",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"MI ENCOMIENDA\",\n  \"peso\": 1,\n  \"destino\": \"cui_cap_la_paz\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{base_url}}/api/calcular",
+            "description": "Cobertura positiva del servicio real a 1 kg con un precio controlado en calcupost_test."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Servicio, destino e historial correctos\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); pm.expect(body.categoria).to.eql(\"MI ENCOMIENDA\"); pm.expect(body.destino).to.eql(\"cui_cap_la_paz\"); pm.expect(body.registro_guardado).to.eql(true); });",
+                  "pm.test(\"Importe exacto: 10 Bs.\", () => pm.expect(Number(pm.response.json().tarifa)).to.eql(10));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Encomienda internacional",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"ENCOMIENDA\",\n  \"peso\": 1,\n  \"destino\": \"dest_a_argentina\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{base_url}}/api/calcular",
+            "description": "Cobertura positiva del servicio real a 1 kg con un precio controlado en calcupost_test."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Servicio, destino e historial correctos\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); pm.expect(body.categoria).to.eql(\"ENCOMIENDA\"); pm.expect(body.destino).to.eql(\"dest_a_argentina\"); pm.expect(body.registro_guardado).to.eql(true); });",
+                  "pm.test(\"Importe exacto: 203 Bs.\", () => pm.expect(Number(pm.response.json().tarifa)).to.eql(203));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "LC/AO internacional",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"LC/AO INT\",\n  \"peso\": 1,\n  \"destino\": \"dest_a_argentina\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{base_url}}/api/calcular",
+            "description": "Cobertura positiva del servicio real a 1 kg con un precio controlado en calcupost_test."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Servicio, destino e historial correctos\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); pm.expect(body.categoria).to.eql(\"LC/AO INT\"); pm.expect(body.destino).to.eql(\"dest_a_argentina\"); pm.expect(body.registro_guardado).to.eql(true); });",
+                  "pm.test(\"Importe exacto: 145 Bs.\", () => pm.expect(Number(pm.response.json().tarifa)).to.eql(145));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ECA nacional",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"ECA NAT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{base_url}}/api/calcular",
+            "description": "Cobertura positiva del servicio real a 1 kg con un precio controlado en calcupost_test."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Servicio, destino e historial correctos\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); pm.expect(body.categoria).to.eql(\"ECA NAT\"); pm.expect(body.destino).to.eql(\"nacional_la_paz\"); pm.expect(body.registro_guardado).to.eql(true); });",
+                  "pm.test(\"Importe exacto: 8 Bs.\", () => pm.expect(Number(pm.response.json().tarifa)).to.eql(8));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ECA internacional",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"ECA INT\",\n  \"peso\": 1,\n  \"destino\": \"dest_a_argentina\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{base_url}}/api/calcular",
+            "description": "Cobertura positiva del servicio real a 1 kg con un precio controlado en calcupost_test."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Servicio, destino e historial correctos\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); pm.expect(body.categoria).to.eql(\"ECA INT\"); pm.expect(body.destino).to.eql(\"dest_a_argentina\"); pm.expect(body.registro_guardado).to.eql(true); });",
+                  "pm.test(\"Importe exacto: 131 Bs.\", () => pm.expect(Number(pm.response.json().tarifa)).to.eql(131));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Pliegos Oficiales nacional",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"PLIEGOS NAT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{base_url}}/api/calcular",
+            "description": "Cobertura positiva del servicio real a 1 kg con un precio controlado en calcupost_test."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Servicio, destino e historial correctos\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); pm.expect(body.categoria).to.eql(\"PLIEGOS NAT\"); pm.expect(body.destino).to.eql(\"nacional_la_paz\"); pm.expect(body.registro_guardado).to.eql(true); });",
+                  "pm.test(\"Importe exacto: 12 Bs.\", () => pm.expect(Number(pm.response.json().tarifa)).to.eql(12));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Pliegos Oficiales internacional",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"PLIEGOS INT\",\n  \"peso\": 1,\n  \"destino\": \"dest_a_argentina\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{base_url}}/api/calcular",
+            "description": "Cobertura positiva del servicio real a 1 kg con un precio controlado en calcupost_test."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Servicio, destino e historial correctos\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); pm.expect(body.categoria).to.eql(\"PLIEGOS INT\"); pm.expect(body.destino).to.eql(\"dest_a_argentina\"); pm.expect(body.registro_guardado).to.eql(true); });",
+                  "pm.test(\"Importe exacto: 145 Bs.\", () => pm.expect(Number(pm.response.json().tarifa)).to.eql(145));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sacas M nacional",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"SACAS M NAT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{base_url}}/api/calcular",
+            "description": "Cobertura positiva del servicio real a 1 kg con un precio controlado en calcupost_test."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Servicio, destino e historial correctos\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); pm.expect(body.categoria).to.eql(\"SACAS M NAT\"); pm.expect(body.destino).to.eql(\"nacional_la_paz\"); pm.expect(body.registro_guardado).to.eql(true); });",
+                  "pm.test(\"Importe exacto: 23 Bs.\", () => pm.expect(Number(pm.response.json().tarifa)).to.eql(23));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sacas M internacional",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"SACAS M INT\",\n  \"peso\": 1,\n  \"destino\": \"dest_a_argentina\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{base_url}}/api/calcular",
+            "description": "Cobertura positiva del servicio real a 1 kg con un precio controlado en calcupost_test."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Servicio, destino e historial correctos\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); pm.expect(body.categoria).to.eql(\"SACAS M INT\"); pm.expect(body.destino).to.eql(\"dest_a_argentina\"); pm.expect(body.registro_guardado).to.eql(true); });",
+                  "pm.test(\"Importe exacto: 249 Bs.\", () => pm.expect(Number(pm.response.json().tarifa)).to.eql(249));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Super Express nacional",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"SUPER NAT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{base_url}}/api/calcular",
+            "description": "Cobertura positiva del servicio real a 1 kg con un precio controlado en calcupost_test."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Servicio, destino e historial correctos\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); pm.expect(body.categoria).to.eql(\"SUPER NAT\"); pm.expect(body.destino).to.eql(\"nacional_la_paz\"); pm.expect(body.registro_guardado).to.eql(true); });",
+                  "pm.test(\"Importe exacto: 52 Bs.\", () => pm.expect(Number(pm.response.json().tarifa)).to.eql(52));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Super Express paquetería internacional",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"SUPER PAQUE NAT\",\n  \"peso\": 1,\n  \"destino\": \"dest_a_argentina\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{base_url}}/api/calcular",
+            "description": "Cobertura positiva del servicio real a 1 kg con un precio controlado en calcupost_test."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Servicio, destino e historial correctos\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); pm.expect(body.categoria).to.eql(\"SUPER PAQUE NAT\"); pm.expect(body.destino).to.eql(\"dest_a_argentina\"); pm.expect(body.registro_guardado).to.eql(true); });",
+                  "pm.test(\"Importe exacto: 437 Bs.\", () => pm.expect(Number(pm.response.json().tarifa)).to.eql(437));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Super Express documentos internacionales",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoria\": \"SUPER DOC NAT\",\n  \"peso\": 1,\n  \"destino\": \"dest_a_argentina\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{base_url}}/api/calcular",
+            "description": "Cobertura positiva del servicio real a 1 kg con un precio controlado en calcupost_test."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Servicio, destino e historial correctos\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); pm.expect(body.categoria).to.eql(\"SUPER DOC NAT\"); pm.expect(body.destino).to.eql(\"dest_a_argentina\"); pm.expect(body.registro_guardado).to.eql(true); });",
+                  "pm.test(\"Importe exacto: 324 Bs.\", () => pm.expect(Number(pm.response.json().tarifa)).to.eql(324));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 · Peso obligatorio",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"destino\": \"nacional_la_paz\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Error de validación: peso\", () => pm.expect(pm.response.json().errors).to.have.property(\"peso\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 · Peso negativo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": -1,\n  \"destino\": \"nacional_la_paz\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Error de validación: peso\", () => pm.expect(pm.response.json().errors).to.have.property(\"peso\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 · Peso no numérico",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": \"abc\",\n  \"destino\": \"nacional_la_paz\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Error de validación: peso\", () => pm.expect(pm.response.json().errors).to.have.property(\"peso\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 · Cuerpo vacío",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Error de validación: categoria\", () => pm.expect(pm.response.json().errors).to.have.property(\"categoria\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 · Dimensiones negativas",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\",\n  \"largo\": -1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Error de validación: largo\", () => pm.expect(pm.response.json().errors).to.have.property(\"largo\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11 · Booleano inválido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\",\n  \"recibo\": \"incorrecto\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Error de validación: recibo\", () => pm.expect(pm.response.json().errors).to.have.property(\"recibo\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "12 · Servicio inexistente",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"QA_SERVICIO_INEXISTENTE\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Explica la falta de tarifa\", () => pm.expect(pm.response.json().message).to.be.a(\"string\").and.not.empty);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "13 · Peso fuera del tarifario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": 999999,\n  \"destino\": \"nacional_la_paz\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Explica la falta de tarifa\", () => pm.expect(pm.response.json().message).to.be.a(\"string\").and.not.empty);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "14 · Destino inexistente debe validarse",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": 1,\n  \"destino\": \"destino_inexistente\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Error de validación: destino\", () => pm.expect(pm.response.json().errors).to.have.property(\"destino\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "15 · Peso cero debe rechazarse",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": 0,\n  \"destino\": \"nacional_la_paz\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Error de validación: peso\", () => pm.expect(pm.response.json().errors).to.have.property(\"peso\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "16 · Destino internacional en servicio nacional",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": 1,\n  \"destino\": \"dest_a_argentina\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Error de validación: destino\", () => pm.expect(pm.response.json().errors).to.have.property(\"destino\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "17 · EMS certificado debe coincidir con formulario web",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\",\n  \"certificado\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular",
+        "description": "Calcula y guarda historial cuando los datos son válidos; rechaza entradas inválidas sin guardar."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Respuesta JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "pm.test(\"Estructura del cálculo\", () => { const body=pm.response.json(); pm.expect(body.success).to.eql(true); [\"categoria\",\"peso\",\"destino\",\"tarifa\"].forEach(key=>pm.expect(body).to.have.property(key)); pm.expect(Number(body.tarifa)).to.be.at.least(0); });",
+              "pm.test(\"Importe esperado\", () => { const body=pm.response.json(); pm.expect(Number(body.tarifa)).to.eql(Number(pm.collectionVariables.get('ems_nat_1kg'))); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "18 · Usuario API sin autenticación",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/api/user"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "19 · Método GET no permitido",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/api/calcular"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 405\", () => pm.response.to.have.status(405));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "20 · Sesión inválida",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Calculator-Session",
+            "value": "invalid-session"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 422', () => pm.response.to.have.status(422));",
+              "pm.test('Campo inválido: sesion_consulta', () => pm.expect(pm.response.json().errors).to.have.property('sesion_consulta'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "21 · Token inválido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular"
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.request.headers.upsert({ key: 'Authorization', value: ['Bearer', 'qa-invalid-token'].join(' ') });"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "22 · Internacional no permite destino nacional",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS INT\",\n  \"peso\": 1,\n  \"destino\": \"nacional_la_paz\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 422', () => pm.response.to.have.status(422));",
+              "pm.test('Campo inválido: destino', () => pm.expect(pm.response.json().errors).to.have.property('destino'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "23 · Destino no puede ser una lista",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoria\": \"EMS NAT\",\n  \"peso\": 1,\n  \"destino\": [\n    \"nacional_la_paz\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/calcular"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 422', () => pm.response.to.have.status(422));",
+              "pm.test('Campo inválido: destino', () => pm.expect(pm.response.json().errors).to.have.property('destino'));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

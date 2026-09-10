@@ -1,0 +1,4 @@
+# Local reports may contain request data and debugging traces.
+results.json
+postman-results.json
+postman-results.html

@@ -1,0 +1,36 @@
+:root { --postar-blue: #0f4aa1; --postar-deep: #082f68; --postar-yellow: #f4c52a; --postar-page: #f4f7fc; --postar-line: #d9e4f2; }
+.log-viewer-heading h1 { color: var(--postar-blue); font-weight: 700; letter-spacing: -.025em; margin: 0; }
+.log-viewer-heading h1::after { content: ""; display: block; width: 56px; height: 4px; margin-top: 9px; border-radius: 4px; background: linear-gradient(90deg, var(--postar-yellow) 0 72%, var(--postar-blue) 72%); }
+.log-viewer-heading p { margin: 10px 0 0; color: #49678c; }
+.log-viewer-admin { height: calc(100vh - 210px); min-height: 520px; position: relative; }
+#log-viewer { height: 100%; max-height: none !important; position: relative; border: 1px solid var(--postar-line); border-top: 5px solid var(--postar-yellow); border-radius: 14px; box-shadow: 0 10px 26px rgba(15, 74, 161, .10); overflow: hidden; background: #fff; }
+#log-viewer .bg-white, #log-viewer .bg-gray-50 { background-color: #fff !important; }
+#log-viewer .bg-gray-100 { background-color: #edf4ff !important; }
+#log-viewer .text-brand-500, #log-viewer .text-brand-600 { color: var(--postar-blue) !important; }
+#log-viewer .bg-brand-500, #log-viewer .bg-brand-600 { background-color: var(--postar-blue) !important; }
+#log-viewer .border-brand-500, #log-viewer .border-brand-600 { border-color: var(--postar-blue) !important; }
+#log-viewer .focus\\:ring-brand-500:focus { --tw-ring-color: rgba(244, 197, 42, .5) !important; }
+#log-viewer .file-list, #log-viewer .overflow-y-auto { scrollbar-color: var(--postar-blue) transparent; }
+#log-viewer .file-list .file-item-container,
+#log-viewer .file-list .folder-item-container {
+  background: #fff !important;
+  color: #153257 !important;
+}
+#log-viewer .file-list .file-item-container.active .file-item,
+#log-viewer .file-list .folder-item-container.active .file-item,
+#log-viewer .file-list .folder-item-container.active-folder .file-item {
+  background: #e7f1ff !important;
+  border-color: var(--postar-blue) !important;
+  color: #153257 !important;
+}
+#log-viewer input,
+#log-viewer select {
+  background: #fff !important;
+  border-color: var(--postar-line) !important;
+  color: #153257 !important;
+}
+#log-viewer input::placeholder { color: #6b82a0 !important; }
+#log-viewer button.bg-brand-500,
+#log-viewer button.bg-brand-600 { color: #fff !important; }
+@media (min-width: 768px) { .log-viewer-admin .md\:fixed { position: absolute !important; } }
+@media (max-width: 991.98px) { .log-viewer-admin { height: calc(100vh - 170px); min-height: 440px; } }

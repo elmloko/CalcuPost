@@ -35,7 +35,7 @@ return [
     |
     */
 
-    'route_path' => 'log-viewer',
+    'route_path' => 'registros/tecnicos',
 
     /*
     |--------------------------------------------------------------------------
@@ -48,9 +48,9 @@ return [
     |
     */
 
-    'back_to_system_url' => config('app.url', null),
+    'back_to_system_url' => '/registros',
 
-    'back_to_system_label' => null, // Displayed by default: "Back to {{ app.name }}"
+    'back_to_system_label' => 'Volver a Registros',
 
     /*
     |--------------------------------------------------------------------------
@@ -74,6 +74,7 @@ return [
     'middleware' => [
         'web',
         'auth',
+        'admin',
         \Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
     ],
 
@@ -88,6 +89,8 @@ return [
 
     'api_middleware' => [
         \Opcodes\LogViewer\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        'auth',
+        'admin',
         \Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
     ],
 
