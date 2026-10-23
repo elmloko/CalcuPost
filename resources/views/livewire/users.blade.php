@@ -129,7 +129,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="password" wire:model="newPassword" class="form-control" placeholder="Nueva Contraseña">
+                    <label for="newPassword">Nueva contraseña</label>
+                    <input id="newPassword" type="password" wire:model="newPassword" class="form-control" placeholder="Nueva Contraseña">
+                    @error('newPassword') <div class="text-danger" role="alert">{{ $message }}</div> @enderror
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

@@ -16,6 +16,8 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        app()->setLocale('es');
+
         return view('profile.edit', [
             'user' => $request->user(),
         ]);
@@ -44,13 +46,17 @@ class ProfileController extends Controller
     {
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
+        ], [
+            'password.required' => 'Introduce tu contraseña actual para confirmar.',
+            'password.current_password' => 'La contraseña actual no es correcta.',
         ]);
 
         $user = $request->user();
+        if (! $user->deactivateUnlessLastAdministrator()) {
+            return back()->withErrors(['password' => 'No puede desactivar al último administrador activo.'], 'userDeletion');
+        }
 
         Auth::logout();
-
-        $user->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

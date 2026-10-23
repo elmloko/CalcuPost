@@ -45,13 +45,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        DB::table('postal_services')->whereIn('code', [
-            'EMS', 'MI_ENCOMIENDA', 'ENCOMIENDA', 'LC_AO', 'ECA', 'PLIEGOS', 'SACAS_M', 'SUPER',
-        ])->delete();
-
-        Schema::table('postal_services', function (Blueprint $table) {
-            $table->dropColumn('profile');
-            $table->string('modality', 3)->change();
-        });
+        throw new \RuntimeException('Rollback would delete postal services and their profiles. Restore from a verified backup instead.');
     }
 };

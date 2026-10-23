@@ -28,7 +28,7 @@ class CalculatorReport
             AVG(duration_ms) AS average_ms, MAX(duration_ms) AS max_ms,
             AVG(total_amount) AS average_amount, AVG(weight_kg) AS average_weight,
             COUNT(DISTINCT service_code) AS services,
-            SUM(modality = 'INT') AS international,
+            SUM(modality IN ('INT', 'PAQUE', 'DOC')) AS international,
             SUM(duration_ms >= 1000) AS slow")->first();
 
         $total = (int) $row->total;

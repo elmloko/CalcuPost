@@ -21,6 +21,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('postal_services');
+        throw new \RuntimeException('Rollback would delete postal services. Restore from a verified backup instead.');
     }
 };

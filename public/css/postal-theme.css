@@ -1,0 +1,34 @@
+:root {
+  --postal-yellow: #ffcf24;
+  --postal-yellow-hover: #f1bd08;
+  --postal-yellow-soft: #fff7d6;
+  --postal-blue: #164b91;
+  --postal-ink: #142f50;
+  --postal-muted: #56687e;
+  --postal-page: #f7f8fa;
+  --postal-line: #dce2e9;
+  --postal-font: 'Figtree', 'Segoe UI', sans-serif;
+}
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 3px solid var(--postal-blue);
+  outline-offset: 3px;
+}
+@keyframes postal-enter {
+  from { opacity: .5; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.postal-account { color: var(--postal-ink); font-family: var(--postal-font); }
+.postal-account > .min-h-screen { background: var(--postal-yellow-soft); }
+.postal-account nav, .postal-account header { border-top: 4px solid var(--postal-yellow); }
+.postal-account .bg-white { border: 1px solid var(--postal-line); border-radius: 12px; }
+.postal-account button.bg-gray-800 { background: var(--postal-yellow); color: var(--postal-ink); }
+.postal-account button.bg-gray-800:hover { background: var(--postal-yellow-hover); }
+.postal-account input:focus { border-color: var(--postal-blue); --tw-ring-color: var(--postal-blue); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

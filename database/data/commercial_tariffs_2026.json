@@ -1,0 +1,734 @@
+{
+  "tariffs": {
+    "ENCOMIENDA": [
+      {
+        "peso_min_kg": "0.001",
+        "peso_max_kg": "0.020",
+        "dest_a": 254,
+        "dest_b": 259,
+        "dest_c": 290,
+        "dest_d": 363,
+        "dest_e": 395
+      },
+      {
+        "peso_min_kg": "0.021",
+        "peso_max_kg": "0.100",
+        "dest_a": 254,
+        "dest_b": 259,
+        "dest_c": 290,
+        "dest_d": 363,
+        "dest_e": 395
+      },
+      {
+        "peso_min_kg": "0.101",
+        "peso_max_kg": "0.250",
+        "dest_a": 254,
+        "dest_b": 259,
+        "dest_c": 290,
+        "dest_d": 363,
+        "dest_e": 395
+      },
+      {
+        "peso_min_kg": "0.251",
+        "peso_max_kg": "0.500",
+        "dest_a": 254,
+        "dest_b": 259,
+        "dest_c": 290,
+        "dest_d": 363,
+        "dest_e": 395
+      },
+      {
+        "peso_min_kg": "0.501",
+        "peso_max_kg": "1.000",
+        "dest_a": 254,
+        "dest_b": 270,
+        "dest_c": 302,
+        "dest_d": 377,
+        "dest_e": 411
+      },
+      {
+        "peso_min_kg": "1.001",
+        "peso_max_kg": "2.000",
+        "dest_a": 302,
+        "dest_b": 335,
+        "dest_c": 402,
+        "dest_d": 513,
+        "dest_e": 605
+      },
+      {
+        "peso_min_kg": "2.001",
+        "peso_max_kg": "3.000",
+        "dest_a": 353,
+        "dest_b": 374,
+        "dest_c": 504,
+        "dest_d": 647,
+        "dest_e": 799
+      },
+      {
+        "peso_min_kg": "3.001",
+        "peso_max_kg": "4.000",
+        "dest_a": 404,
+        "dest_b": 440,
+        "dest_c": 604,
+        "dest_d": 782,
+        "dest_e": 994
+      },
+      {
+        "peso_min_kg": "4.001",
+        "peso_max_kg": "5.000",
+        "dest_a": 455,
+        "dest_b": 506,
+        "dest_c": 704,
+        "dest_d": 916,
+        "dest_e": 1186
+      },
+      {
+        "peso_min_kg": "5.001",
+        "peso_max_kg": "6.000",
+        "dest_a": 527,
+        "dest_b": 570,
+        "dest_c": 805,
+        "dest_d": 1051,
+        "dest_e": 1381
+      },
+      {
+        "peso_min_kg": "6.001",
+        "peso_max_kg": "7.000",
+        "dest_a": 580,
+        "dest_b": 636,
+        "dest_c": 907,
+        "dest_d": 1186,
+        "dest_e": 1573
+      },
+      {
+        "peso_min_kg": "7.001",
+        "peso_max_kg": "8.000",
+        "dest_a": 632,
+        "dest_b": 702,
+        "dest_c": 1008,
+        "dest_d": 1320,
+        "dest_e": 1768
+      },
+      {
+        "peso_min_kg": "8.001",
+        "peso_max_kg": "9.000",
+        "dest_a": 687,
+        "dest_b": 767,
+        "dest_c": 1108,
+        "dest_d": 1455,
+        "dest_e": 1962
+      },
+      {
+        "peso_min_kg": "9.001",
+        "peso_max_kg": "10.000",
+        "dest_a": 739,
+        "dest_b": 834,
+        "dest_c": 1209,
+        "dest_d": 1590,
+        "dest_e": 2156
+      },
+      {
+        "peso_min_kg": "10.001",
+        "peso_max_kg": "11.000",
+        "dest_a": 823,
+        "dest_b": 935,
+        "dest_c": 1361,
+        "dest_d": 1792,
+        "dest_e": 2440
+      },
+      {
+        "peso_min_kg": "11.001",
+        "peso_max_kg": "12.000",
+        "dest_a": 878,
+        "dest_b": 1002,
+        "dest_c": 1465,
+        "dest_d": 1932,
+        "dest_e": 2641
+      },
+      {
+        "peso_min_kg": "12.001",
+        "peso_max_kg": "13.000",
+        "dest_a": 933,
+        "dest_b": 1071,
+        "dest_c": 1571,
+        "dest_d": 2071,
+        "dest_e": 2842
+      },
+      {
+        "peso_min_kg": "13.001",
+        "peso_max_kg": "14.000",
+        "dest_a": 987,
+        "dest_b": 1140,
+        "dest_c": 1676,
+        "dest_d": 2210,
+        "dest_e": 3045
+      },
+      {
+        "peso_min_kg": "14.001",
+        "peso_max_kg": "15.000",
+        "dest_a": 1044,
+        "dest_b": 1207,
+        "dest_c": 1778,
+        "dest_d": 2351,
+        "dest_e": 3245
+      },
+      {
+        "peso_min_kg": "15.001",
+        "peso_max_kg": "16.000",
+        "dest_a": 1116,
+        "dest_b": 1294,
+        "dest_c": 1912,
+        "dest_d": 2528,
+        "dest_e": 3498
+      },
+      {
+        "peso_min_kg": "16.001",
+        "peso_max_kg": "17.000",
+        "dest_a": 1170,
+        "dest_b": 1364,
+        "dest_c": 2019,
+        "dest_d": 2669,
+        "dest_e": 3702
+      },
+      {
+        "peso_min_kg": "17.001",
+        "peso_max_kg": "18.000",
+        "dest_a": 1228,
+        "dest_b": 1434,
+        "dest_c": 2124,
+        "dest_d": 2812,
+        "dest_e": 3906
+      },
+      {
+        "peso_min_kg": "18.001",
+        "peso_max_kg": "19.000",
+        "dest_a": 1283,
+        "dest_b": 1502,
+        "dest_c": 2231,
+        "dest_d": 2954,
+        "dest_e": 4112
+      },
+      {
+        "peso_min_kg": "19.001",
+        "peso_max_kg": "20.000",
+        "dest_a": 1339,
+        "dest_b": 1572,
+        "dest_c": 2338,
+        "dest_d": 3097,
+        "dest_e": 4315
+      }
+    ],
+    "EMS NAT": [
+      {
+        "peso_min_kg": "0.001",
+        "peso_max_kg": "0.250",
+        "nacional": 15,
+        "cui_int": 23,
+        "pro_dentro": 34,
+        "cui1": 21,
+        "cui2": 27
+      },
+      {
+        "peso_min_kg": "0.251",
+        "peso_max_kg": "0.500",
+        "nacional": 18,
+        "cui_int": 27,
+        "pro_dentro": 39,
+        "cui1": 32,
+        "cui2": 34
+      },
+      {
+        "peso_min_kg": "0.501",
+        "peso_max_kg": "1.000",
+        "nacional": 23,
+        "cui_int": 33,
+        "pro_dentro": 44,
+        "cui1": 40,
+        "cui2": 52
+      },
+      {
+        "peso_min_kg": "1.001",
+        "peso_max_kg": "2.000",
+        "nacional": 29,
+        "cui_int": 37,
+        "pro_dentro": 49,
+        "cui1": 58,
+        "cui2": 75
+      },
+      {
+        "peso_min_kg": "2.001",
+        "peso_max_kg": "3.000",
+        "nacional": 35,
+        "cui_int": 47,
+        "pro_dentro": 58,
+        "cui1": 75,
+        "cui2": 99
+      },
+      {
+        "peso_min_kg": "3.001",
+        "peso_max_kg": "4.000",
+        "nacional": 41,
+        "cui_int": 55,
+        "pro_dentro": 66,
+        "cui1": 94,
+        "cui2": 124
+      },
+      {
+        "peso_min_kg": "4.001",
+        "peso_max_kg": "5.000",
+        "nacional": 49,
+        "cui_int": 58,
+        "pro_dentro": 70,
+        "cui1": 112,
+        "cui2": 148
+      },
+      {
+        "peso_min_kg": "5.001",
+        "peso_max_kg": "6.000",
+        "nacional": 62,
+        "cui_int": 71,
+        "pro_dentro": 83,
+        "cui1": 135,
+        "cui2": 178
+      },
+      {
+        "peso_min_kg": "6.001",
+        "peso_max_kg": "7.000",
+        "nacional": 69,
+        "cui_int": 78,
+        "pro_dentro": 90,
+        "cui1": 154,
+        "cui2": 203
+      },
+      {
+        "peso_min_kg": "7.001",
+        "peso_max_kg": "8.000",
+        "nacional": 76,
+        "cui_int": 88,
+        "pro_dentro": 100,
+        "cui1": 172,
+        "cui2": 228
+      },
+      {
+        "peso_min_kg": "8.001",
+        "peso_max_kg": "9.000",
+        "nacional": 86,
+        "cui_int": 96,
+        "pro_dentro": 108,
+        "cui1": 191,
+        "cui2": 254
+      },
+      {
+        "peso_min_kg": "9.001",
+        "peso_max_kg": "10.000",
+        "nacional": 93,
+        "cui_int": 104,
+        "pro_dentro": 116,
+        "cui1": 209,
+        "cui2": 279
+      },
+      {
+        "peso_min_kg": "10.001",
+        "peso_max_kg": "11.000",
+        "nacional": 105,
+        "cui_int": 112,
+        "pro_dentro": 124,
+        "cui1": 238,
+        "cui2": 315
+      },
+      {
+        "peso_min_kg": "11.001",
+        "peso_max_kg": "12.000",
+        "nacional": 113,
+        "cui_int": 124,
+        "pro_dentro": 137,
+        "cui1": 258,
+        "cui2": 342
+      },
+      {
+        "peso_min_kg": "12.001",
+        "peso_max_kg": "13.000",
+        "nacional": 122,
+        "cui_int": 132,
+        "pro_dentro": 144,
+        "cui1": 277,
+        "cui2": 368
+      },
+      {
+        "peso_min_kg": "13.001",
+        "peso_max_kg": "14.000",
+        "nacional": 130,
+        "cui_int": 140,
+        "pro_dentro": 153,
+        "cui1": 297,
+        "cui2": 394
+      },
+      {
+        "peso_min_kg": "14.001",
+        "peso_max_kg": "15.000",
+        "nacional": 138,
+        "cui_int": 144,
+        "pro_dentro": 157,
+        "cui1": 315,
+        "cui2": 419
+      },
+      {
+        "peso_min_kg": "15.001",
+        "peso_max_kg": "16.000",
+        "nacional": 152,
+        "cui_int": 164,
+        "pro_dentro": 177,
+        "cui1": 349,
+        "cui2": 463
+      },
+      {
+        "peso_min_kg": "16.001",
+        "peso_max_kg": "17.000",
+        "nacional": 161,
+        "cui_int": 172,
+        "pro_dentro": 185,
+        "cui1": 369,
+        "cui2": 490
+      },
+      {
+        "peso_min_kg": "17.001",
+        "peso_max_kg": "18.000",
+        "nacional": 169,
+        "cui_int": 180,
+        "pro_dentro": 193,
+        "cui1": 389,
+        "cui2": 518
+      },
+      {
+        "peso_min_kg": "18.001",
+        "peso_max_kg": "19.000",
+        "nacional": 178,
+        "cui_int": 189,
+        "pro_dentro": 202,
+        "cui1": 410,
+        "cui2": 545
+      },
+      {
+        "peso_min_kg": "19.001",
+        "peso_max_kg": "20.000",
+        "nacional": 186,
+        "cui_int": 199,
+        "pro_dentro": 212,
+        "cui1": 429,
+        "cui2": 571
+      }
+    ],
+    "EMS INT": [
+      {
+        "peso_min_kg": "0.001",
+        "peso_max_kg": "0.050",
+        "dest_a": 72,
+        "dest_b": 76,
+        "dest_c": 81,
+        "dest_d": 93,
+        "dest_e": 144
+      },
+      {
+        "peso_min_kg": "0.051",
+        "peso_max_kg": "0.150",
+        "dest_a": 111,
+        "dest_b": 115,
+        "dest_c": 118,
+        "dest_d": 135,
+        "dest_e": 210
+      },
+      {
+        "peso_min_kg": "0.151",
+        "peso_max_kg": "0.250",
+        "dest_a": 249,
+        "dest_b": 270,
+        "dest_c": 297,
+        "dest_d": 341,
+        "dest_e": 529
+      },
+      {
+        "peso_min_kg": "0.251",
+        "peso_max_kg": "0.500",
+        "dest_a": 272,
+        "dest_b": 292,
+        "dest_c": 319,
+        "dest_d": 364,
+        "dest_e": 551
+      },
+      {
+        "peso_min_kg": "0.501",
+        "peso_max_kg": "1.000",
+        "dest_a": 295,
+        "dest_b": 315,
+        "dest_c": 342,
+        "dest_d": 387,
+        "dest_e": 574
+      },
+      {
+        "peso_min_kg": "1.001",
+        "peso_max_kg": "2.000",
+        "dest_a": 372,
+        "dest_b": 397,
+        "dest_c": 431,
+        "dest_d": 490,
+        "dest_e": 718
+      },
+      {
+        "peso_min_kg": "2.001",
+        "peso_max_kg": "3.000",
+        "dest_a": 450,
+        "dest_b": 480,
+        "dest_c": 520,
+        "dest_d": 625,
+        "dest_e": 862
+      },
+      {
+        "peso_min_kg": "3.001",
+        "peso_max_kg": "4.000",
+        "dest_a": 527,
+        "dest_b": 562,
+        "dest_c": 609,
+        "dest_d": 739,
+        "dest_e": 1007
+      },
+      {
+        "peso_min_kg": "4.001",
+        "peso_max_kg": "5.000",
+        "dest_a": 605,
+        "dest_b": 644,
+        "dest_c": 699,
+        "dest_d": 854,
+        "dest_e": 1151
+      },
+      {
+        "peso_min_kg": "5.001",
+        "peso_max_kg": "6.000",
+        "dest_a": 683,
+        "dest_b": 726,
+        "dest_c": 788,
+        "dest_d": 990,
+        "dest_e": 1295
+      },
+      {
+        "peso_min_kg": "6.001",
+        "peso_max_kg": "7.000",
+        "dest_a": 729,
+        "dest_b": 790,
+        "dest_c": 877,
+        "dest_d": 1104,
+        "dest_e": 1439
+      },
+      {
+        "peso_min_kg": "7.001",
+        "peso_max_kg": "8.000",
+        "dest_a": 777,
+        "dest_b": 855,
+        "dest_c": 966,
+        "dest_d": 1218,
+        "dest_e": 1582
+      },
+      {
+        "peso_min_kg": "8.001",
+        "peso_max_kg": "9.000",
+        "dest_a": 824,
+        "dest_b": 919,
+        "dest_c": 1056,
+        "dest_d": 1332,
+        "dest_e": 1726
+      },
+      {
+        "peso_min_kg": "9.001",
+        "peso_max_kg": "10.000",
+        "dest_a": 870,
+        "dest_b": 982,
+        "dest_c": 1145,
+        "dest_d": 1447,
+        "dest_e": 1937
+      },
+      {
+        "peso_min_kg": "10.001",
+        "peso_max_kg": "11.000",
+        "dest_a": 917,
+        "dest_b": 1046,
+        "dest_c": 1234,
+        "dest_d": 1584,
+        "dest_e": 2080
+      },
+      {
+        "peso_min_kg": "11.001",
+        "peso_max_kg": "12.000",
+        "dest_a": 964,
+        "dest_b": 1110,
+        "dest_c": 1316,
+        "dest_d": 1697,
+        "dest_e": 2224
+      },
+      {
+        "peso_min_kg": "12.001",
+        "peso_max_kg": "13.000",
+        "dest_a": 1011,
+        "dest_b": 1175,
+        "dest_c": 1398,
+        "dest_d": 1811,
+        "dest_e": 2368
+      },
+      {
+        "peso_min_kg": "13.001",
+        "peso_max_kg": "14.000",
+        "dest_a": 1058,
+        "dest_b": 1239,
+        "dest_c": 1481,
+        "dest_d": 1925,
+        "dest_e": 2580
+      },
+      {
+        "peso_min_kg": "14.001",
+        "peso_max_kg": "15.000",
+        "dest_a": 1104,
+        "dest_b": 1302,
+        "dest_c": 1563,
+        "dest_d": 2039,
+        "dest_e": 2723
+      },
+      {
+        "peso_min_kg": "15.001",
+        "peso_max_kg": "16.000",
+        "dest_a": 1152,
+        "dest_b": 1366,
+        "dest_c": 1646,
+        "dest_d": 2154,
+        "dest_e": 2867
+      },
+      {
+        "peso_min_kg": "16.001",
+        "peso_max_kg": "17.000",
+        "dest_a": 1198,
+        "dest_b": 1430,
+        "dest_c": 1727,
+        "dest_d": 2267,
+        "dest_e": 3078
+      },
+      {
+        "peso_min_kg": "17.001",
+        "peso_max_kg": "18.000",
+        "dest_a": 1245,
+        "dest_b": 1494,
+        "dest_c": 1810,
+        "dest_d": 2382,
+        "dest_e": 3221
+      },
+      {
+        "peso_min_kg": "18.001",
+        "peso_max_kg": "19.000",
+        "dest_a": 1293,
+        "dest_b": 1559,
+        "dest_c": 1892,
+        "dest_d": 2496,
+        "dest_e": 3365
+      },
+      {
+        "peso_min_kg": "19.001",
+        "peso_max_kg": "20.000",
+        "dest_a": 1339,
+        "dest_b": 1623,
+        "dest_c": 1975,
+        "dest_d": 2610,
+        "dest_e": 3576
+      }
+    ],
+    "ECA INT": [
+      {
+        "peso_min_kg": "0.001",
+        "peso_max_kg": "0.030",
+        "dest_a": 31,
+        "dest_b": 33,
+        "dest_c": 38,
+        "dest_d": 42,
+        "dest_e": 46
+      },
+      {
+        "peso_min_kg": "0.031",
+        "peso_max_kg": "0.100",
+        "dest_a": 49,
+        "dest_b": 54,
+        "dest_c": 67,
+        "dest_d": 72,
+        "dest_e": 97
+      },
+      {
+        "peso_min_kg": "0.101",
+        "peso_max_kg": "0.250",
+        "dest_a": 80,
+        "dest_b": 109,
+        "dest_c": 120,
+        "dest_d": 129,
+        "dest_e": 214
+      },
+      {
+        "peso_min_kg": "0.251",
+        "peso_max_kg": "0.500",
+        "dest_a": 153,
+        "dest_b": 158,
+        "dest_c": 176,
+        "dest_d": 189,
+        "dest_e": 417
+      },
+      {
+        "peso_min_kg": "0.501",
+        "peso_max_kg": "1.000",
+        "dest_a": 200,
+        "dest_b": 232,
+        "dest_c": 301,
+        "dest_d": 363,
+        "dest_e": 517
+      },
+      {
+        "peso_min_kg": "1.001",
+        "peso_max_kg": "2.000",
+        "dest_a": 397,
+        "dest_b": 406,
+        "dest_c": 449,
+        "dest_d": 522,
+        "dest_e": 827
+      },
+      {
+        "peso_min_kg": "2.001",
+        "peso_max_kg": "3.000",
+        "dest_a": 418,
+        "dest_b": 476,
+        "dest_c": 593,
+        "dest_d": 673,
+        "dest_e": 990
+      },
+      {
+        "peso_min_kg": "3.001",
+        "peso_max_kg": "4.000",
+        "dest_a": 514,
+        "dest_b": 584,
+        "dest_c": 686,
+        "dest_d": 847,
+        "dest_e": 1174
+      },
+      {
+        "peso_min_kg": "4.001",
+        "peso_max_kg": "5.000",
+        "dest_a": 592,
+        "dest_b": 726,
+        "dest_c": 761,
+        "dest_d": 991,
+        "dest_e": 1370
+      }
+    ]
+  },
+  "special_tariffs": {
+    "ECA INT": {
+      "Tarjetas postales": {
+        "Destino A": 23,
+        "Destino B": 25,
+        "Destino C": 31,
+        "Destino D": 32,
+        "Destino E": 36
+      }
+    }
+  }
+}

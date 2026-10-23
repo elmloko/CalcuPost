@@ -382,6 +382,10 @@
                                     <input type="number" wire:model.live.debounce.500ms="cui_int" class="form-control">
                                 </div>
                                 <div class="form-group">
+                                    <label>Provincia</label>
+                                    <input type="number" wire:model.live.debounce.500ms="pro_dentro" class="form-control">
+                                </div>
+                                <div class="form-group">
                                     <label>Trinidad / Cobija</label>
                                     <input type="number" wire:model.live.debounce.500ms="cui1" class="form-control">
                                 </div>

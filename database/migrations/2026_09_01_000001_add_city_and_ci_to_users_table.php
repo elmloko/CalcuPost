@@ -16,8 +16,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['city', 'ci']);
-        });
+        throw new \RuntimeException('Rollback would delete user location data. Restore from a verified backup instead.');
     }
 };

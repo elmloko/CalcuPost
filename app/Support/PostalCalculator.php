@@ -13,7 +13,7 @@ class PostalCalculator
     {
         $data = Validator::make($input, [
             'destino' => ['required', 'string', Rule::in(array_keys(PostalDestinations::forService($service)))],
-            'peso' => 'required|numeric|gt:0|max:999999',
+            'peso' => 'required|numeric|decimal:0,3|gt:0|max:999999',
             'largo' => 'nullable|numeric|min:0|max:999999',
             'ancho' => 'nullable|numeric|min:0|max:999999',
             'alto' => 'nullable|numeric|min:0|max:999999',
@@ -29,16 +29,21 @@ class PostalCalculator
         // Only a destination in the server-owned catalog can determine a column.
         $parts = explode('_', $data['destino']);
         $column = $parts[0] === 'nacional' ? 'nacional' : implode('_', array_slice($parts, 0, 2));
-        $base = DB::table('tarifario')->where('categoria', $service->category)
+        $prices = DB::table('tarifario')->where('categoria', $service->category)
             ->where('peso_min_kg', '<=', $data['peso'])->where('peso_max_kg', '>=', $data['peso'])
-            ->value($column);
+            ->pluck($column)->filter(fn ($price) => $price !== null)->unique()->values();
+        if ($prices->count() > 1) {
+            return ['data' => $data, 'base' => null, 'total' => null,
+                'status' => 'no_rate', 'reason' => 'ambiguous'];
+        }
+        $base = $prices->first();
         if ($base === null) {
             return ['data' => $data, 'base' => null, 'total' => null, 'status' => 'no_rate'];
         }
 
         $total = (float) $base;
-        // Preserve the current pricing rule. A threshold change needs business confirmation.
-        if (($data['largo'] ?? 0) + ($data['ancho'] ?? 0) + ($data['alto'] ?? 0) > 1.5) {
+        // Dimensions are entered in centimeters; the commercial threshold is 1.5 m.
+        if (($data['largo'] ?? 0) + ($data['ancho'] ?? 0) + ($data['alto'] ?? 0) > 150) {
             $total *= 1.3;
         }
         $certifiedProfiles = [

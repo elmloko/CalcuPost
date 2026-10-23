@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Precios;
+use App\Models\PostalService;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -25,6 +26,7 @@ class Dashboard extends Component
 
     public function render()
     {
+        $modalities = PostalService::pluck('modality', 'category');
         $categorias = Precios::query()
             ->select(
                 'categoria',
@@ -35,10 +37,11 @@ class Dashboard extends Component
             ->groupBy('categoria')
             ->orderBy('categoria')
             ->get()
-            ->filter(function ($categoria) {
+            ->filter(function ($categoria) use ($modalities) {
+                $modality = $modalities->get($categoria->categoria);
                 return match ($this->filtro) {
-                    'nacional' => str_ends_with($categoria->categoria, 'NAT') || $categoria->categoria === 'MI ENCOMIENDA',
-                    'internacional' => str_ends_with($categoria->categoria, 'INT') || $categoria->categoria === 'ENCOMIENDA',
+                    'nacional' => $modality === 'NAT',
+                    'internacional' => in_array($modality, ['INT', 'PAQUE', 'DOC'], true),
                     default => true,
                 };
             })

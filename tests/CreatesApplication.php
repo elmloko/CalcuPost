@@ -16,6 +16,12 @@ trait CreatesApplication
 
         $app->make(Kernel::class)->bootstrap();
 
+        $connection = config('database.default');
+        $database = config("database.connections.{$connection}.database");
+        if (app()->environment('testing') && $database !== 'calcupost_test') {
+            throw new \RuntimeException('Tests must use the calcupost_test database.');
+        }
+
         return $app;
     }
 }

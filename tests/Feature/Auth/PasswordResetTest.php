@@ -70,4 +70,25 @@ class PasswordResetTest extends TestCase
             return true;
         });
     }
+
+    public function test_password_reset_rejects_non_string_token(): void
+    {
+        $user = User::factory()->create();
+
+        $this->postJson('/reset-password', [
+            'token' => ['invalid'],
+            'email' => $user->email,
+            'password' => 'new-password',
+            'password_confirmation' => 'new-password',
+        ])->assertUnprocessable()->assertJsonValidationErrors('token');
+    }
+
+    public function test_password_reset_attempts_are_rate_limited(): void
+    {
+        for ($attempt = 0; $attempt < 6; $attempt++) {
+            $this->postJson('/reset-password', [])->assertUnprocessable();
+        }
+
+        $this->postJson('/reset-password', [])->assertTooManyRequests();
+    }
 }

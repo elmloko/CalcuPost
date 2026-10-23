@@ -50,7 +50,7 @@ class CalculatorApiTest extends TestCase
         $before = CalculatorQuery::count();
         foreach ([['destino', 'destino_inexistente'], ['destino', 'dest_a_argentina'],
             ['destino', ['nacional_la_paz']], ['peso', 0], ['peso', -1], ['peso', 'texto'],
-            ['largo', -1], ['certificado', 'sí'], ['recibo', 'invalid']] as [$field, $value]) {
+            ['largo', -1], ['peso', 1.0004], ['certificado', 'sí'], ['recibo', 'invalid']] as [$field, $value]) {
             $this->postJson('/api/calcular', $this->payload([$field => $value]))
                 ->assertUnprocessable()->assertJsonValidationErrors($field);
         }
@@ -67,7 +67,7 @@ class CalculatorApiTest extends TestCase
             $destination = $mode === 'NAT' ? 'nacional_la_paz' : 'dest_a_argentina';
             $input = $this->payload(['categoria' => 'QA API '.$mode, 'destino' => $destination,
                 'certificado' => true, 'espreso' => true, 'recibo' => true,
-                'largo' => 0.5, 'ancho' => 0.5, 'alto' => 0.6]);
+                'largo' => 50, 'ancho' => 50, 'alto' => 60]);
             $component = Livewire::test(Calculadora::class)->set('servicio', 'QA_API')->set('modalidad', $mode);
             foreach (array_diff_key($input, ['categoria' => true]) as $field => $value) {
                 $component->set($field, $value);
@@ -80,7 +80,7 @@ class CalculatorApiTest extends TestCase
             $this->assertSame('Servicio renombrado', $record->service_name);
             $this->assertSame($mode, $record->modality);
             $this->assertSame(true, $record->extras['certificado']);
-            $this->assertSame(0.6, $record->dimensions['alto']);
+            $this->assertEquals(60, $record->dimensions['alto']);
             $this->assertTrue(Str::isUuid($response->json('sesion_consulta')));
         }
     }
@@ -97,6 +97,26 @@ class CalculatorApiTest extends TestCase
         $this->assertNull($record->base_amount);
     }
 
+    public function test_small_dimensions_do_not_trigger_the_150_cm_surcharge(): void
+    {
+        $this->postJson('/api/calcular', $this->payload([
+            'largo' => 1, 'ancho' => 1, 'alto' => 1,
+        ]))->assertOk()->assertJsonPath('tarifa', 10);
+    }
+
+    public function test_conflicting_weight_brackets_never_quote_an_arbitrary_price(): void
+    {
+        Precios::create(['categoria' => 'QA API NAT', 'peso_min_kg' => 1,
+            'peso_max_kg' => 2, 'nacional' => 99]);
+
+        $response = $this->postJson('/api/calcular', $this->payload())
+            ->assertStatus(409)->assertJsonPath('success', false)->assertJsonPath('tarifa', null)
+            ->assertJsonPath('reason', 'ambiguous');
+        $record = CalculatorQuery::findOrFail($response->json('registro_id'));
+        $this->assertSame('no_rate', $record->status);
+        $this->assertSame('ambiguous', $record->extras['reason']);
+    }
+
     public function test_super_package_and_document_modalities_use_international_zones(): void
     {
         foreach (['PAQUE' => 437, 'DOC' => 324] as $modality => $amount) {
@@ -108,7 +128,9 @@ class CalculatorApiTest extends TestCase
                 'peso_max_kg' => 20, 'dest_a' => $amount]);
 
             Livewire::test(Calculadora::class)->set('servicio', $code)
-                ->assertSet('modalidad', $modality)->assertSee('Argentina')->assertDontSee('La Paz')
+                ->assertSet('modalidad', $modality)
+                ->assertSet('opcionesDestino', fn ($options) => ($options['dest_a_argentina'] ?? null) === 'Argentina'
+                    && !in_array('La Paz', $options, true))
                 ->set('destino', 'dest_a_argentina')->set('peso', 1)->call('calcular')
                 ->assertHasNoErrors()->assertSet('resultado', (float) $amount);
             $this->postJson('/api/calcular', ['categoria' => $category, 'peso' => 1,

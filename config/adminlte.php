@@ -64,7 +64,7 @@ return [
     */
 
     'logo' => 'Calcu<b>Post</b>',
-    'logo_img' => 'vendor/adminlte/dist/img/AGBClogo.png',
+    'logo_img' => 'images/correos-bolivia.png',
     'logo_img_class' => 'brand-image img-circle',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AGBClogo.png',
+            'path' => 'images/correos-bolivia.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -113,7 +113,7 @@ return [
         'enabled' => false,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AGBClogo.png',
+            'path' => 'images/correos-bolivia.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
@@ -217,7 +217,7 @@ return [
     'sidebar_mini' => 'lg',
     'sidebar_collapse' => true,
     'sidebar_collapse_auto_size' => false,
-    'sidebar_collapse_remember' => false,
+    'sidebar_collapse_remember' => true,
     'sidebar_collapse_remember_no_transition' => true,
     'sidebar_scrollbar_theme' => 'os-theme-light',
     'sidebar_scrollbar_auto_hide' => 'l',

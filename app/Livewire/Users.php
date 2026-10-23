@@ -7,6 +7,7 @@ use Livewire\WithPagination;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class Users extends Component
 {
@@ -40,7 +41,8 @@ class Users extends Component
         $this->authorizeAdministrator();
 
         $this->validate([
-            'newPassword' => 'required|min:6', // Validar que la nueva contraseña tenga al menos 6 caracteres
+            'newPassword' => ['required', Password::defaults()],
+            'userIdBeingUpdated' => ['required', 'integer'],
         ]);
 
         $user = User::find($this->userIdBeingUpdated);
@@ -70,7 +72,11 @@ class Users extends Component
             return;
         }
 
-        $user->delete();
+        if (! $user->deactivateUnlessLastAdministrator()) {
+            session()->flash('error', 'No puede desactivar al último administrador activo.');
+            return;
+        }
+
         session()->flash('success', 'Usuario desactivado correctamente. Puede reactivarlo cuando lo necesite.');
     }
 

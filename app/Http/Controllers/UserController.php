@@ -13,10 +13,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::withTrashed()->paginate(); // Incluye usuarios eliminados
-
-        return view('user.index', compact('users'))
-            ->with('i', (request()->input('page', 1) - 1) * $users->perPage());
+        return view('user.index');
     }
 
     public function create()
@@ -59,6 +56,9 @@ class UserController extends Controller
 
     public function pdf()
     {
+        if (User::withTrashed()->count() > 1000) {
+            return redirect()->route('users.index')->with('error', 'El PDF admite hasta 1.000 usuarios. Use una exportación por lotes para volúmenes mayores.');
+        }
         $users = User::withTrashed()->orderBy('name')->get();
 
         return Pdf::loadView('user.pdf', compact('users'))
@@ -102,8 +102,12 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        $user->delete();
-
+        if ($user->is(auth()->user())) {
+            return redirect()->route('users.index')->with('error', 'No puede desactivar su propia cuenta.');
+        }
+        if (! $user->deactivateUnlessLastAdministrator()) {
+            return redirect()->route('users.index')->with('error', 'No puede desactivar al último administrador activo.');
+        }
         return redirect()->route('users.index')
             ->with('success', 'Usuario dado de baja correctamente');
     }

@@ -49,8 +49,13 @@ class ApiController extends Controller
             'registro_id' => $record->id, 'registro_guardado' => true, 'sesion_consulta' => $session,
         ];
         if ($calculation['status'] === 'no_rate') {
-            $body['message'] = 'No se encontraron tarifas para los datos ingresados.';
+            $body['reason'] = $calculation['reason'] ?? 'no_rate';
+            $body['message'] = ($calculation['reason'] ?? null) === 'ambiguous'
+                ? 'Hay tarifas distintas para el mismo peso. Contacte a un administrador.'
+                : 'No se encontraron tarifas para los datos ingresados.';
         }
-        return response()->json($body, $calculation['status'] === 'calculated' ? 200 : 404);
+        $status = $calculation['status'] === 'calculated' ? 200
+            : (($calculation['reason'] ?? null) === 'ambiguous' ? 409 : 404);
+        return response()->json($body, $status);
     }
 }

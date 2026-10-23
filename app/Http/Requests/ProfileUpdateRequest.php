@@ -20,4 +20,21 @@ class ProfileUpdateRequest extends FormRequest
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'required' => 'El campo :attribute es obligatorio.',
+            'string' => 'El campo :attribute debe ser un texto.',
+            'max' => 'El campo :attribute no puede superar los :max caracteres.',
+            'email.email' => 'Introduce un correo electrónico válido.',
+            'email.lowercase' => 'El correo electrónico debe estar en minúsculas.',
+            'email.unique' => 'Este correo electrónico ya está registrado.',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return ['name' => 'nombre completo', 'email' => 'correo electrónico'];
+    }
 }

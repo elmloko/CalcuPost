@@ -41,4 +41,24 @@ class PasswordConfirmationTest extends TestCase
 
         $response->assertSessionHasErrors();
     }
+
+    public function test_password_confirmation_rejects_non_string_input(): void
+    {
+        $this->actingAs(User::factory()->create())
+            ->postJson('/confirm-password', ['password' => ['password']])
+            ->assertUnprocessable()->assertJsonValidationErrors('password');
+    }
+
+    public function test_password_confirmation_attempts_are_rate_limited(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        for ($attempt = 0; $attempt < 6; $attempt++) {
+            $this->postJson('/confirm-password', ['password' => 'incorrect'])
+                ->assertUnprocessable();
+        }
+
+        $this->postJson('/confirm-password', ['password' => 'incorrect'])
+            ->assertTooManyRequests();
+    }
 }

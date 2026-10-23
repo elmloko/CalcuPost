@@ -13,19 +13,20 @@ return new class extends Migration
             $table->boolean('is_admin')->default(false)->after('ci');
         });
 
-        DB::table('users')->where('email', 'admin@admin.test')->update(['is_admin' => true]);
-
-        foreach (['model_has_permissions', 'model_has_roles', 'role_has_permissions', 'permissions', 'roles'] as $table) {
-            if (Schema::hasTable($table)) {
-                DB::table($table)->delete();
-            }
+        if (Schema::hasTable('roles') && Schema::hasTable('model_has_roles')) {
+            $adminIds = DB::table('model_has_roles')
+                ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                ->where('model_has_roles.model_type', 'App\\Models\\User')
+                ->whereIn('roles.name', ['admin', 'Admin', 'administrador', 'Administrador'])
+                ->pluck('model_has_roles.model_id');
+            DB::table('users')->whereIn('id', $adminIds)->update(['is_admin' => true]);
         }
+
+        // Keep legacy role tables intact for rollback and auditability.
     }
 
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_admin');
-        });
+        throw new \RuntimeException('Rollback would discard administrator assignments. Restore from a verified backup instead.');
     }
 };

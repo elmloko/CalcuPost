@@ -22,7 +22,7 @@ class User extends Authenticatable
     }
     public function adminlte_profile_url()
     {
-        return 'profile/username';
+        return route('profile.edit', [], false);
     }
     protected $fillable = [
         'name',
@@ -58,5 +58,20 @@ class User extends Authenticatable
     public function isAdministrator(): bool
     {
         return (bool) $this->is_admin;
+    }
+
+    public function deactivateUnlessLastAdministrator(): bool
+    {
+        return $this->getConnection()->transaction(function (): bool {
+            // Serialize administrator removals in a consistent order, using current locked rows.
+            $administrators = $this->newQuery()->where('is_admin', true)
+                ->orderBy('id')->lockForUpdate()->get(['id']);
+
+            if ($administrators->count() === 1 && $administrators->first()->is($this)) {
+                return false;
+            }
+
+            return (bool) $this->delete();
+        });
     }
 }

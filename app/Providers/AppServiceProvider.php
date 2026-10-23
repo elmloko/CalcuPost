@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         Gate::define('viewPulse', function (?User $user) {
-            return $user !== null;
+            return $user?->isAdministrator() ?? false;
         });
 
         Gate::define('administrar-sistema', fn (User $user) => $user->isAdministrator());

@@ -48,4 +48,43 @@ class PasswordUpdateTest extends TestCase
             ->assertSessionHasErrorsIn('updatePassword', 'current_password')
             ->assertRedirect('/profile');
     }
+
+    public function test_short_password_error_is_in_spanish(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->from('/profile')->put('/password', [
+            'current_password' => 'password',
+            'password' => 'short',
+            'password_confirmation' => 'short',
+        ])->assertRedirect('/profile')->assertSessionHasErrorsIn('updatePassword', [
+            'password' => 'La nueva contraseña debe tener al menos 8 caracteres.',
+        ]);
+    }
+
+    public function test_session_with_old_password_is_rejected_after_password_changes(): void
+    {
+        $user = User::factory()->create();
+        $oldPasswordHash = $user->password;
+        $user->update(['password' => 'new-password']);
+
+        $this->actingAs($user)->withSession(['password_hash_web' => $oldPasswordHash])
+            ->get('/profile')->assertRedirect('/login');
+
+        $this->assertGuest();
+    }
+
+    public function test_changing_password_keeps_current_session_authenticated(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->put('/password', [
+            'current_password' => 'password',
+            'password' => 'new-password',
+            'password_confirmation' => 'new-password',
+        ])->assertSessionHasNoErrors();
+
+        $this->get('/profile')->assertOk();
+        $this->assertAuthenticatedAs($user);
+    }
 }

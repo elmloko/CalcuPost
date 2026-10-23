@@ -1,0 +1,81 @@
+API DE CALCUPOST
+================
+
+Base de ejemplo para desarrollo: http://127.0.0.1:8000
+En otro entorno, sustituya esta dirección por la URL donde esté instalado CalcuPost.
+Las rutas descritas abajo son las API propias de la aplicación.
+
+1. CALCULAR TARIFA POSTAL
+-------------------------
+Método y ruta: POST /api/calcular
+Acceso: público. Si se envía un token Sanctum válido, la consulta se asocia al usuario autenticado.
+Cabeceras recomendadas:
+  Accept: application/json
+  Content-Type: application/json
+Cabecera opcional:
+  X-Calculator-Session: UUID de una consulta anterior para agrupar consultas en una sesión.
+
+Cuerpo JSON:
+  categoria    Obligatorio. Código exacto de un servicio postal disponible; texto de hasta 50 caracteres.
+  destino      Obligatorio. Código de destino válido para la categoría elegida.
+  peso         Obligatorio. Número mayor que 0, con hasta 3 decimales y máximo 999999.
+  largo        Opcional. Número no negativo, en centímetros.
+  ancho        Opcional. Número no negativo, en centímetros.
+  alto         Opcional. Número no negativo, en centímetros.
+  certificado  Opcional. Booleano (true/false).
+  espreso      Opcional. Booleano (true/false). El nombre del campo es "espreso".
+  recibo       Opcional. Booleano (true/false).
+
+Ejemplo de solicitud:
+  POST http://127.0.0.1:8000/api/calcular
+  Accept: application/json
+  Content-Type: application/json
+
+  {"categoria":"EMS NAT","destino":"nacional_la_paz","peso":1}
+
+Ejemplo de respuesta exitosa (HTTP 200; la tarifa depende de los datos vigentes):
+  {
+    "success": true,
+    "categoria": "EMS NAT",
+    "peso": 1,
+    "destino": "nacional_la_paz",
+    "tarifa": 17,
+    "registro_id": 123,
+    "registro_guardado": true,
+    "sesion_consulta": "550e8400-e29b-41d4-a716-446655440000"
+  }
+
+El ejemplo de tarifa e ID es ilustrativo; no representa una cotización actual.
+Cada cálculo válido se guarda en el historial. Si no se envía X-Calculator-Session,
+la respuesta incluye un UUID nuevo que se puede reutilizar en solicitudes posteriores.
+
+Posibles respuestas:
+  200  Tarifa calculada y consulta guardada.
+  401  Se envió un token Bearer inválido.
+  404  La categoría no existe o no hay tarifa para los datos enviados.
+       Si no hay tarifa, la respuesta incluye success=false, tarifa=null y reason="no_rate".
+  409  Hay tarifas distintas para el mismo peso; reason="ambiguous".
+  422  Datos o cabecera X-Calculator-Session inválidos.
+  429  Se excedió el límite de solicitudes.
+  503  No se pudo guardar la consulta; registro_guardado=false.
+
+2. CONSULTAR USUARIO AUTENTICADO
+--------------------------------
+Método y ruta: GET /api/user
+Acceso: requiere autenticación Sanctum.
+Cabeceras:
+  Accept: application/json
+  Authorization: Bearer <TOKEN_SANCTUM>
+
+Devuelve los datos JSON del usuario autenticado. Sin autenticación válida devuelve HTTP 401.
+Esta API no incluye una ruta pública para emitir tokens Sanctum.
+
+NOTAS GENERALES
+---------------
+- Límite configurado: 60 solicitudes por minuto para las rutas /api.
+- Los códigos de categoría y destino deben existir en el catálogo del servidor.
+- Para pruebas en Postman, consulte tests/postman/CalcuPost.postman_collection.json.
+- No incluya tokens reales en documentos compartidos.
+
+Fuente: routes/api.php, app/Http/Controllers/ApiController.php,
+app/Support/PostalCalculator.php y app/Providers/RouteServiceProvider.php.

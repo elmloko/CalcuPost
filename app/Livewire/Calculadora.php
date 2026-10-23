@@ -17,6 +17,8 @@ class Calculadora extends Component
     public $categoria;
     public $perfilCategoria = '';
     public $destino;
+    public $busquedaDestino = '';
+    public array $opcionesDestino = [];
     public $peso;
     public $largo;
     public $ancho;
@@ -76,7 +78,9 @@ class Calculadora extends Component
 
     private function reiniciarCalculo(): void
     {
+        $this->opcionesDestino = $this->getDestinosProperty();
         $this->destino = '';
+        $this->busquedaDestino = '';
         $this->resultado = null;
         $this->registroGuardado = null;
         $this->resetValidation();
@@ -88,9 +92,26 @@ class Calculadora extends Component
             ->where('modality', $this->modalidad)->first());
     }
 
+    public function updated(string $property): void
+    {
+        if (in_array($property, ['destino', 'peso', 'largo', 'ancho', 'alto', 'certificado', 'espreso', 'recibo'], true)) {
+            $this->resultado = null;
+            $this->registroGuardado = null;
+            $this->resetValidation();
+        }
+    }
+
+    public function updatedBusquedaDestino(): void
+    {
+        $this->destino = array_search($this->busquedaDestino, $this->destinos, true) ?: '';
+        $this->resultado = null;
+        $this->registroGuardado = null;
+        $this->resetValidation('destino');
+    }
+
     public function limpiar(): void
     {
-        $this->reset('servicio', 'modalidad', 'categoria', 'perfilCategoria', 'destino', 'peso',
+        $this->reset('servicio', 'modalidad', 'categoria', 'perfilCategoria', 'destino', 'busquedaDestino', 'opcionesDestino', 'peso',
             'largo', 'ancho', 'alto', 'resultado', 'certificado', 'espreso', 'recibo', 'registroGuardado');
         $this->resetValidation();
     }
@@ -115,7 +136,9 @@ class Calculadora extends Component
         $calculation = app(PostalCalculator::class)->calculate($service, $this->only([
             'destino', 'peso', 'largo', 'ancho', 'alto', 'certificado', 'espreso', 'recibo',
         ]));
-        $this->resultado = $calculation['total'] ?? 'No se encontraron tarifas para los datos ingresados.';
+        $this->resultado = $calculation['total'] ?? (($calculation['reason'] ?? null) === 'ambiguous'
+            ? 'Hay tarifas distintas para el mismo peso. Contacte a un administrador.'
+            : 'No se encontraron tarifas para los datos ingresados.');
 
         if (!session()->has('calculator_visitor')) {
             session()->put('calculator_visitor', (string) Str::uuid());

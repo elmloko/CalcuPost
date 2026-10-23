@@ -70,6 +70,20 @@ class CalculatorHistoryTest extends TestCase
         $this->assertSame('La Paz', $first->destination_name);
     }
 
+    public function test_changing_quote_inputs_clears_the_previous_result_without_deleting_history(): void
+    {
+        $before = CalculatorQuery::count();
+        $component = $this->calculator()->call('calcular')->assertHasNoErrors()->assertSet('resultado', 25.0);
+        $record = $component->get('registroGuardado');
+        $component->set('peso', 3)->assertSet('resultado', null)->assertSet('registroGuardado', null);
+        $this->assertDatabaseHas('calculator_queries', ['id' => $record, 'weight_kg' => 2, 'total_amount' => 25]);
+        $this->assertSame($before + 1, CalculatorQuery::count());
+        $component->call('calcular')->assertHasNoErrors()->assertSet('resultado', 25.0)
+            ->set('largo', 200)->assertSet('resultado', null)->assertSet('registroGuardado', null);
+        $component->call('calcular')->assertHasNoErrors()->assertSet('resultado', 32.5)
+            ->set('certificado', true)->assertSet('resultado', null)->assertSet('registroGuardado', null);
+    }
+
     public function test_invalid_inputs_are_not_saved_and_cannot_select_a_foreign_destination(): void
     {
         $before = CalculatorQuery::count();
@@ -79,6 +93,38 @@ class CalculatorHistoryTest extends TestCase
         $this->calculator()->set('largo', -5)->call('calcular')->assertHasErrors('largo');
         Livewire::test(Calculadora::class)->set('servicio', 'QA_HISTORY')->call('calcular')->assertHasErrors('modalidad');
         $this->assertSame($before, CalculatorQuery::count());
+    }
+
+    public function test_destination_search_preserves_text_and_only_selects_valid_matches(): void
+    {
+        $component = Livewire::test(Calculadora::class)->set('servicio', 'QA_HISTORY')->set('modalidad', 'INT')
+            ->assertSeeHtml('aria-controls="destino-opciones"')
+            ->assertSet('opcionesDestino', fn ($options) => array_slice(array_values($options), 0, 7) ===
+                ['Alemania', 'Andorra', 'Angola', 'Antigua y Barbuda', 'Arabia Saudita', 'Argelia', 'Argentina'])
+            ->set('busquedaDestino', 'Arg')->assertSet('busquedaDestino', 'Arg')->assertSet('destino', '')
+            ->set('busquedaDestino', 'Argentina')->assertSet('destino', 'dest_a_argentina')
+            ->set('peso', 2)->call('calcular')->assertHasNoErrors()->assertSet('resultado', 100.0);
+
+        $component->set('busquedaDestino', 'Destino inexistente')->assertSet('destino', '')
+            ->assertSet('resultado', null)->call('calcular')->assertHasErrors('destino')
+            ->set('busquedaDestino', 'Argentina')->set('modalidad', 'NAT')
+            ->assertSet('busquedaDestino', '')->assertSet('destino', '')
+            ->set('busquedaDestino', 'La Paz')->assertSet('destino', 'nacional_la_paz')
+            ->call('limpiar')->assertSet('busquedaDestino', '');
+    }
+
+    public function test_encomienda_destinations_refresh_when_switching_modalities(): void
+    {
+        $component = Livewire::test(Calculadora::class)->set('servicio', 'ENCOMIENDA')
+            ->assertSet('opcionesDestino', [])
+            ->set('modalidad', 'NAT')
+            ->assertSet('opcionesDestino', fn ($options) => count($options) === 11 && ($options['cui_cap_la_paz'] ?? null) === 'La Paz')
+            ->set('busquedaDestino', 'La Paz')->assertSet('destino', 'cui_cap_la_paz')
+            ->set('modalidad', 'INT')->assertSet('busquedaDestino', '')
+            ->assertSet('opcionesDestino', fn ($options) => isset($options['dest_a_argentina']) && !isset($options['cui_cap_la_paz']))
+            ->set('modalidad', 'NAT')
+            ->assertSet('opcionesDestino', fn ($options) => isset($options['cui_cap_la_paz']) && !isset($options['dest_a_argentina']))
+            ->call('limpiar')->assertSet('opcionesDestino', []);
     }
 
     public function test_missing_tariff_is_saved_separately_from_successful_calculations(): void
@@ -115,6 +161,7 @@ class CalculatorHistoryTest extends TestCase
         foreach (['/registros', '/registros/pdf', '/registros/tecnicos', '/registros/tecnicos/api/files'] as $path) {
             $this->get($path)->assertForbidden();
         }
+        session()->forget('password_hash_web');
         $this->actingAs($this->user(true));
         $this->get('/log-viewer')->assertRedirect('/registros');
         $this->get('/registros')->assertOk()->assertSee('Descargar PDF');

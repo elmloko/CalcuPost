@@ -107,18 +107,10 @@ class Tarifario extends Component
     public function crearServicioPostal(): void
     {
         $this->authorizeAdministrator();
-        $this->validate([
-            'nombreNuevoServicio' => ['required', 'string', 'min:2', 'max:40'],
-            'modalidadesNuevoServicio' => ['required', 'array', 'min:1'],
-            'modalidadesNuevoServicio.*' => ['in:NAT,INT'],
-        ], [
-            'nombreNuevoServicio.required' => 'Ingrese el nombre del servicio postal.',
-            'modalidadesNuevoServicio.required' => 'Seleccione al menos una modalidad.',
-            'modalidadesNuevoServicio.min' => 'Seleccione al menos una modalidad.',
-        ]);
+        $this->validateServiceData();
 
         $name = trim($this->nombreNuevoServicio);
-        $code = Str::of(Str::ascii($name))->upper()->replaceMatches('/[^A-Z0-9]+/', '_')->trim('_')->toString();
+        $code = $this->makeServiceCode($name);
 
         if (PostalService::where('code', $code)->exists()) {
             throw ValidationException::withMessages([
@@ -255,20 +247,34 @@ class Tarifario extends Component
 
     private function validateServiceData(): void
     {
+        $this->nombreNuevoServicio = trim($this->nombreNuevoServicio);
+        $modalities = ['NAT', 'INT'];
+        if ($this->editandoServicioCodigo) {
+            $modalities = array_unique(array_merge($modalities, PostalService::where('code', $this->editandoServicioCodigo)
+                ->pluck('modality')->all()));
+        }
         $this->validate([
             'nombreNuevoServicio' => ['required', 'string', 'min:2', 'max:40'],
-            'modalidadesNuevoServicio' => ['required', 'array', 'min:1'],
-            'modalidadesNuevoServicio.*' => ['in:NAT,INT'],
+            'modalidadesNuevoServicio' => ['required', 'array', 'min:1', 'max:4'],
+            'modalidadesNuevoServicio.*' => ['required', 'string', 'distinct', \Illuminate\Validation\Rule::in($modalities)],
         ], [
             'nombreNuevoServicio.required' => 'Ingrese el nombre del servicio postal.',
             'modalidadesNuevoServicio.required' => 'Seleccione al menos una modalidad.',
             'modalidadesNuevoServicio.min' => 'Seleccione al menos una modalidad.',
         ]);
+        $this->makeServiceCode($this->nombreNuevoServicio);
     }
 
     private function makeServiceCode(string $name): string
     {
-        return Str::of(Str::ascii($name))->upper()->replaceMatches('/[^A-Z0-9]+/', '_')->trim('_')->toString();
+        $code = Str::of(Str::ascii($name))->upper()->replaceMatches('/[^A-Z0-9]+/', '_')->trim('_')->toString();
+        if ($code === '') {
+            throw ValidationException::withMessages([
+                'nombreNuevoServicio' => 'El nombre debe contener al menos una letra o número.',
+            ]);
+        }
+
+        return $code;
     }
 
     public function getEsCategoriaPersonalizadaProperty(): bool
@@ -291,7 +297,8 @@ class Tarifario extends Component
         return match ($this->categoriaVisual) {
             'EMS NAT' => ['local_1' => 'Local 1', 'local_2' => 'Local 2', 'local_3' => 'Local 3',
                 'local_4' => 'Local 4', 'nacional' => 'Nacional', 'cui_int' => 'Ciudades intermedias',
-                'cui1' => 'Trinidad / Cobija', 'cui2' => 'Riberalta / Guayaramerín'],
+                'pro_dentro' => 'Provincia', 'cui1' => 'Trinidad / Cobija',
+                'cui2' => 'Riberalta / Guayaramerín'],
             'MI ENCOMIENDA' => ['cui_cap' => 'Ciudades capitales', 'cui1' => 'Trinidad / Cobija',
                 'pro_dentro' => 'Provincia del departamento', 'pro_otro' => 'Provincia de otro departamento'],
             'LC/AO NAT', 'ECA NAT' => ['local_1' => 'Local', 'nacional' => 'Nacional',
@@ -331,6 +338,7 @@ class Tarifario extends Component
 
     public function prepararCreacion(): void
     {
+        $this->authorizeAdministrator();
         $this->editingId = null;
         $this->creando = true;
         $this->resetInputs();
@@ -342,9 +350,7 @@ class Tarifario extends Component
             $this->{$campo} = $borrador['campos'][$campo] ?? null;
         }
 
-        if ($this->categoriaNueva) {
-            $this->activeTab = $this->categoriaNueva;
-        }
+        $this->sincronizarCategoriaNueva();
 
         $this->dispatch('openModal');
     }
@@ -407,12 +413,16 @@ class Tarifario extends Component
     private function sincronizarCategoriaNueva(): void
     {
         if ($this->categoriaNueva) {
+            $this->servicioActivo = $this->nuevoServicio;
+            $this->modalidadActiva = $this->nuevaModalidad;
             $this->activeTab = $this->categoriaNueva;
+            $this->resetPage();
         }
     }
 
     public function editTarifa(int $id): void
     {
+        $this->authorizeAdministrator();
         $tarifa = Precios::where('categoria', $this->activeTab)->findOrFail($id);
         $this->editingId = $tarifa->id;
         $this->creando = false;
@@ -433,19 +443,20 @@ class Tarifario extends Component
 
     public function updateTarifa(): void
     {
-        $rules = [
-            'peso_min_kg' => 'required|numeric|min:0',
-            'peso_max_kg' => 'required|numeric|gte:peso_min_kg',
-        ];
-        foreach (array_keys($this->columnasTarifa) as $campo) {
-            $rules[$campo] = 'nullable|numeric|min:0';
-        }
-        $this->validate($rules);
+        $this->authorizeAdministrator();
+        $data = $this->validatedTariffData();
+        $tarifa = DB::transaction(function () use ($data) {
+            PostalService::where('category', $this->activeTab)->lockForUpdate()->firstOrFail();
+            $tarifa = Precios::where('categoria', $this->activeTab)->findOrFail($this->editingId);
+            if ($this->overlappingTariff($tarifa->categoria, $data['peso_min_kg'], $data['peso_max_kg'], $tarifa->id)) {
+                throw ValidationException::withMessages([
+                    'peso_min_kg' => 'El rango se superpone con otra tarifa de esta categoría.',
+                ]);
+            }
+            $tarifa->update($data);
 
-        $tarifa = Precios::findOrFail($this->editingId);
-        $tarifa->update(collect(self::CAMPOS_TARIFA)->mapWithKeys(
-            fn ($campo) => [$campo => $this->{$campo}]
-        )->all());
+            return $tarifa;
+        });
 
         Cache::forget(Precios::tariffCacheKey($tarifa->categoria));
         $this->editingId = null;
@@ -455,207 +466,25 @@ class Tarifario extends Component
 
     public function createTarifa()
     {
+        $this->authorizeAdministrator();
         if (!$this->categoriaNueva) {
             session()->flash('error', 'Selecciona servicio postal y modalidad antes de guardar.');
             return;
         }
 
         $this->activeTab = $this->categoriaNueva;
+        $data = $this->validatedTariffData();
 
         try {
-            $data = [
-                'categoria' => $this->activeTab,
-            ];
-
-            if ($this->activeTab === 'EMS INT') {
-                $data = array_merge($data, [
-                    'categoria' => 'EMS INT',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'dest_a' => $this->dest_a,
-                    'dest_b' => $this->dest_b,
-                    'dest_c' => $this->dest_c,
-                    'dest_d' => $this->dest_d,
-                    'dest_e' => $this->dest_e,
-                ]);
-            } elseif ($this->activeTab === 'EMS NAT') {
-                $data = array_merge($data, [
-                    'categoria' => 'EMS NAT',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'local_1' => $this->local_1,
-                    'local_2' => $this->local_2,
-                    'local_3' => $this->local_3,
-                    'local_4' => $this->local_4,
-                    'nacional' => $this->nacional,
-                    'cui_int' => $this->cui_int,
-                    'cui1' => $this->cui1,
-                    'cui2' => $this->cui2,
-                ]);
-            } elseif ($this->activeTab === 'MI ENCOMIENDA') {
-                $data = array_merge($data, [
-                    'categoria' => 'MI ENCOMIENDA',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'cui_cap' => $this->cui_cap,
-                    'cui1' => $this->cui1,
-                    'pro_dentro' => $this->pro_dentro,
-                    'pro_otro' => $this->pro_otro,  
-                ]);
-            } elseif ($this->activeTab === 'ENCOMIENDA') {
-                $data = array_merge($data, [
-                    'categoria' => 'ENCOMIENDA',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'dest_a' => $this->dest_a,
-                    'dest_b' => $this->dest_b,
-                    'dest_c' => $this->dest_c,
-                    'dest_d' => $this->dest_d,
-                    'dest_e' => $this->dest_e,  
-                ]);
-            } elseif ($this->activeTab === 'LC/AO NAT') {
-                $data = array_merge($data, [
-                    'categoria' => 'LC/AO NAT',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'local_1' => $this->local_1,
-                    'nacional' => $this->nacional,
-                    'pro_dentro' => $this->pro_dentro,
-                    'pro_otro' => $this->pro_otro,  
-                    'cui1' => $this->cui1,
-                    'cui2' => $this->cui2,
-                ]);
-            } elseif ($this->activeTab === 'LC/AO INT') {
-                $data = array_merge($data, [
-                    'categoria' => 'LC/AO INT',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'dest_a' => $this->dest_a,
-                    'dest_b' => $this->dest_b,
-                    'dest_c' => $this->dest_c,
-                    'dest_d' => $this->dest_d,
-                    'dest_e' => $this->dest_e,  
-                ]);
-            } elseif ($this->activeTab === 'ECA NAT') {
-                $data = array_merge($data, [
-                    'categoria' => 'ECA NAT',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'local_1' => $this->local_1,
-                    'nacional' => $this->nacional,
-                    'pro_dentro' => $this->pro_dentro,
-                    'pro_otro' => $this->pro_otro,  
-                    'cui1' => $this->cui1,
-                    'cui2' => $this->cui2,
-                ]);
-            } elseif ($this->activeTab === 'ECA INT') {
-                $data = array_merge($data, [
-                    'categoria' => 'ECA INT',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'dest_a' => $this->dest_a,
-                    'dest_b' => $this->dest_b,
-                    'dest_c' => $this->dest_c,
-                    'dest_d' => $this->dest_d,
-                    'dest_e' => $this->dest_e,  
-                ]);
-            } elseif ($this->activeTab === 'PLIEGOS NAT') {
-                $data = array_merge($data, [
-                    'categoria' => 'PLIEGOS NAT',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'local_1' => $this->local_1,
-                    'nacional' => $this->nacional,
-                    'pro_dentro' => $this->pro_dentro,
-                    'pro_otro' => $this->pro_otro,
-                ]);
-            } elseif ($this->activeTab === 'PLIEGOS INT') {
-                $data = array_merge($data, [
-                    'categoria' => 'PLIEGOS INT',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'dest_a' => $this->dest_a,
-                    'dest_b' => $this->dest_b,
-                    'dest_c' => $this->dest_c,
-                    'dest_d' => $this->dest_d,
-                    'dest_e' => $this->dest_e,  
-                ]);
-            } elseif ($this->activeTab === 'SACAS M NAT') {
-                $data = array_merge($data, [
-                    'categoria' => 'SACAS M NAT',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'nacional' => $this->nacional,
-                    'pro_dentro' => $this->pro_dentro,
-                ]);
-            } elseif ($this->activeTab === 'SACAS M INT') {
-                $data = array_merge($data, [
-                    'categoria' => 'SACAS M INT',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'dest_a' => $this->dest_a,
-                    'dest_b' => $this->dest_b,
-                    'dest_c' => $this->dest_c,
-                    'dest_d' => $this->dest_d,
-                    'dest_e' => $this->dest_e,  
-                ]);
-            } elseif ($this->activeTab === 'SUPER NAT') {
-                $data = array_merge($data, [
-                    'categoria' => 'SUPER NAT',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'nacional' => $this->nacional,
-                ]);
-            } elseif ($this->activeTab === 'SUPER PAQUE NAT') {
-                $data = array_merge($data, [
-                    'categoria' => 'SUPER PAQUE NAT',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'dest_a' => $this->dest_a,
-                    'dest_b' => $this->dest_b,
-                    'dest_c' => $this->dest_c,
-                    'dest_d' => $this->dest_d,
-                    'dest_e' => $this->dest_e,  
-                    'dest_f' => $this->dest_f,  
-                    'dest_g' => $this->dest_g,  
-                ]);
-            } elseif ($this->activeTab === 'SUPER DOC NAT') {
-                $data = array_merge($data, [
-                    'categoria' => 'SUPER DOC NAT',
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                    'dest_a' => $this->dest_a,
-                    'dest_b' => $this->dest_b,
-                    'dest_c' => $this->dest_c,
-                    'dest_d' => $this->dest_d,
-                    'dest_e' => $this->dest_e,  
-                    'dest_f' => $this->dest_f,  
-                    'dest_g' => $this->dest_g,  
-                ]);
-            } elseif ($this->esCategoriaPersonalizada) {
-                $this->validate([
-                    'peso_min_kg' => ['required', 'numeric', 'min:0'],
-                    'peso_max_kg' => ['required', 'numeric', 'gte:peso_min_kg'],
-                ]);
-
-                $data = array_merge($data, [
-                    'peso_min_kg' => $this->peso_min_kg,
-                    'peso_max_kg' => $this->peso_max_kg,
-                ], $this->modalidadCategoriaActiva === 'INT' ? [
-                    'dest_a' => $this->dest_a,
-                    'dest_b' => $this->dest_b,
-                    'dest_c' => $this->dest_c,
-                    'dest_d' => $this->dest_d,
-                    'dest_e' => $this->dest_e,
-                ] : [
-                    'local_1' => $this->local_1,
-                    'nacional' => $this->nacional,
-                    'pro_dentro' => $this->pro_dentro,
-                    'pro_otro' => $this->pro_otro,
-                ]);
-            }
-
-            Precios::create($data);
+            DB::transaction(function () use ($data) {
+                PostalService::where('category', $this->activeTab)->lockForUpdate()->firstOrFail();
+                if ($this->overlappingTariff($this->activeTab, $data['peso_min_kg'], $data['peso_max_kg'])) {
+                    throw ValidationException::withMessages([
+                        'peso_min_kg' => 'El rango se superpone con otra tarifa de esta categoría.',
+                    ]);
+                }
+                Precios::create(['categoria' => $this->activeTab] + $data);
+            });
             Cache::forget(Precios::tariffCacheKey($this->activeTab));
             Session::forget('tarifario.borrador');
 
@@ -665,13 +494,17 @@ class Tarifario extends Component
             $this->nuevaModalidad = '';
             $this->resetInputs();
             $this->dispatch('closeModal');
-        } catch (\Exception $e) {
-            session()->flash('error', 'Error al crear la tarifa: ' . $e->getMessage());
+        } catch (ValidationException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            report($exception);
+            session()->flash('error', 'No se pudo crear la tarifa. Inténtalo de nuevo.');
         }
     }
 
     public function solicitarEliminacionTarifa(int $id): void
     {
+        $this->authorizeAdministrator();
         Precios::where('categoria', $this->activeTab)->findOrFail($id);
         $this->deletingId = $id;
     }
@@ -690,6 +523,7 @@ class Tarifario extends Component
 
     public function deleteTarifa(): void
     {
+        $this->authorizeAdministrator();
         if (! $this->deletingId) {
             return;
         }
@@ -701,8 +535,9 @@ class Tarifario extends Component
             Cache::forget(Precios::tariffCacheKey($categoria));
             $this->deletingId = null;
             session()->flash('message', 'Tarifa eliminada exitosamente.');
-        } catch (\Exception $e) {
-            session()->flash('error', 'Error al eliminar la tarifa: ' . $e->getMessage());
+        } catch (\Exception $exception) {
+            report($exception);
+            session()->flash('error', 'No se pudo eliminar la tarifa. Inténtalo de nuevo.');
         }
     }
 
@@ -726,5 +561,28 @@ class Tarifario extends Component
         return view('livewire.tarifario', [
             'tarifarios' => $tarifarios,
         ]);
+    }
+
+    private function validatedTariffData(): array
+    {
+        abort_if($this->columnasTarifa === [], 404);
+        $rules = [
+            'peso_min_kg' => 'required|numeric|decimal:0,3|min:0|max:999999',
+            'peso_max_kg' => 'required|numeric|decimal:0,3|gt:0|gte:peso_min_kg|max:999999',
+        ];
+        foreach (array_keys($this->columnasTarifa) as $field) {
+            $rules[$field] = 'nullable|numeric|decimal:0,2|min:0|max:999999999999.99';
+        }
+
+        return $this->validate($rules);
+    }
+
+    private function overlappingTariff(string $category, $minimum, $maximum, ?int $exceptId = null): bool
+    {
+        return Precios::where('categoria', $category)
+            ->when($exceptId, fn ($query) => $query->where('id', '!=', $exceptId))
+            ->where('peso_min_kg', '<=', $maximum)
+            ->where('peso_max_kg', '>=', $minimum)
+            ->exists();
     }
 }

@@ -37,6 +37,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('calculator_queries');
+        throw new \RuntimeException('Rollback would delete calculator history. Restore from a verified backup instead.');
     }
 };
